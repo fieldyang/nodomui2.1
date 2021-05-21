@@ -1,0 +1,47 @@
+// @import "base";
+/*floatbox*/
+.nd-floatbox{
+    @extend .nd-main-color;
+    position:absolute;
+    // display:none;
+    margin:0;
+    padding:5px;
+    > div {
+        min-width:150px;
+        min-height:50px;
+        padding:$nd-padding;
+        display:inline-flex;
+        border-color: $nd-color-grey5;
+        border-radius:$nd-radius;
+        box-shadow: 0px 0px 8px 1px $nd-shadecolor;
+    }
+    /*蒙版*/
+    .nd-floatbox-cover{
+        background-color:$nd-color9;
+        opacity:0.4;
+        position:inherit;
+        left:0;
+        top:0;
+        width:100%;
+        height:100%;
+    }
+
+    .nd-floatbox-body{
+        @extend .nd-box-default;
+        z-index: 1;
+    }
+}
+.nd-floatbox-hide{
+    width:0px;
+    height:0px;
+    
+    .nd-floatbox-cover{
+        width: 0;
+        height:0;
+    }
+    .nd-floatbox-body{
+        width: 0;
+        height:0px;
+        overflow:hidden;
+    }
+}

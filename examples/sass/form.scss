@@ -1,0 +1,209 @@
+// @import "base","icon";
+/*form css*/
+
+.nd-form{
+    padding:$nd-padding;
+    .nd-form-row{
+        display:flex;
+        flex-wrap:wrap;
+        align-content: space-between;
+        box-sizing: border-box;
+        .nd-form-item{
+            flex:1;
+            padding:$nd-padding;
+            display:inline-flex;
+            align-items: center;
+            label{
+                margin-right:$nd-padding;
+            }
+            // input,textarea,.nd-select,.nd-datetime,.nd-text,.nd-file{
+            //     flex:1;
+            // }
+
+            .nd-form-item-unit{
+                width:50px;
+                font-style:italic;
+                font-size:$nd-fontsmall;
+                margin-left:$nd-padding;
+            }
+        }
+    }
+}
+
+
+
+/*文本框*/
+.nd-text{
+    @extend .nd-input-icon;
+    .nd-text-iconleft{
+        margin-right:5px;
+    }
+}
+
+.nd-radio-unactive{
+    @extend .nd-icon-radio;
+}
+
+.nd-radio-active{
+    @extend .nd-icon-radio-active;
+    color:$nd-activecolor;
+}
+
+.nd-checkbox-uncheck{
+    margin-right:$nd-padding;
+    @extend .nd-icon-checkbox;
+}
+.nd-checkbox-checked{
+    margin-right:$nd-padding;
+    @extend .nd-icon-checked;
+    color:$nd-activecolor;
+}
+
+
+/*select 框*/
+.nd-select{
+    display:inline-block;
+    position:relative;
+    display:inline-flex;
+    /*输入框，下箭头容器*/
+    .nd-select-inputct{
+        overflow:hidden;
+        @extend .nd-input-icon;
+        > b{
+            @extend .nd-icon-arrow-down;
+        }
+        
+        /*搜索框*/
+        .nd-select-search{
+            position:absolute;
+            width:90%;
+            opacity:0.3;
+            background-color:$nd-color1;
+        }
+
+        .nd-select-search-active{
+            opacity:1;
+        }
+    }
+    /*下拉框*/
+    .nd-select-list{
+        display:block;
+        @extend .nd-box-default;
+        text-align: left;
+        position:absolute;
+        max-height:500px;
+        margin-top:$nd-dropdown-margin;
+        overflow:auto;
+        z-index:$nd-combo-index;
+        padding:$nd-padding * 2;
+        width:100%;
+        box-sizing: border-box;
+        border-bottom-left-radius: $nd-padding;
+        border-bottom-right-radius: $nd-padding;
+        
+        .nd-select-item{
+            display:flex;
+            line-height:30px;
+            .nd-select-itemicon{
+                flex:0;
+                padding:0;
+                display:inline-block;
+            }
+
+            .nd-select-itemcontent{
+                flex:1;
+            }
+
+            &:hover{
+                @extend .nd-hover-active;
+            }
+
+            b{
+                padding:5px;
+            }
+        }
+
+        .nd-select-selected{
+            @extend .nd-active-color;
+            .nd-select-itemicon{
+                @extend .nd-icon-select;
+            }
+        }
+    }
+}
+
+.nd-file{
+    display:flex;
+    flex-direction: row;
+    .nd-file-showct{
+        position:relative;
+        display:inline-block;
+        width:100px;
+        height:100px;
+        overflow:hidden;
+        margin-right:$nd-padding * 2;
+        a.nd-file-content{
+            width:100%;
+            height:100%;
+            background-position: 0 0;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-color:$nd-color6;
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            img{
+                width:100px;
+            }
+        }
+
+        .nd-file-del{
+            position: absolute;
+            @extend .nd-icon-close;
+            right:0px;
+            top:0px;
+            font-size:$nd-fontlarger;
+            cursor: pointer;
+            &:hover{
+                color:$nd-activecolor;
+            }
+        }
+    }
+
+    .nd-file-uploadct{
+        width:100px;
+        height:100px;
+        overflow:hidden;
+        box-sizing: border-box;
+        background-color:$nd-color6;
+        padding:0;
+        position:relative;
+        display:inline-block;
+        
+        .nd-file-input{
+            opacity:0;
+            display:inline-block;
+            height:100%;
+            width:100%;
+            padding:0;
+            margin:0;
+        }
+
+        .nd-file-uploading{
+            position: absolute;
+            left:0px;
+            top:0px;
+            width:100%;
+            height:100%;
+            text-align:center;
+            line-height:100px;
+            box-sizing: border-box;
+        
+            /*加号按钮*/
+            .nd-file-add{
+                @extend .nd-icon-add1;
+                font-size:30pt;
+            }
+        }
+    }
+}

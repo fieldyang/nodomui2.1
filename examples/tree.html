@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta title="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - panel usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='js/nodom.js'></script>
+    <script src='../bin/nodomui.js'></script>
+    
+</head>
+<body>
+    <div>
+        <p>简单用法</p>
+        <ui-tree style='width:300px;max-height:200px;' name='tree1' listField='rows'
+            icons='folderopen,folderclose' displayField='title'
+            maxLevel='4'>
+        </ui-tree>
+
+        <p>增加复选框</p>
+        <button e-click='getTreeValue'>获取checked值</button>
+        <!--
+            listField       显示的数据行
+            valueField      值字段名
+            displayField    显示字段名
+            itemClick       item点击事件
+            checkName       选择字段名，如果没有此项，则不显示选择框
+            maxLevel        最大级数，默认3
+            icons           两个，以“,”分割，第一个为非叶子节点图标，第二个为叶子节点图标
+        -->
+        <ui-tree style='width:300px;max-height:200px;'  name='tree1' listField='rows'
+            icons='folderopen,folderclose' valueField='id' displayField='title' itemClick='clickItem' 
+            checkName='checked' maxLevel='4'>
+        </ui-tree>
+    </div>
+</body>
+<script>
+    nodom.newApp({
+        module:{
+            el:'div',
+            data:{
+                rows:[
+                    {id:1,title:'商品管理',checked:true,rows:[
+                        {id:2,title:'商品上架'},
+                        {id:3,title:'商品下架'},
+                        {id:4,title:'商品编辑'},
+                        {id:5,title:'商品统计',checked:true,rows:[
+                            {id:6,title:'上架统计'},
+                            {id:7,title:'下架统计'},
+                            {id:8,title:'销售统计',rows:[
+                                {id:9,title:'日统计'},
+                                {id:10,title:'周统计'},
+                                {id:11,title:'月统计'},
+                                {id:12,title:'年统计'}
+                            ]}
+                        ]}
+                    ]},
+                    {id:13,title:'商家管理',rows:[
+                        {id:14,title:'商家审核'},
+                        {id:15,title:'商家关店'},
+                        {id:16,title:'临时关闭'},
+                        {id:17,title:'商家统计'}
+                    ]},
+                    {id:18,title:'订单管理',rows:[
+                        {id:19,title:'发货'},
+                        {id:20,title:'取消申请'},
+                        {id:21,title:'删除订单'}
+                    ]},
+                    {id:22,title:'安全管理',rows:[
+                        {id:23,title:'角色管理'},
+                        {id:24,title:'用户管理'},
+                        {id:25,title:'资源管理'},
+                        {id:26,title:'权限管理'}
+                    ]}
+                ]    
+            },
+            methods:{
+                clickItem:function(dom,model,module){
+                    console.log(model.data);
+                },
+                getTreeValue:function(dom,model,module){
+                    console.log(module.getPlugin('tree1').getValue());
+                }
+            }
+        }
+    })
+</script>
+</html>

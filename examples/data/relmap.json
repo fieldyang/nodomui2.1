@@ -1,0 +1,21 @@
+{
+    "groupUser":[
+        {"gid":1,"uid":2},
+        {"gid":1,"uid":3},
+        {"gid":3,"uid":4},
+        {"gid":2,"uid":1}
+    ],
+    "groups":[
+        {"gid":1,"groupName":"系统管理员"},
+        {"gid":2,"groupName":"店铺管理员"},
+        {"gid":3,"groupName":"用户管理员"},
+        {"gid":4,"groupName":"用户"}
+    ],
+    "users":[
+        {"uid":1,"userName":"yang"},
+        {"uid":2,"userName":"张三"},
+        {"uid":3,"userName":"李四"},
+        {"uid":4,"userName":"王武"},
+        {"uid":5,"userName":"field"}
+    ]
+}

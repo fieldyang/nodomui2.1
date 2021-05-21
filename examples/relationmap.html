@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta title="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - panel usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='js/nodom.js'></script>
+    <script src='../bin/nodomui.js'></script>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div>
+        <div>{{JSON.stringify(groupUser)}}</div>
+        <ui-relationmap x-field='groupUser' listField='users,groups'  valueField='uid,gid' displayField='userName,groupName'>
+        </ui-relationmap>
+    </div>
+</body>
+<script>
+    nodom.newApp({
+        module:{
+            el:'div',
+            data:{
+                // groupUser:[
+                //     {gid:1,uid:2},
+                //     {gid:1,uid:3},
+                //     {gid:3,uid:4},
+                //     {gid:2,uid:1}
+                // ],
+                // groups:[
+                //     {gid:1,groupName:'系统管理员'},
+                //     {gid:2,groupName:'店铺管理员'},
+                //     {gid:3,groupName:'用户管理员'},
+                //     {gid:4,groupName:'用户'}
+                // ],
+                // users:[
+                //     {uid:1,userName:'yang'},
+                //     {uid:2,userName:'张三'},
+                //     {uid:3,userName:'李四'},
+                //     {uid:4,userName:'王武'},
+                //     {uid:5,userName:'field'}
+                // ]
+            },
+            methods:{
+                onBeforeFirstRender(model,module){
+                    nodom.request({
+                        url:'data/relmap.json',
+                        type:'json'
+                    }).then(r=>{
+                        model.set('groups',r.groups);
+                        model.set('users',r.users);
+                        model.set('groupUser',r.groupUser);
+                    })
+                }
+            }
+        }
+    });
+</script>
+</html>

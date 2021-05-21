@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta title="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - panel usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='js/nodom.js'></script>
+    <script src='../bin/nodomui.js'></script>
+
+    <style>
+        .tip{
+            height:200px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button e-click='showtip1'>tip1</button>
+        <button e-click='showtip2'>tip2</button>
+        <button e-click='showtip3'>tip3</button>
+        <button e-click='showtip4'>tip4</button>
+        <p>hello 测试</p>
+        <ui-tip></ui-tip>
+    </div>
+</body>
+<script>
+    let index = 1;
+    nodom.newApp({
+        module:{
+            el:'div',
+            methods:{
+                showtip1:function(){
+                    nodom.tip({content:'hello top' + index++,allowClose:true});
+                },
+                showtip2:function(){
+                    nodom.tip({
+                        content:'hello right' + index++,
+                        loc:'right',
+                        allowClose:true,
+                        icon:'close',
+                        theme:'warn'
+                    });
+                },
+                showtip3:function(){
+                    nodom.tip({
+                        content:'hello bottom 内容有点多，要不要自动换行' + index++,
+                        loc:'bottom',
+                        allowClose:true,
+                        icon:'select',
+                        theme:'success'
+                    });
+                },
+                showtip4:function(){
+                    let themes = ['active','success','warn','error'];
+                    nodom.tip({
+                        content:'hello left' + index++,
+                        loc:'left',
+                        allowClose:true,
+                        icon:'insurance',
+                        theme:themes[index%4],
+                        exclusive:true
+                    });
+                }
+            }
+        }
+    });
+</script>
+</html>

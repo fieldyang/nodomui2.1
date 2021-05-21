@@ -1,0 +1,49 @@
+// @import "base","icon","button";
+
+/*表格css*/
+.nd-listtransfer{
+    overflow:hidden;
+    padding:$nd-padding;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    .nd-list{
+        @extend .nd-border;
+        @include nd-color(1);
+        border-radius:$nd-padding;
+        overflow:auto;
+        padding:$nd-padding;
+        flex:1;
+        display:flex;
+        flex-direction: column;
+    }
+    
+    .nd-listtransfer-btngrp{
+        padding:$nd-padding*2;
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content:center;
+
+        > b{
+            @extend .nd-btn;
+            margin-bottom:10px;
+        }
+        .nd-listtransfer-right2{
+            @extend .nd-icon-double-arrow-right;
+        }
+
+        .nd-listtransfer-right1{
+            @extend .nd-icon-arrow-right;
+        }
+
+        .nd-listtransfer-left2{
+            @extend .nd-icon-double-arrow-left;
+        }
+
+        .nd-listtransfer-left1{
+            @extend .nd-icon-arrow-left;
+        }
+    }
+}

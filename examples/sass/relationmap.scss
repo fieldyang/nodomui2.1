@@ -1,0 +1,40 @@
+// @import "base","icon";
+/*relation map*/
+
+.nd-relationmap{
+    border-spacing: 1px;
+    @include nd-color(6);
+    .nd-relationmap-head{
+        td{
+            padding:$nd-padding $nd-padding * 2;
+        }
+    }
+    
+    td{
+        @include nd-color(1);
+        text-align:center;
+    }
+
+    .nd-relationmap-head{
+        td{
+            @extend .nd-disable;
+        }
+    }
+    
+
+    .nd-relationmap-row{
+        td{
+            @extend .nd-canclick;
+        }
+        
+        td:first-child{
+            @extend .nd-disable;
+            padding:$nd-padding $nd-padding*2;
+        }
+    }
+
+    .nd-relationmap-active{
+        @extend .nd-icon-select;
+        color:$nd-activecolor;
+    }
+}

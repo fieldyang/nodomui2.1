@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - panel usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='js/nodom.js'></script>
+    <script src='../bin/nodomui.js'></script>
+</head>
+<body>
+    <div>
+        <p>单文件</p>
+        <!-- deleteUrl='http://localhost:3000/delres' -->
+        <!--
+            valueField      值字段
+            displayField    显示字段
+            urlField        从服务器返回的上传文件路径名
+            uploadName      提交名
+            uploadUrl       提交url
+        -->
+        <ui-file x-field='files' valueField='id' displayField="fileName" urlField='url' uploadName='file' extraDisplayName='fff' 
+            uploadUrl='http://localhost:3000/upload'></ui-file>
+
+        <!-- <p>多文件</p>
+        <ui-file x-field='photos' multiple valueField='id' displayField="url"  uploadName='file'
+        uploadUrl='http://localhost:3000/upload' fileType='image' maxCount='5'></ui-file> -->
+    </div>
+
+</body>
+<script>
+    nodom.newApp({
+        module:{
+            el:'div',
+            data:{
+                files:[{id:2,fff:'bbbbb'}],
+                photos:[]
+            }
+        }
+    });
+</script>
+</html>

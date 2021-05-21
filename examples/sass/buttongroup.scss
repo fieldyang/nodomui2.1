@@ -1,0 +1,19 @@
+// @import "base.scss";
+/* button group*/
+.nd-buttongroup{
+    padding:$nd-padding;
+    // @include nd-color(2);
+    // background-color:$nd-color-grey7;
+    border-top:$nd-border;
+    display:inline-flex;
+    justify-content: flex-end;
+    .nd-btn{
+        margin-right:10px;
+
+        &:last-child{
+            margin:0px;
+        }
+    }
+
+    
+}

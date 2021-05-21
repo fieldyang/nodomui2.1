@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - panel usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='js/nodom.js'></script>
+    <script src='../bin/nodomui.js'></script>
+    
+</head>
+<body>
+    <div style='position:relative'>
+        <p><label>姓名:</label><input type='text'></p>
+        <p><label>姓名:</label><input type='text'></p>
+        <p><label>姓名:</label><input type='text'></p>
+        <p><label>姓名:</label><input type='text'></p>
+        <p><label>姓名:</label><input type='text'>
+        <p><label>姓名:</label><input type='text'></p>
+        <p><label>姓名:</label><input type='text'>
+        <label>测试:</label><input type='text' style='background-color:grey' e-click='focusme'></p>
+        <!-- <p><label>姓名:</label><input type='text'></p>
+        <button e-click='focusme'>显示</button> -->
+        <ui-floatbox></ui-floatbox>
+        
+    </div>
+
+</body>
+<script>
+    $.a({
+        module:{
+            el:'div',
+            data:{
+                files:[],
+                photos:[]
+            },
+            methods:{
+                focusme:function(dom,model,module,e){
+                    let dom1 = new $.Element('div');
+                    let txt = new $.Element();
+                    txt.textContent='hello world!';
+                    dom1.add(txt)
+                    $.floatbox(dom1,e);
+                }
+            }
+        }
+    });
+</script>
+</html>

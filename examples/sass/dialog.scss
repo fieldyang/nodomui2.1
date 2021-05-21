@@ -1,0 +1,46 @@
+// @import "base";
+/*dialog*/
+.nd-dialog{
+    position:fixed;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:$nd-dialog-index;
+    /*蒙版*/
+    .nd-dialog-cover{
+        background-color:$nd-color9;
+        opacity:0.4;
+        position:inherit;
+        left:0;
+        top:0;
+        width:100%;
+        height:100%;
+    }
+
+    .nd-dialog-body{
+        @extend .nd-box-default;
+        z-index: 1;
+    }
+}
+.nd-dialog-hide{
+    width:0px;
+    height:0px;
+    
+    .nd-dialog-cover{
+        width: 0;
+        height:0;
+    }
+    .nd-dialog-body{
+        width: 0;
+        height:0px;
+        overflow:hidden;
+        .nd-panel-body{
+            height:0px;
+            width:0px;
+        }
+    }
+}

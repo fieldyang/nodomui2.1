@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta title="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - listtransfer usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='js/nodom.js'></script>
+    <script src='../bin/nodomui.js'></script>
+    <style>
+        .ct{
+            height:200px;
+            width:600px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <p>简单用法</p>
+        <button e-click='change'>修改</button>
+        <ui-listtransfer style='height:200px;max-width:500px;' x-field='selectedUser'  valueField='uid' 
+            displayField='userName' listField='users'>
+        </ui-listtransfer>
+        <p>自定义</p>
+        <!-- <ui-listtransfer style='height:200px;max-width:500px;' x-field='selectedUser'  valueField='uid' 
+            displayField='userName' listField='users'>
+            <div>
+                <span style='width:100px;display:inline-block;'>{{userName}}</span>
+                <span >{{company}}</span>
+            </div>
+        </ui-listtransfer> -->
+    </div>
+</body>
+<script>
+    nodom.newApp({
+        module:{
+            el:'div',
+            data:{
+                selectedUser:'3,4',
+                users:[
+                    {uid:1,userName:'yang lei','company':'swust'},
+                    {uid:2,userName:'张三','company':'阿里'},
+                    {uid:3,userName:'李四','company':'华为'},
+                    {uid:4,userName:'王武','company':'腾讯'},
+                    {uid:5,userName:'fieldyang','company':'京东'},
+                    {uid:6,userName:'路人甲','company':'google'}
+                ]
+            },
+            methods:{
+                change(dom,model){
+                    model.set('selectedUser','1');
+                }
+            }
+        }
+    })
+</script>
+</html>

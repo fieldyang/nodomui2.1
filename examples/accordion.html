@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - panel usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='js/nodom.js'></script>
+    <script src='../bin/nodomui.js'></script>
+    
+</head>
+<body>
+    <div>
+        <ui-accordion style='width:300px' x-model='result'>
+        <div first data='levels' activeName='active'><b class="{{'nd-icon-' + icon}}"></b>{{title}}</div>
+        <a second data='rows' activeName='a1' itemClick='clickItem'><b class="{{'nd-icon-' + icon}}"></b>{{name}}</a>
+        </ui-accordion>
+    </div>
+</body>
+<script>
+    nodom.newApp({
+        module:{
+            el:'div',
+            data:{
+                levels:[
+                    {title:'商品管理',icon:'insurance',active:true,rows:[
+                        {name:'商品上架',icon:'prompt'},
+                        {name:'商品下架',icon:'prompt'},
+                        {name:'商品编辑',icon:'prompt'},
+                        {name:'商品统计',icon:'prompt'}
+                    ]},
+                    {title:'商家管理',icon:'edit',rows:[
+                        {name:'商家审核',icon:'prompt'},
+                        {name:'商家关店',icon:'prompt'},
+                        {name:'临时关闭',icon:'prompt'},
+                        {name:'商家统计',icon:'prompt'}
+                    ]},
+                    {title:'订单管理',icon:'shopping-cart',rows:[
+                        {name:'发货',icon:'prompt'},
+                        {name:'取消申请',icon:'prompt'},
+                        {name:'删除订单',icon:'prompt'}
+                    ]},
+                    {title:'安全管理',icon:'user',rows:[
+                        {name:'角色管理',icon:'prompt'},
+                        {name:'用户管理',icon:'user'},
+                        {name:'资源管理',icon:'prompt'},
+                        {name:'权限管理',icon:'prompt'}
+                    ]}
+                ]    
+            },
+            methods:{
+                clickItem:(dom,model,module,e)=>{
+                    console.log(model.data);
+                }
+            }
+        }
+    })
+</script>
+</html>

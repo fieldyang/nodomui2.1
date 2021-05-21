@@ -1,0 +1,48 @@
+// @import "base";
+/********** accordion ***********/
+.nd-accordion{
+    @extend .nd-commonbox;
+    .nd-accordion-item{
+        border-bottom:$nd-border;
+        .nd-accordion-first{
+            padding:$nd-padding*2;
+            font-size:$nd-fontnormal;
+            font-weight:bold;
+            width:100%;
+            box-sizing: border-box;
+            display:inline-flex;
+            justify-content: space-between;
+        }
+
+        .nd-accordion-icon{
+            display:inline-block;
+        }        
+        
+        .nd-accordion-open{
+            transform:rotate(90deg);
+        }
+    
+        .nd-accordion-secondct{
+            .nd-accordion-second{
+                height:30px;
+                line-height:30px;
+                text-indent: 2em;
+                font-size:$nd-fontnormal;
+                display:block;
+                // @include nd-color(2);
+            }
+         
+            .nd-accordion-selected{
+                @extend .nd-item-selectcolor;
+                @include nd-color(2)
+            }
+    
+            .nd-accordion-second:hover{
+                @extend .nd-hover-active;
+            }
+        }
+        .nd-accordion-hide{
+            display:none;
+        }    
+    }
+}

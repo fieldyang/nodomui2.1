@@ -1,0 +1,156 @@
+// @import "base","icon","button";
+
+/*datetime css*/
+
+/*弹出选择框*/
+.nd-datetime{
+    position:relative;
+    .nd-datetime-field{
+        @extend .nd-input-icon;
+        .nd-datetime-date{
+            @extend .nd-icon-calendar;
+            background-color:inherit;
+        }
+        .nd-datetime-time{
+            @extend .nd-icon-time;
+        }
+    }
+    /*下拉面板*/
+    .nd-datetime-picker{
+        position:absolute;
+        z-index:$nd-combo-index;
+        margin-top:$nd-dropdown-margin;
+        padding:$nd-padding;
+        // @extend .nd-border;
+        @extend .nd-box-default;
+        border:$nd-border;
+        /*按钮*/
+        .nd-datetime-btnct{
+            padding:$nd-padding 0;
+            text-align:center;
+            >button{
+                @extend .nd-btn-small;
+            }
+            & :first-child{
+                margin-right:$nd-padding*2;
+            }
+        }
+
+        .nd-datetime-tbl{
+            display:flex;
+        }
+    }
+
+    /*日期面板*/
+    .nd-datetime-datetbl{
+        width:245px;
+        /*显示年月和箭头*/
+        .nd-datetime-ymct{
+            line-height:30px;
+            padding:$nd-padding/2;
+            font-size:$nd-fontlarge;
+            display:flex;
+            justify-content: space-between;
+            /*年月*/
+            .nd-datetime-ym{
+                text-align:center;
+                flex:1;
+            }
+
+            > b{
+                padding:0 $nd-padding;
+                @extend .nd-canclick;
+            }
+
+            .nd-datetime-leftarrow{
+                @extend .nd-icon-arrow-left;
+                flex:0;
+            }
+            .nd-datetime-leftarrow1{
+                @extend .nd-icon-double-arrow-left;
+                flex:0;
+            }
+
+            .nd-datetime-rightarrow{
+                @extend .nd-icon-arrow-right;
+                flex:0;
+            }
+
+            .nd-datetime-rightarrow1{
+                @extend .nd-icon-double-arrow-right;
+                flex:0;
+            }
+        }
+
+        /*周日容器*/
+        .nd-datetime-weekdays,.nd-datetime-dates{
+            >span{
+                font-size:$nd-fontnormal;
+                margin:$nd-padding/2;
+                display:inline-block;
+                height:25px;
+                width:25px;
+                text-align:center;
+                line-height: 25px;
+            }
+        }
+
+        /*日期容器*/
+        .nd-datetime-dates{
+            // border-top:1px solid $nd-color4;
+            // border-bottom:1px solid $nd-color4;
+            border:$nd-border;
+            font-size:$nd-fontsmall;
+
+            > span{
+                @extend .nd-canclick;
+            }
+            
+            .nd-datetime-today{
+                color:$nd-activecolor;
+            }
+
+            .nd-datetime-selected{
+                @extend .nd-item-selectcolor;
+                border-radius:35px;
+            }
+
+            .nd-datetime-disable{
+                @extend .nd-disable;
+            }
+        }
+    }
+
+    /*时间面板*/
+    .nd-datetime-timetbl{
+        width:210px;
+        overflow:hidden;
+        padding:$nd-padding;
+        
+        >input{
+            margin-bottom:$nd-padding;
+            @extend .nd-input;
+            width:100%;
+            box-sizing: border-box;
+            font-size:$nd-fontlarge;
+            text-align:center;
+        }
+        .nd-datetime-timect{
+            font-size:$nd-fontnormal;
+            height:180px;
+            display:flex;
+            >div{
+                overflow:auto;
+                height:100%;
+                flex:1;
+                >div{
+                    line-height:30px;
+                    text-align:center;
+                }
+                .nd-datetime-itemselect{
+                    @extend .nd-item-selectcolor;
+                }
+            }
+        }
+    }
+}

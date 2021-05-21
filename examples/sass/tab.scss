@@ -1,0 +1,66 @@
+// @import "base","icon";
+/*relation map*/
+
+/*横向*/
+
+.nd-tab-horizontal{
+    display:flex;
+    flex-direction: row;
+    
+    .nd-tab-head{
+        @include nd-color(2);
+        flex-direction: column;
+    }
+    .nd-tab-body{
+        flex:1;
+    }
+}
+
+.nd-tab{
+    @extend .nd-main-color;
+    flex-direction: column;
+    border:$nd-border;
+    /*头部 tab区域*/
+    .nd-tab-head{
+        @extend .nd-header1;
+        background-color:$nd-color1;
+        box-sizing: border-box;
+        border-bottom:$nd-border;
+        .nd-tab-item{
+            // @extend .nd-header1;
+            box-sizing: border-box;
+            display:inline-block;
+            @extend .nd-canclick;
+            @extend .nd-main-color;
+            padding:0 $nd-padding*2;
+            border-bottom:$nd-border;
+            transform:translateY(-1px);
+            .nd-tab-close{
+                margin-left:$nd-padding;
+                font-size:$nd-fontsmall;
+                @include nd-clickicon('cross');
+                border-radius:10px;
+            }
+        }    
+        .nd-tab-item-active{
+            // color:$nd-color-active1;
+            font-weight:bold;
+            border-top:$nd-border;
+            border-left:$nd-border;
+            border-right:$nd-border;
+            border-bottom:0;
+            margin-bottom:1px;
+            // height:$nd-head-height + 1;
+            transform:translateY(1px);
+            // @extend .nd-item-selectcolor;
+            background-color:$nd-color6;
+        }
+    }
+
+    /*内容区域*/
+    .nd-tab-body{
+        @extend .nd-padding;
+        overflow:auto;
+    }
+}
+

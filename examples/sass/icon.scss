@@ -1,0 +1,490 @@
+// @import "base";
+
+@font-face {font-family: "nd-iconfont";
+    // src:url('font/iconfont.ttf'),
+    // url('font/iconfont.woff')
+    src: url('font/iconfont.eot');
+    src: url('font/iconfont.eot') format('embedded-opentype'),
+        url('font/iconfont.woff') format('woff'),
+        url('font/iconfont.ttf') format('truetype');
+        // url('font/iconfont.svg') format('svg');
+}
+
+/*icon size*/
+.nd-icon-sizesmall{
+    font-size:$nd-fontsmall;
+}
+
+.nd-icon-sizenormal{
+    font-size:$nd-fontnormal;
+}
+
+.nd-icon-sizebig{
+    font-size:$nd-fontlargest;
+}
+
+@mixin nd-genicon($code) {
+    font-family: nd-iconfont;
+    &:before{
+        content:$code;
+    }
+}
+
+/*icon class*/
+/**必要箭头开始*/
+
+/*菜单，树右向箭头*/
+.nd-icon-right{
+    @include nd-genicon('\e65d');
+}
+
+/*复选框，未选中*/
+.nd-icon-checkbox{
+    @include nd-genicon('\ec58');
+}
+
+/*复选框，已选中*/
+.nd-icon-checked{
+    @include nd-genicon('\ead4');
+}
+
+/*单选框，未选中*/
+.nd-icon-radio{
+    @include nd-genicon('\e6ed');
+}
+/*单选框，已选中*/
+.nd-icon-radio-active{
+    @include nd-genicon('\e6ee');
+}
+
+/*减号*/
+.nd-icon-minus{
+    @include nd-genicon('\e76c');
+}
+/*加号*/
+.nd-icon-add{
+    @include nd-genicon('\e742');
+}
+
+/*关闭*/
+.nd-icon-close{
+    @include nd-genicon('\e76b');
+}
+
+/*加号(不带圆圈)*/
+.nd-icon-add1{
+    @include nd-genicon('\e7b0');
+}
+/*减号(不带圆圈)*/
+.nd-icon-minus1{
+    @include nd-genicon('\e7b1');
+}
+
+/*勾*/
+.nd-icon-select{
+    @include nd-genicon('\e773');
+}
+
+/*叉*/
+.nd-icon-cross{
+    @include nd-genicon('\e74e');
+}
+
+/*上箭头*/
+.nd-icon-arrow-up{
+    @include nd-genicon('\e746');
+}
+/*下箭头*/
+.nd-icon-arrow-down{
+    @include nd-genicon('\e7b2');
+}
+
+/*左箭头*/
+.nd-icon-arrow-left{
+    @include nd-genicon('\e744');
+}
+
+/*右箭头*/
+.nd-icon-arrow-right{
+    @include nd-genicon('\e743');
+}
+
+
+/*双左箭头*/
+.nd-icon-double-arrow-left{
+    @include nd-genicon('\e755');
+}
+
+/*双右箭头*/
+.nd-icon-double-arrow-right{
+    @include nd-genicon('\e754');
+}
+
+/*日期*/
+.nd-icon-calendar{
+    @include nd-genicon('\e74b');
+}
+
+/*时间*/
+.nd-icon-time{
+    @include nd-genicon('\e8b8');
+}
+
+/*查询*/
+.nd-icon-search{
+    @include nd-genicon('\e7b5');
+}
+
+/*loading*/
+.nd-icon-loading{
+    @include nd-genicon('\e761');
+}
+
+/**必要图标结束*/
+
+/**编辑器*/
+/*粗体*/
+.nd-icon-bold{
+    @include nd-genicon('\e7cf');
+}
+/*斜体*/
+.nd-icon-italic{
+    @include nd-genicon('\e7d1');
+}
+/*下划线*/
+.nd-icon-underline{
+    @include nd-genicon('\e7d3');
+}
+
+/*左对齐*/
+.nd-icon-leftalign{
+    @include nd-genicon('\e7d0');
+}
+
+/*右对齐*/
+.nd-icon-rightalign{
+    @include nd-genicon('\e7d9');
+}
+
+/*居中对齐*/
+.nd-icon-centeralign{
+    @include nd-genicon('\e7d2');
+}
+
+/*剪切*/
+.nd-icon-cut{
+    @include nd-genicon('\e753');
+}
+
+/*复制*/
+.nd-icon-copy{
+    @include nd-genicon('\e6f3');
+}
+
+
+/*播放器*/
+/*播放*/
+.nd-icon-play{
+    @include nd-genicon('\e701');
+}
+
+/*停止*/
+.nd-icon-stop{
+    @include nd-genicon('\e778');
+}
+
+/*编辑*/
+.nd-icon-edit{
+    @include nd-genicon('\e6f6');
+}
+
+
+/*提示*/
+.nd-icon-prompt{
+    @include nd-genicon('\e76a');
+}
+
+/*菜单*/
+.nd-icon-menu{
+    @include nd-genicon('\e652');
+}
+
+/*分类*/
+.nd-icon-category{
+    @include nd-genicon('\e74d');
+}
+
+/*设置*/
+.nd-icon-set{
+    @include nd-genicon('\e782');
+}
+
+/*购物车*/
+.nd-icon-cart{
+    @include nd-genicon('\e7b4');
+}
+
+/*用户*/
+.nd-icon-user{
+    @include nd-genicon('\e7b3');
+}
+
+/*密码*/
+.nd-icon-password{
+    @include nd-genicon('\e764');
+}
+
+/*解锁*/
+.nd-icon-unlock{
+    @include nd-genicon('\e78a');
+}
+
+/*安全*/
+.nd-icon-security{
+    @include nd-genicon('\e772');
+}
+
+/*保险*/
+.nd-icon-insurance{
+    @include nd-genicon('\e787');
+}
+
+/*垃圾桶*/
+.nd-icon-ashbin{
+    @include nd-genicon('\e747');
+}
+
+/*消息*/
+.nd-icon-message{
+    @include nd-genicon('\e635');
+}
+
+/*夜晚*/
+.nd-icon-night{
+    @include nd-genicon('\e788');
+}
+
+/*白天*/
+.nd-icon-daytime{
+    @include nd-genicon('\e786');
+}
+
+/*关机*/
+.nd-icon-switch{
+    @include nd-genicon('\e77a');
+}
+
+/*二维码*/
+.nd-icon-qrcode{
+    @include nd-genicon('\e704');
+}
+
+/*扫描*/
+.nd-icon-scan{
+    @include nd-genicon('\e771');
+}
+
+
+/*下载*/
+.nd-icon-download{
+    @include nd-genicon('\e757');
+}
+
+/*上传*/
+.nd-icon-upload{
+    @include nd-genicon('\e77f');
+}
+
+/*警告*/
+.nd-icon-warning{
+    @include nd-genicon('\e781');
+}
+
+/*点赞*/
+.nd-icon-good{
+    @include nd-genicon('\e8ad');
+}
+
+
+/*主页*/
+.nd-icon-home{
+    @include nd-genicon('\e7a7');
+}
+
+/*喜欢*/
+.nd-icon-favorite{
+    @include nd-genicon('\e657');
+}
+
+/*喜欢fill*/
+.nd-icon-favorite-fill{
+    @include nd-genicon('\e658');
+}
+
+/*收藏*/
+.nd-icon-collect{
+    @include nd-genicon('\e659');
+}
+
+/*收藏fill*/
+.nd-icon-collect-fill{
+    @include nd-genicon('\e65a');
+}
+
+
+/*map*/
+.nd-icon-map{
+    @include nd-genicon('\e763');
+}
+
+/*vip*/
+.nd-icon-vip{
+    @include nd-genicon('\e78b');
+}
+
+/*to bottom*/
+.nd-icon-tobottom{
+    @include nd-genicon('\e65b');
+}
+
+/*to top*/
+.nd-icon-totop{
+    @include nd-genicon('\e65c');
+}
+
+/*picture*/
+.nd-icon-picture{
+    @include nd-genicon('\e6ff');
+}
+
+
+/*电话*/
+.nd-icon-telephone{
+    @include nd-genicon('\e8ad');
+}
+
+
+/*保存*/
+.nd-icon-save{
+    @include nd-genicon('\e770');
+}
+
+
+/*打印机*/
+.nd-icon-printer{
+    @include nd-genicon('\e769');
+}
+
+/*help*/
+.nd-icon-help{
+    @include nd-genicon('\e655');
+}
+
+/*folder open*/
+.nd-icon-folderopen{
+    @include nd-genicon('\e698');
+}
+
+/*folder close*/
+.nd-icon-folderclose{
+    @include nd-genicon('\e75c');
+}
+
+
+/*email*/
+.nd-icon-email{
+    @include nd-genicon('\e759');
+}
+
+/*more*/
+.nd-icon-more{
+    @include nd-genicon('\e758');
+}
+
+/*link*/
+.nd-icon-link{
+    @include nd-genicon('\e760');
+}
+
+/*计算器*/
+.nd-icon-caculator{
+    @include nd-genicon('\e74c');
+}
+
+/*声音*/
+.nd-icon-voice{
+    @include nd-genicon('\e777');
+}
+
+/*关闭声音*/
+.nd-icon-voiceout{
+    @include nd-genicon('\e776');
+}
+
+
+/*相机*/
+.nd-icon-camera{
+    @include nd-genicon('\e8bc');
+}
+
+/*code*/
+.nd-icon-code{
+    @include nd-genicon('\e6f2');
+}
+
+/*all*/
+.nd-icon-all{
+    @include nd-genicon('\e6ef');
+}
+
+/*发布*/
+.nd-icon-publish{
+    @include nd-genicon('\e6a9');
+}
+
+/*刷新*/
+.nd-icon-refresh{
+    @include nd-genicon('\e651');
+}
+
+/*眼镜*/
+.nd-icon-glasses{
+    @include nd-genicon('\e8ab');
+}
+
+/*电话*/
+.nd-icon-telphone{
+    @include nd-genicon('\e8ad');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

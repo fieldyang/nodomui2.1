@@ -1,0 +1,435 @@
+/**
+ * 基础文件
+ * 包含所有变量定义
+ */
+
+/*颜色定义*/
+$nd-whitecolor:#fff;
+$nd-blackcolor:#000;
+/*前景色，深色和浅色*/
+/*normal color*/
+
+
+//特殊色
+$nd-activecolor: rgb(40,100,200);
+$nd-successcolor: rgb(41,192,75);
+$nd-warncolor: gold;
+$nd-errorcolor: #f00;
+
+
+/*超链接颜色*/
+$nd-linkcolor:rgb(38,117,246);
+$nd-linkcolorvisted:rgb(30,100,200);
+
+
+/**白色主题 **/
+//阴影色
+// $nd-shadecolor: #999;
+// //前景色
+// //通用色
+// $nd-forecolor1:#000;
+// //重点色1
+// $nd-forecolor2: #333;
+// //重点色2
+// $nd-forecolor3: #111;
+// // 特殊色背景下的前景色
+// $nd-forecolor4: #fff;
+
+
+//背景色
+// $nd-color-bg:#fff;
+// //前景色
+// $nd-color-fore:#222;
+
+/*深紫色*/
+$nd-shadecolor: rgb(73,80,120);
+// //前景色
+// //通用色
+$nd-forecolor1:#fff;
+// //重点色1
+$nd-forecolor2: #ccc;
+// //重点色2
+$nd-forecolor3: #eee;
+// 特殊色背景下的前景色
+$nd-forecolor4: #fff;
+$nd-color-bg:#222;
+// //前景色
+$nd-color-fore:#fff;
+
+
+//灰色
+$nd-color-grey1:#666;
+$nd-color-grey2:#888;
+$nd-color-grey3:#aaa;
+$nd-color-grey4:#ccc;
+$nd-color-grey5:#eee;
+$nd-color-grey6:#f0f0f0;
+$nd-color-grey7:#f6f6f6;
+
+//激活色主色调
+// $nd-color-active1:rgb(14,113,198);
+$nd-color-active1:rgb(240,240,240);
+$nd-color-active2:lighten($nd-color-active1,15%);
+$nd-color-active3:lighten($nd-color-active1,30%);
+$nd-color-active4:lighten($nd-color-active1,45%);
+$nd-color-active5:lighten($nd-color-active1,60%);
+
+//主背景
+/*白色系*/
+// $nd-color1:#fff;      //主背景 tree、accordion、form
+// $nd-color2: #fff;  //toolbar、button group、tab header
+// $nd-color3: #fff;  //tab、 button、 item hover、accordion第一级
+// $nd-color4: #fff;  //menu
+// $nd-color5: #fff;  //panel-title
+// $nd-color6: #d5d5d5;  //line
+// $nd-color7: #666;  //滚动条 mouseover border
+// $nd-color8: #e5e5e5;  //按钮
+// $nd-color9: #333;     //默认tip框背景色、蒙版背景色
+
+/*深紫色系*/
+$nd-color1:rgb(13,20,66); //主背景 tree、accordion、form
+$nd-color2: rgb(13,20,66);       //toolbar、button group、tab header
+$nd-color3: rgb(13,20,66);       //tab、 button、 accordion第一级
+$nd-color4: rgb(13,20,66);       //menu
+$nd-color5: rgb(13,20,66);       //panel-title
+$nd-color6: rgb(43,50,96);       //line select
+$nd-color7: rgb(43,52,100);      //滚动条 mouseover border
+$nd-color8: rgb(53,62,110);      //按钮
+$nd-color9: rgb(73,80,120);      //默认tip框背景色、蒙版背景色，阴影色
+$nd-color10: rgb(33,40,83);      //alt
+$nd-color11: rgb(73,80,120);     //hover
+
+
+// $nd-color1:#fff;      //主背景 tree、accordion、form
+// $nd-color2: #f5f5f5;  //toolbar、button group、tab header
+// $nd-color3: #efefef;  //tab、 button、 item hover、accordion第一级
+// $nd-color4: #e5e5e5;  //menu
+// $nd-color5: #dfdfdf;  //panel-title
+// $nd-color6: #d5d5d5;  //line
+// $nd-color7: #cfcfcf;  //滚动条 mouseover border
+// $nd-color8: #e5e5e5;  //按钮
+// $nd-color9: #333;     //默认tip框背景色、蒙版背景色
+// $nd-color1:#fff;      //主背景 tree、accordion、form
+// $nd-color2: rgb(61,220,255);  //toolbar、button group、tab header
+// $nd-color3:rgb(61,220,255);  //tab、 button、 item hover、accordion第一级
+// $nd-color4: rgb(61,220,255);  //menu
+// $nd-color5: rgb(41,147,237);  //panel-title
+// $nd-color6: rgb(61,220,255);  //line
+// $nd-color7: rgb(41,147,237);  //滚动条 mouseover border
+// $nd-color8: rgb(45,172,255);  //按钮
+// $nd-color9:rgb(41,147,237);     //默认tip框背景色、蒙版背景色
+//颜色序列
+$nd-listcolor: $nd-color1 $nd-color2 $nd-color3 $nd-color4 $nd-color5 $nd-color6 $nd-color7 $nd-color8 $nd-color9;  
+/*颜色 混合*/
+@mixin nd-color($index){
+    background-color: nth($nd-listcolor,$index);
+    color:$nd-forecolor1;
+}
+
+
+
+ /*size定义*/
+/*全局padding*/
+$nd-padding: 10px;
+/*全局圆角*/
+$nd-radius: 5px;
+/*标题 padding*/
+$nd-title-padding: 15px;
+/*头部高度*/
+$nd-head-height: 50px;
+
+
+/*下拉框离显示框距离*/
+$nd-dropdown-margin: 3px;
+/*按钮padding*/
+$nd-btn-padding-left: 15px;
+$nd-btn-padding-top: 8px;
+/*字体大小*/
+$nd-fonttiny: 10px;
+$nd-fontsmall: 12px;
+$nd-fontnormal: 14px;
+$nd-fontlarge: 16px;
+$nd-fontlarger: 18px;
+$nd-fontlargest: 20px;
+
+/*字体粗体*/
+$nd-fontweight-bold:bold;
+
+
+/*zindex*/
+$nd-tip-index: 1000;
+$nd-dialog-index: 999;
+$nd-menu-index: 998;
+$nd-combo-index: 997;
+
+/*border样式*/
+$nd-border: 1px solid $nd-color6;
+$nd-border1:1px solid $nd-color7;
+
+
+
+@mixin nd-clickicon($icon){
+    @extend #{'.nd-icon-' + $icon};
+    @extend .nd-canclick;
+    &:hover{
+        color:$nd-color-active1;
+    }
+}
+
+//生成颜色
+//item hover
+.nd-item-hovercolor{
+    background-color:$nd-color11;
+    color:$nd-color-active1;
+    text-shadow:2px 2px 2px $nd-shadecolor;
+}
+
+/*item active*/
+.nd-item-selectcolor{
+    // background-color:lighten($nd-activecolor,20%);
+    background-color:$nd-color6;
+    color:$nd-forecolor4;
+}
+
+
+/*框*/
+@mixin nd-box-bg($color){
+    padding:5px;
+    $bg:mix(#fff,$color,90%);
+    background-color:$bg;
+    border-radius:$nd-radius;
+    box-shadow: 0px 0px 8px 1px $nd-shadecolor;
+    @if lightness($bg) > 70% {
+        color:mix(#000,$color,20%);
+    } @else {
+        color:#fff;
+    }
+}
+
+
+/*边框*/
+.nd-border{
+    border-color: $nd-color-grey5;
+    border-style: solid;
+}
+/*主背景+字体颜色*/
+.nd-main-color{
+    background-color:$nd-color1;
+    color:$nd-color-fore;
+}
+
+/*激活背景+字体颜色*/
+.nd-active-color{
+    background-color:$nd-color-active5;
+    color:$nd-color-active1;
+}
+/*hover 颜色*/
+.nd-hover-active{
+    &:hover{
+        background-color:$nd-color6;
+        color:$nd-color-active1;
+    }
+}
+
+/*头部*/
+.nd-header{
+    height:$nd-head-height;
+    line-height:$nd-head-height;
+}
+
+.nd-header1{
+    height:$nd-head-height - 10;
+    line-height:$nd-head-height - 10;
+}
+
+/*框体padding*/
+.nd-padding{
+    padding:$nd-padding * 2;
+}
+
+/*通用框*/
+//用于 tree、accordion、list等
+.nd-commonbox{
+    @include nd-color(1);
+    border:1px solid $nd-color6;
+    padding:$nd-padding;
+}
+
+
+/*默认色背景box*/
+.nd-box-default{
+    @include nd-color(1);
+    border-radius:$nd-radius;
+    box-shadow: 0px 0px 8px 1px $nd-shadecolor;
+}
+/*active颜色框*/
+.nd-box-active{
+    @include nd-box-bg($nd-activecolor);
+}
+/*success 颜色框*/
+.nd-box-success{
+    @include nd-box-bg($nd-successcolor);
+}
+
+/*warn颜色框*/
+.nd-box-warn{
+    @include nd-box-bg($nd-warncolor);
+}
+
+
+/*error颜色框*/
+.nd-box-error{
+    @include nd-box-bg($nd-errorcolor);
+}
+
+/*link*/
+a:link{
+    color:$nd-linkcolor;
+    text-decoration: none;
+}
+
+a:hover{
+    color:$nd-linkcolorvisted;
+}
+
+a:visited{
+    color:$nd-linkcolorvisted;
+}
+
+/*禁用*/
+.nd-disable{
+    color:grey;
+    cursor:not-allowed !important;
+    &:hover{
+        color:grey !important;
+        background-color:transparent !important;
+    }
+}
+
+/*可以click*/
+.nd-canclick{
+    cursor:pointer;
+}
+
+/*输入框*/
+input,.nd-input{
+    background-color:$nd-color3;
+    color:$nd-color-fore;
+    padding:$nd-padding;
+    border-radius:$nd-radius;
+    border:$nd-border1;
+    margin:0 5px;
+    &:hover, &:focus{
+        @extend .nd-hover-active;
+        
+        // border-color:$nd-color-active1;
+    }
+}
+
+/*label*/
+label{
+    font-size:12px;
+    color:$nd-color-fore;
+    text-shadow:1px 1px 1px $nd-shadecolor;
+}
+/*带图标输入框*/
+.nd-input-icon{
+    @extend .nd-input;
+    display:inline-flex;
+    b{
+        flex:0;
+        padding:0;
+        width:16px;
+    }
+    input{
+        margin:0;
+        padding:0;
+        border:0;
+        background-color:transparent;
+        // flex:1;
+    }
+    line-height:15px;
+}
+
+
+/*global*/
+body{
+    // padding:0;
+    margin:0;
+    @include nd-color(1);
+    font-size: $nd-fontnormal;
+}
+
+
+button,input{
+    outline:none;
+}
+
+
+/**滚动条**/
+::-webkit-scrollbar{
+    @media screen and (max-width: 640px){
+        width:2px;
+        height:2px;
+    }
+
+    @media screen and (min-width: 640px){
+        width:10px;
+        height:10px;        
+    }
+}
+
+/*滚动条轨道*/
+::-webkit-scrollbar-track
+{
+    @include nd-color(1);
+    border:$nd-border;
+    border-radius:5px;
+    // background-color:$nd-color-grey7;
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb{
+    border-radius: $nd-padding;
+    @include nd-color(7);
+    &:hover{
+        background-color:$nd-color-grey2;
+    }
+}
+
+/*标题*/
+
+h1{
+    font-size:20px;
+    font-weight:bold !important;
+}
+
+h2{
+    font-size:18px;
+    font-weight:bold !important;
+}
+
+h3{
+    font-size:16px;
+    font-weight:bold !important;
+}
+
+h4{
+    font-size:14px;
+    font-weight:bold !important;
+}
+
+h5{
+    font-size:12px;
+    font-weight:bold !important;
+}
+
+.nd-checked{
+    @extend .nd-icon-checked;
+    color: $nd-color-active1;
+}
+
+body{
+    color:$nd-color-fore;
+}
+

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - radio usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='js/nodom.js'></script>
+    <!-- <script src='../bin/nodomui.js'></script> -->
+    <script src='../dist/uibase.js'></script>
+    <script src='../dist/radio.js'></script>
+    <style>
+       form{
+           width:500px;
+       }
+    </style>
+</head>
+<body>
+    <div>
+        <div>性别:{{sexy}}</div>
+        <div>学历:{{education}}</div>
+        <p>简单使用</p>
+        <div>
+            <label>性别:</label>
+            <ui-radio  x-field='sexy'>
+                <span value='M'>男</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span value='F'>女</span>
+            </ui-radio>
+        </div>
+        <p>选项来自数据</p>
+        <div>
+            <label>学历：</label>
+            <ui-radio x-field='education' valueField='id' displayField='title' listField='edus' itemMargin='5'>
+            </ui-radio>
+        </div>
+    </div>
+</body>
+<script>
+    nodom.newApp({
+        module:{
+            el:'div',
+            data:{
+                userName:'yang',
+                sexy:'F',
+                agree:'Y',
+                education:'3',
+                birth:'1980-1-2',
+                plantime:'2020-8-5 8:45:00',
+                starttime:'10:00',
+                hobby:2,
+                photos:[],
+                edus:[
+                    {id:1,title:'高中',},
+                    {id:2,title:'专科'},
+                    {id:3,title:'本科'},
+                    {id:4,title:'硕士'},
+                    {id:5,title:'博士'}
+                ],
+                hobbies:[
+                    {hid:1,htitle:'体育',icon:'prompt',desc:'体育运动很不错'},
+                    {hid:2,htitle:'阅读',icon:'search',desc:'阅读让人睿智'},
+                    {hid:3,htitle:'健身',icon:'close',desc:'健身让人上瘾'},
+                    {hid:4,htitle:'电脑游戏',icon:'minus',desc:'好玩可别贪玩'},
+                    {hid:5,htitle:'户外运动',icon:'add',desc:'感受大自然，轻呼吸'},
+                    {hid:6,htitle:'旅游',icon:'prompt',desc:'读万卷书，行万里路'},
+                    {hid:7,htitle:'吐槽',icon:'prompt',desc:'吐吐更健康'},
+                    {hid:8,htitle:'发呆',icon:'prompt',desc:'人生那么长，歇一下又何妨'},
+                ]
+            },
+            methods:{
+                showDlg:function(dom,model,module,e){
+                    model.set('showdlg', true);
+                },
+                hideDlg:function(dom,model,module,e){
+                    model.set('showdlg', false);
+                },
+                uploadFile:function(dom,model,module,e){
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST','http://localhost:3000/upload');
+                    let form = new FormData();
+                    let files = model.data['$file_photos'];
+                    for(let f of files){
+                        form.append('photo',f);
+                    }
+                    xhr.setRequestHeader('Content-Type','multipart/form-data');
+                    xhr.send(form);
+                    xhr.onload = (x)=>{
+                        let r = JSON.parse(xhr.responseText);
+                        for(let r1 of r.rows){
+                            model.data['photos'].push({
+                                imgId:r1.id,
+                                imgUrl:r1.url,
+                                fileName:r1.fileName
+                            });
+                        }
+                        model.set('$uploadstate_photos',0);
+                    }
+                },
+                delFile:function(dom,model,module,e){
+                    let rows = module.model.data['photos'];
+                    for(let i=0;i<rows.length;i++){
+                        if(rows[i].imgId === model.data['imgId']){
+                            rows.splice(i,1);
+                            break;
+                        }
+                    }
+                    
+                }
+            }
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - panel usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='js/nodom.js'></script>
+    <script src='../bin/nodomui.js'></script>
+    
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div>
+        <!-- <p>简单使用</p>
+        <ui-pagination totalName='total'></ui-pagination>
+
+        <p>显示记录数</p>
+        <ui-pagination totalName='total' showTotal></ui-pagination>
+
+        
+        <p>带页面跳转</p>
+        <ui-pagination totalName='total' showTotal showGo></ui-pagination>
+        
+        <p>选择页面大小</p>
+        <ui-pagination totalName='total' pageSize='10' sizeChange='10,20,30,50' 
+            showTotal showGo >
+        </ui-pagination>
+
+        <p>修改显示页面数为15(默认10)</p>
+        <ui-pagination totalName='total' pageSize='10' sizeChange='10,20,30,50' 
+            showTotal showGo showNum='15'>
+        </ui-pagination>
+
+        <p>修改一大步移动步数为10(默认5)</p>
+        <ui-pagination totalName='total' pageSize='20' sizeChange='10,20,30,50' 
+            showTotal showGo showNum='10' steps='10'>
+        </ui-pagination> -->
+        
+        <!--
+            totalName   total字段名
+            pageName    页号名(请求url时有效)
+            sizeName    页面大小名(请求url时有效)
+            pageSize    页面大小值
+            sizeChange  列出的页面大小可选项
+            showTotal   是否显示“共*条”
+            showGo      是否显示"第*页"
+            showNum     显示页码个数，如10表示显示页码为10个
+            steps       表示一次大跳的数量
+            onChange    页面号、页面大小改变时响应事件
+            onBeforeReq 请求前操作
+            onReq       数据请求时回调函数，参数为 module和请求结果数据
+            dataUrl     请求url
+
+        -->
+        <!-- dataUrl='data/grid1.json' -->
+        <button e-click='setTotal'>setTotal</button>
+        <p>增加change事件和req事件</p>
+        <ui-pagination totalName='total' pageName='page' sizeName='rows' pageSize='10' sizeChange='10,20,30,50' 
+            showTotal showGo showNum='10' steps='10' 
+            onChange='changePage' onReq='reqData' onBeforeReq='beforeReq'
+            dataUrl='data/grid1.json' 
+            />
+    </div>
+</body>
+<script>
+    nodom.newApp({
+        module:{
+            el:'div',
+            data:{
+                total:0
+            },
+            methods:{
+                setTotal:function(dom,model){
+                    model.set('total',123);
+                },
+                changePage:function(module,currentPage,pageSize){
+                    console.log(module,currentPage,pageSize);
+                },
+                reqData:function(module,data){
+                    console.log(data);
+                },
+                beforeReq:function(module,plugin){
+                    console.log(plugin)
+                }
+            }
+        }
+    })
+</script>
+</html>

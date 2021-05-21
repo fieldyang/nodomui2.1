@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - panel usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='js/nodom.js'></script>
+    <script src='../bin/nodomui.js'></script>
+    <style>
+        .panel{
+            height:300px;
+        }
+        .dialog{
+            width:500px;
+            height:500px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button e-click='showDlg'>打开</button>
+        <!--
+            name        如果需要操作dialog，则需要设置
+            title       dialog 标题
+            autoOpen    是否自动打开，如果设置，则首次渲染时自动打开
+            onOpen      打开时事件
+            onClose     关闭时事件
+        -->
+        <ui-dialog name='dlg' class='dialog'  autoOpen onOpen='onOpen' onClose='onClose'>
+                <ui-form class='form' labelWidth='80'>
+                        <div>
+                            <label>姓名:</label>
+                            <ui-text x-field='userName' value='{{userName}}' icon='search'></ui-text>
+                        </div>
+                        <div>
+                            <label>性别:</label>
+                            <ui-radio  x-field='sexy'>
+                                <span value='M'>男</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span value='F'>女</span>
+                            </ui-radio>
+                        </div>
+                        <div>
+                            <label>出生日期:</label>
+                            <ui-datetime class='nd-form-input' x-field='birth' type='date'/>
+                        </div>
+                        <div>
+                            <label>计划时间:</label>
+                            <ui-datetime class='nd-form-input' x-field='plantime' type='datetime'/>
+                        </div>
+                        <div>
+                            <label>开始时间:</label>
+                            <ui-datetime class='nd-form-input' x-field='starttime' type='time'/>
+                        </div>
+                        <div>
+                            <label>学历:</label>
+                            <!--
+                                x-field 绑定字段
+                                valueField 对应数组中对象的值字段名
+                                displayField 对应数组中对象的显示字段名
+                                listField  下拉列表对应数据
+                                allowFilter 允许过滤器
+                            -->
+                            <ui-select x-field='education' valueField='id' displayField='title' allowFilter listField='edus'>
+                            </ui-select>
+                        </div>
+                        <!-- 
+                        <div>
+                            <label>爱好:</label> -->
+                            <!--
+                                x-field 绑定字段
+                                valueField 对应数组中对象的值字段名
+                                displayField 对应数组中对象的显示字段名
+                                listField  下拉列表对应数据
+                                allowFilter 允许过滤
+                                listWidth   下拉列表宽度，默认与输入框相同
+                            -->
+                            <!-- <ui-select x-field='hobby' valueField='hid' displayField='htitle' listField='hobbies' multiselect allowFilter listWidth='500'>
+                                <div class='hobitem'><span class='id'>{{hid}}</span> <span class='title'>{{htitle}} </span> <span class='desc'>{{desc}}</span></div>
+                            </ui-select>
+                        </div> -->
+            
+                        <div>
+                            <label>生活照:</label>
+                            <ui-file x-field='photos' multiple valueField='id' displayField="url"  uploadName='file'
+                            uploadUrl='http://localhost:3000/upload' fileType='image' maxCount='5'></ui-file>
+                        </div>
+                        
+                        <div>
+                            <label>爱好</label>
+                            <ui-list x-field='hobby' valueField='hid' 
+                                displayField='htitle' multiselect 
+                                listField='hobbies' 
+                                listType='row'>
+                                <div>
+                                    <b class='{{"nd-icon-" + icon }}'></b>
+                                    <span style='width:100px;display:inline-block;'>{{htitle}}</span>
+                                    <span>{{desc}}</span>
+                                </div>
+                            </ui-list>
+                        </div>
+                        <div>
+                            <label>同意条款:</label>
+                            <ui-checkbox  yesvalue='Y' novalue='N'  x-field='agree'>阅读并同意</ui-checkbox>
+                        </div>
+                    </ui-form>
+            <ui-buttongroup>
+                <ui-button theme='active' size='small' icon='close' e-click='closeDlg'>关闭</ui-button>
+            </ui-buttongroup>
+        </ui-dialog>
+    </div>
+</body>
+<script>
+    nodom.newApp({
+        module:{
+            el:'div',
+            data:{
+                userName:'yang',
+                sexy:'F',
+                agree:'Y',
+                education:'3',
+                birth:'1980-1-2',
+                plantime:'2020-8-5 8:45:00',
+                starttime:'10:00',
+                hobby:2,
+                photos:[],
+                edus:[
+                    {id:1,title:'高中',},
+                    {id:2,title:'专科'},
+                    {id:3,title:'本科'},
+                    {id:4,title:'硕士'},
+                    {id:5,title:'博士'}
+                ],
+                hobbies:[
+                    {hid:1,htitle:'体育',icon:'prompt',desc:'体育运动很不错'},
+                    {hid:2,htitle:'阅读',icon:'search',desc:'阅读让人睿智'},
+                    {hid:3,htitle:'健身',icon:'close',desc:'健身让人上瘾'},
+                    {hid:4,htitle:'电脑游戏',icon:'minus',desc:'好玩可别贪玩'},
+                    {hid:5,htitle:'户外运动',icon:'add',desc:'感受大自然，轻呼吸'},
+                    {hid:6,htitle:'旅游',icon:'prompt',desc:'读万卷书，行万里路'},
+                    {hid:7,htitle:'吐槽',icon:'prompt',desc:'吐吐更健康'},
+                    {hid:8,htitle:'发呆',icon:'prompt',desc:'人生那么长，歇一下又何妨'},
+                ]
+            },
+            methods:{
+                showDlg:function(dom,model,module,e){
+                    module.getPlugin('dlg').open();
+                },
+                closeDlg:function(dom,model,module,e){
+                    module.getPlugin('dlg').close();
+                },
+                onOpen:function(model,module){
+                    console.log('open');
+                },
+                onClose:function(model,module){
+                    console.log('close');
+                    console.log(model.data);
+                }
+            }
+        }
+    });
+</script>
+</html>

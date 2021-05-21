@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - panel usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='js/nodom.js'></script>
+    <script src='../bin/nodomui.js'></script>
+    <style>
+        .center{
+            padding:20px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <ui-layout>
+            <div center class='center'>
+                <ui-list 
+                    displayField='icon|1|image,title|1'
+                    listField='desks' itemClick='clickItem'
+                    listType='col'>
+                </ui-list>
+            </div>
+        </ui-layout>
+    </div>
+</body>
+<script>
+    nodom.newApp({
+        module:{
+            el:'div',
+            data:{
+                desks:[
+                    {id:1,title:'计算器',icon:'imgs/caculator.png'},
+                    {id:2,title:'日历',icon:'imgs/calendar.png'},
+                    {id:3,title:'安全',icon:'imgs/shield.png'},
+                    {id:4,title:'购物',icon:'imgs/shopping_cart.png'},
+                    {id:5,title:'钱包',icon:'imgs/wallet.png'},
+                    {id:6,title:'设置',icon:'imgs/settings.png'}
+                ]
+            },
+            methods:{
+                clickItem:function(dom,model,module,e){
+                    console.log(model.data);
+                }
+            }
+        }
+    })
+</script>
+</html>

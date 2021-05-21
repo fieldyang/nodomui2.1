@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - panel usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='js/nodom.js'></script>
+    <script src='../bin/nodomui.js'></script>
+    <style>
+        .panel{
+            height:300px;
+        }
+        .dialog{
+            width:500px;
+            height:500px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button e-click='show'>打开</button>
+        
+        <ui-loading moveCircle='40'></ui-loading>
+                
+    </div>
+</body>
+<script>
+    nodom.newApp({
+        module:{
+            el:'div',
+            
+            methods:{
+                show:function(dom,model,module,e){
+                    nodom.showLoading();
+
+                    setTimeout(()=>{
+                        nodom.closeLoading()
+                    },5000);
+                },
+                
+            }
+        }
+    });
+</script>
+</html>

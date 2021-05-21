@@ -1,0 +1,527 @@
+@charset "UTF-8";
+/**
+ * 基础文件
+ * 包含所有变量定义
+ */
+/*颜色定义*/
+/*前景色，深色和浅色*/
+/*current color*/
+/*浅色框字体颜色*/
+/*背景色*/
+/*超链接颜色*/
+/*颜色 混合*/
+/*size定义*/
+/*全局padding*/
+/*全局圆角*/
+/*标题 padding*/
+/*表格高度*/
+/*下拉框离显示框距离*/
+/*按钮padding*/
+/*字体大小*/
+/*zindex*/
+/*item active*/
+.nd-item-selectcolor {
+  background-color: #ae163d;
+  color: white; }
+
+/*menu active*/
+.nd-item-hovercolor {
+  background-color: #323232;
+  color: white; }
+
+/*框*/
+.nd-box-default {
+  background-color: #323232;
+  color: #c1c1c1; }
+
+/*active颜色框*/
+.nd-box-active {
+  background-color: #ae163d;
+  border: 1px solid #ae163d;
+  color: #fff; }
+
+/*success 颜色框*/
+.nd-box-success {
+  background-color: #29c04b;
+  border: 1px solid #29c04b;
+  color: #fff; }
+
+/*warn颜色框*/
+.nd-box-warn {
+  background-color: gold;
+  border: 1px solid gold;
+  color: #fff; }
+
+/*error颜色框*/
+.nd-box-error {
+  background-color: #f00;
+  border: 1px solid #f00;
+  color: #fff; }
+
+/*link*/
+a:link {
+  color: #669933;
+  text-decoration: none; }
+
+a:hover {
+  color: #99CC99; }
+
+a:visited {
+  color: #99CC99; }
+
+/*边框*/
+.nd-border {
+  border: 1px solid #323232; }
+
+.nd-border-shader, .nd-tip .nd-tip-item {
+  box-shadow: #000 3px 3px 5px; }
+
+/*框体padding*/
+.nd-padding {
+  padding: 20px; }
+
+/*禁用*/
+.nd-disable {
+  color: grey;
+  cursor: not-allowed; }
+  .nd-disable:hover {
+    color: grey;
+    background-color: transparent; }
+
+/*可以click*/
+.nd-canclick, .nd-tip .nd-tip-item .nd-tip-close {
+  cursor: pointer; }
+  .nd-canclick:hover, .nd-tip .nd-tip-item .nd-tip-close:hover {
+    color: white; }
+
+/*输入框*/
+.nd-input, .nd-input-icon {
+  padding: 10px;
+  background-color: #171717;
+  color: #c1c1c1;
+  border-radius: 5px;
+  border: 1px solid #2e2e2e; }
+  .nd-input:hover, .nd-input-icon:hover {
+    border-color: #222222; }
+
+/*带图标输入框*/
+.nd-input-icon {
+  display: flex; }
+  .nd-input-icon :last-child {
+    flex: 0;
+    padding: 0; }
+  .nd-input-icon input {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    flex: 1; }
+
+/*global*/
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #171717;
+  color: #c1c1c1;
+  font-size: 14px; }
+
+button, input {
+  outline: none; }
+
+/**滚动条**/
+::-webkit-scrollbar {
+  width: 10px; }
+
+::-webkit-scrollbar-track {
+  background-color: #171717;
+  color: #c1c1c1; }
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #2e2e2e;
+  color: #c1c1c1; }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #323232;
+    color: #c1c1c1; }
+
+/**
+ * 基础文件
+ * 包含所有变量定义
+ */
+/*颜色定义*/
+/*前景色，深色和浅色*/
+/*current color*/
+/*浅色框字体颜色*/
+/*背景色*/
+/*超链接颜色*/
+/*颜色 混合*/
+/*size定义*/
+/*全局padding*/
+/*全局圆角*/
+/*标题 padding*/
+/*表格高度*/
+/*下拉框离显示框距离*/
+/*按钮padding*/
+/*字体大小*/
+/*zindex*/
+/*item active*/
+.nd-item-selectcolor {
+  background-color: #ae163d;
+  color: white; }
+
+/*menu active*/
+.nd-item-hovercolor {
+  background-color: #323232;
+  color: white; }
+
+/*框*/
+.nd-box-default {
+  background-color: #323232;
+  color: #c1c1c1; }
+
+/*active颜色框*/
+.nd-box-active {
+  background-color: #ae163d;
+  border: 1px solid #ae163d;
+  color: #fff; }
+
+/*success 颜色框*/
+.nd-box-success {
+  background-color: #29c04b;
+  border: 1px solid #29c04b;
+  color: #fff; }
+
+/*warn颜色框*/
+.nd-box-warn {
+  background-color: gold;
+  border: 1px solid gold;
+  color: #fff; }
+
+/*error颜色框*/
+.nd-box-error {
+  background-color: #f00;
+  border: 1px solid #f00;
+  color: #fff; }
+
+/*link*/
+a:link {
+  color: #669933;
+  text-decoration: none; }
+
+a:hover {
+  color: #99CC99; }
+
+a:visited {
+  color: #99CC99; }
+
+/*边框*/
+.nd-border {
+  border: 1px solid #323232; }
+
+.nd-border-shader, .nd-tip .nd-tip-item {
+  box-shadow: #000 3px 3px 5px; }
+
+/*框体padding*/
+.nd-padding {
+  padding: 20px; }
+
+/*禁用*/
+.nd-disable {
+  color: grey;
+  cursor: not-allowed; }
+  .nd-disable:hover {
+    color: grey;
+    background-color: transparent; }
+
+/*可以click*/
+.nd-canclick, .nd-tip .nd-tip-item .nd-tip-close {
+  cursor: pointer; }
+  .nd-canclick:hover, .nd-tip .nd-tip-item .nd-tip-close:hover {
+    color: white; }
+
+/*输入框*/
+.nd-input, .nd-input-icon {
+  padding: 10px;
+  background-color: #171717;
+  color: #c1c1c1;
+  border-radius: 5px;
+  border: 1px solid #2e2e2e; }
+  .nd-input:hover, .nd-input-icon:hover {
+    border-color: #222222; }
+
+/*带图标输入框*/
+.nd-input-icon {
+  display: flex; }
+  .nd-input-icon :last-child {
+    flex: 0;
+    padding: 0; }
+  .nd-input-icon input {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    flex: 1; }
+
+/*global*/
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #171717;
+  color: #c1c1c1;
+  font-size: 14px; }
+
+button, input {
+  outline: none; }
+
+/**滚动条**/
+::-webkit-scrollbar {
+  width: 10px; }
+
+::-webkit-scrollbar-track {
+  background-color: #171717;
+  color: #c1c1c1; }
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #2e2e2e;
+  color: #c1c1c1; }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #323232;
+    color: #c1c1c1; }
+
+@font-face {
+  font-family: "nd-iconfont";
+  src: url("font/iconfont.ttf"), url("font/iconfont.woff"); }
+/*icon size*/
+.nd-icon-sizesmall {
+  font-size: 12px; }
+
+.nd-icon-sizenormal {
+  font-size: 14px; }
+
+.nd-icon-sizebig {
+  font-size: 20px; }
+
+/*icon class*/
+/*菜单，树右向箭头*/
+.nd-icon-right {
+  font-family: nd-iconfont; }
+  .nd-icon-right:before {
+    content: ""; }
+
+/*复选框，未选中*/
+.nd-icon-checkbox {
+  font-family: nd-iconfont; }
+  .nd-icon-checkbox:before {
+    content: ""; }
+
+/*复选框，已选中*/
+.nd-icon-checked {
+  font-family: nd-iconfont; }
+  .nd-icon-checked:before {
+    content: ""; }
+
+/*单选框，未选中*/
+.nd-icon-radio {
+  font-family: nd-iconfont; }
+  .nd-icon-radio:before {
+    content: ""; }
+
+/*单选框，已选中*/
+.nd-icon-radio-active {
+  font-family: nd-iconfont; }
+  .nd-icon-radio-active:before {
+    content: ""; }
+
+/*减号*/
+.nd-icon-minus {
+  font-family: nd-iconfont; }
+  .nd-icon-minus:before {
+    content: ""; }
+
+/*加号*/
+.nd-icon-add {
+  font-family: nd-iconfont; }
+  .nd-icon-add:before {
+    content: ""; }
+
+/*关闭*/
+.nd-icon-close {
+  font-family: nd-iconfont; }
+  .nd-icon-close:before {
+    content: ""; }
+
+/*加号(不带圆圈)*/
+.nd-icon-add-select {
+  font-family: nd-iconfont; }
+  .nd-icon-add-select:before {
+    content: ""; }
+
+/*减号(不带圆圈)*/
+.nd-icon-sami-select {
+  font-family: nd-iconfont; }
+  .nd-icon-sami-select:before {
+    content: ""; }
+
+/*提示*/
+.nd-icon-prompt {
+  font-family: nd-iconfont; }
+  .nd-icon-prompt:before {
+    content: ""; }
+
+/*查询*/
+.nd-icon-search {
+  font-family: nd-iconfont; }
+  .nd-icon-search:before {
+    content: ""; }
+
+/*上箭头*/
+.nd-icon-arrow-up {
+  font-family: nd-iconfont; }
+  .nd-icon-arrow-up:before {
+    content: ""; }
+
+/*下箭头*/
+.nd-icon-arrow-down {
+  font-family: nd-iconfont; }
+  .nd-icon-arrow-down:before {
+    content: ""; }
+
+/*右箭头*/
+.nd-icon-arrow-right {
+  font-family: nd-iconfont; }
+  .nd-icon-arrow-right:before {
+    content: ""; }
+
+/*双右箭头*/
+.nd-icon-double-arrow-right {
+  font-family: nd-iconfont; }
+  .nd-icon-double-arrow-right:before {
+    content: ""; }
+
+/*左箭头*/
+.nd-icon-arrow-left {
+  font-family: nd-iconfont; }
+  .nd-icon-arrow-left:before {
+    content: ""; }
+
+/*双左箭头*/
+.nd-icon-double-arrow-left {
+  font-family: nd-iconfont; }
+  .nd-icon-double-arrow-left:before {
+    content: ""; }
+
+/*编辑*/
+.nd-icon-edit {
+  font-family: nd-iconfont; }
+  .nd-icon-edit:before {
+    content: ""; }
+
+/*删除*/
+.nd-icon-del {
+  font-family: nd-iconfont; }
+  .nd-icon-del:before {
+    content: ""; }
+
+/*菜单*/
+.nd-icon-menu {
+  font-family: nd-iconfont; }
+  .nd-icon-menu:before {
+    content: ""; }
+
+/*设置*/
+.nd-icon-menu {
+  font-family: nd-iconfont; }
+  .nd-icon-menu:before {
+    content: ""; }
+
+/*购物车*/
+.nd-icon-shopping-cart {
+  font-family: nd-iconfont; }
+  .nd-icon-shopping-cart:before {
+    content: ""; }
+
+/*用户*/
+.nd-icon-user {
+  font-family: nd-iconfont; }
+  .nd-icon-user:before {
+    content: ""; }
+
+/*安全*/
+.nd-icon-insurance {
+  font-family: nd-iconfont; }
+  .nd-icon-insurance:before {
+    content: ""; }
+
+/*勾*/
+.nd-icon-selected {
+  font-family: nd-iconfont; }
+  .nd-icon-selected:before {
+    content: ""; }
+
+/*日期*/
+.nd-icon-calendar {
+  font-family: nd-iconfont; }
+  .nd-icon-calendar:before {
+    content: ""; }
+
+/*时间*/
+.nd-icon-time {
+  font-family: nd-iconfont; }
+  .nd-icon-time:before {
+    content: ""; }
+
+/*勾*/
+.nd-icon-select {
+  font-family: nd-iconfont; }
+  .nd-icon-select:before {
+    content: ""; }
+
+/*叉*/
+.nd-icon-cross, .nd-tip .nd-tip-item .nd-tip-close {
+  font-family: nd-iconfont; }
+  .nd-icon-cross:before, .nd-tip .nd-tip-item .nd-tip-close:before {
+    content: ""; }
+
+.nd-tip {
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%; }
+  .nd-tip .nd-tip-item {
+    width: 300px;
+    box-sizing: border-box;
+    padding: 20px;
+    margin: 5px 0;
+    border-radius: 5px;
+    display: flex; }
+    .nd-tip .nd-tip-item .nd-tip-content {
+      display: inline-block;
+      flex: 1; }
+      .nd-tip .nd-tip-item .nd-tip-content > b {
+        margin-right: 5px; }
+    .nd-tip .nd-tip-item .nd-tip-close {
+      margin-right: -10px; }
+
+.nd-tip-top {
+  top: 30px; }
+
+.nd-tip-bottom {
+  bottom: 30px; }
+
+.nd-tip-left {
+  left: 0px;
+  top: 10px;
+  width: 300px;
+  align-items: center; }
+
+.nd-tip-right {
+  right: 10px;
+  top: 10px;
+  width: 300px;
+  align-items: center; }
+
+/*# sourceMappingURL=tip.css.map */

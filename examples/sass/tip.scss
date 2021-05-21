@@ -1,0 +1,55 @@
+// @import "base","icon";
+
+.nd-tip{
+    position:fixed;
+    z-index:$nd-tip-index;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    .nd-tip-item{
+        width:300px;
+        box-sizing: border-box;
+        padding:$nd-padding * 2;
+        margin:$nd-padding/2 0;
+        border-radius:$nd-radius;
+        display:flex;
+        align-items: center;
+
+        > b{
+            margin-right:5px;
+        }
+        
+        .nd-tip-content{
+            display:inline-block;
+            flex:1;
+        }
+        
+        .nd-tip-close{
+            margin-right:-$nd-padding;
+            @include nd-clickicon('cross');
+        }
+    }
+}
+
+.nd-tip-top{
+    top:30px;
+}
+.nd-tip-bottom{
+    bottom:30px;
+}
+
+.nd-tip-left{
+    left:0px;
+    top:$nd-padding;
+    width:300px;
+    align-items: center;
+}
+
+.nd-tip-right{
+    right:$nd-padding;
+    top:$nd-padding;
+    width:300px;
+    align-items: center;
+}

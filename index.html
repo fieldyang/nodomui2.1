@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<script src="./js/nodom.js"></script>
+		<script src="./node_modules/nodom/dist/nodom.js"></script>
+		<link rel="stylesheet" href="./css/nodomui.css" />
+	</head>
+	<body>
+		<div>
+			<ui-text x-field="data"></ui-text>
+		</div>
+	</body>
+	<script>
+		nodom.app({
+			module: {
+				el: "div",
+				data: {
+					data: "this is a test",
+				},
+			},
+		});
+	</script>
+</html>
