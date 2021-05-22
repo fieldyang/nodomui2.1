@@ -5,21 +5,39 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Document</title>
-		<script src="./js/nodom.js"></script>
 		<script src="./node_modules/nodom/dist/nodom.js"></script>
+		<script src="./dist/nodomui.js"></script>
 		<link rel="stylesheet" href="./css/nodomui.css" />
 	</head>
 	<body>
 		<div>
-			<ui-text x-field="data"></ui-text>
+			<p>按钮尺寸</p>
+			<ui-button size="small" e-click="itemClick">small</ui-button>
+			<ui-button size="normal" e-click="itemClick">normal</ui-button>
+			<ui-button size="big" e-click="itemClick">large</ui-button>
+			<p>按钮图标，图标命名参阅图标教程</p>
+			<ui-button icon="close" e-click="itemClick">close图标</ui-button>
+			<ui-button icon="checked" iconPos="right" e-click="itemClick">check图标</ui-button>
+			<ui-button icon="search" iconPos="top" e-click="itemClick">search图标</ui-button>
+			<ui-button icon="prompt" iconPos="bottom" e-click="itemClick">prompt图标</ui-button>
+			<p>图标主题</p>
+			<ui-button icon="close" theme="active" e-click="itemClick">close图标</ui-button>
+			<ui-button icon="checked" theme="success" e-click="itemClick">check图标</ui-button>
+			<ui-button icon="ashbin" theme="error" e-click="itemClick">search图标</ui-button>
+			<ui-button icon="prompt" theme="warn" e-click="itemClick">prompt图标</ui-button>
+			<p>无背景 无文字</p>
+			<ui-button iconPos="left" icon="prompt" theme="warn" nobg e-click="itemClick">小图标</ui-button>
+			<ui-button iconPos="left" icon="prompt" theme="warn" nobg e-click="itemClick"></ui-button>
 		</div>
 	</body>
 	<script>
 		nodom.app({
 			module: {
 				el: "div",
-				data: {
-					data: "this is a test",
+				methods: {
+					itemClick: function (dom, model, module, e, el) {
+						alert("button clicked");
+					},
 				},
 			},
 		});
