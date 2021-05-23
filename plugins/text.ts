@@ -1,6 +1,21 @@
-import { DefineElement, DefineElementManager, Directive, Element, IExtraParmas, UITool } from 'nodom';
-class UITEXT extends DefineElement {
+import { DefineElement, DefineElementManager, Directive, Element, UITool } from 'nodom';
+ export class UITEXT extends DefineElement {
     tagName: string = 'UI-TEXT'
+
+    /**
+     * select绑定的数据字段名
+     */
+    dataName: string;
+
+    /**
+     * 图标
+     */
+    icon: string;
+    /**
+     * 图标位置 left,right
+     */
+    iconpos: string;
+
     constructor(element: Element, parent?: Element) {
         super(element);
         // this.extraParmas = {};
@@ -9,12 +24,13 @@ class UITEXT extends DefineElement {
             ['icon', 'iconPos'],
             ['', 'left']
         );
-        this.UITextGenerate(this.extraParmas, element);
+        this.UITextGenerate(element);
         element.tagName = 'div';
         element.defineEl = this;
+        this.element = element;
     }
 
-    UITextGenerate(uitextParams: IExtraParmas, element: Element) {
+    UITextGenerate(element: Element) {
         element.addClass('nd-text');
         //生成id
         let field = element.getDirective('field');
@@ -38,10 +54,10 @@ class UITEXT extends DefineElement {
         element.removeDirectives(['field']);
         element.events.clear();
 
-        if (uitextParams.icon !== '') {
+        if (this.icon !== '') {
             let icon: Element = new Element('b');
-            icon.addClass('nd-icon-' + uitextParams.icon);
-            if (uitextParams.iconpos === 'left') {
+            icon.addClass('nd-icon-' + this.icon);
+            if (this.iconpos === 'left') {
                 icon.addClass('nd-text-iconleft');
                 element.children.unshift(icon);
             } else {

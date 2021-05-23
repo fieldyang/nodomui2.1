@@ -1,67 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>nodomui example - panel usage</title>
-    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
-    <script src='js/nodom.js'></script>
-    <script src='../bin/nodomui.js'></script>
-    <style>
-        
-    </style>
-</head>
-<body>
-    <div>
-        <button e-click='show'>show</button>
-        <!-- <ui-panel title='' style='box-sizing:border-box;width:{{width}};height:{{height}}' buttons='minus|recover,add|maximum'> -->
-        <ui-panel style='box-sizing:border-box;width:{{width}};height:{{height}}' >
-            <ui-toolbar name='tbr'>
-                <ui-button nobg icon='menu'></ui-button>
-                <ui-button nobg >颜色</ui-button>
-                <ui-button nobg icon='search'></ui-button>
-                <ui-button nobg icon='ashbin'></ui-button>
-            </ui-toolbar>
-            <ui-buttongroup>
-                <ui-button theme='active' icon='add'>添加</ui-button>
-                <ui-button theme='error' icon='ashbin'>删除</ui-button>
-                <ui-button theme='warn' icon='edit'>编辑</ui-button>
-                <ui-button  icon='search'>查询</ui-button>
-            </ui-buttongroup>
-            <!--panel body,可以有多个-->
-            <div>hello world!</div>
-            <p>
-                这是一个panel
-            </p>
-        </ui-panel>
-    </div>
-</body>
-<script>
-    $.a({
-        module:{
-            el:'div',
-            data:{
-                width:'500px',
-                height:'300px'
-            },
-            methods:{
-                recover:function(dom,model,module){
-
-                    model.set('width','500px');
-                    model.set('height','300px');
-                },
-                maximum:function(dom,model,module){
-                    model.set('width','100%');
-                    model.set('height','100%');
-                },
-                show:function(dom,model,module){
-                    console.log(module.plugins);
-                }
-            }
-        }
-    });
-
-    
-</script>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>nodomui example - panel usage</title>
+		<link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+		<script src="js/nodom.js"></script>
+		<script src="../bin/nodomui.js"></script>
+		<style></style>
+	</head>
+	<body>
+		<div>
+			<button e-click="show">show</button>
+			<!-- <ui-panel title='' style='box-sizing:border-box;width:{{width}};height:{{height}}' buttons='minus|recover,add|maximum'> -->
+			<ui-panel style="box-sizing:border-box;width:{{width}};height:{{height}}">
+				<ui-toolbar name="tbr">
+					<ui-button nobg icon="menu"></ui-button>
+					<ui-button nobg>颜色</ui-button>
+					<ui-button nobg icon="search"></ui-button>
+					<ui-button nobg icon="ashbin"></ui-button>
+				</ui-toolbar>
+				<ui-buttongroup>
+					<ui-button theme="active" icon="add">添加</ui-button>
+					<ui-button theme="error" icon="ashbin">删除</ui-button>
+					<ui-button theme="warn" icon="edit">编辑</ui-button>
+					<ui-button icon="search">查询</ui-button>
+				</ui-buttongroup>
+				<!--panel body,可以有多个-->
+				<div>hello world!</div>
+				<p>这是一个panel</p>
+			</ui-panel>
+		</div>
+	</body>
+	<script>
+		$.a({
+			module: {
+				el: "div",
+				data: {
+					width: "500px",
+					height: "300px",
+				},
+				methods: {
+					recover: function (dom, model, module) {
+						model.set("width", "500px");
+						model.set("height", "300px");
+					},
+					maximum: function (dom, model, module) {
+						model.set("width", "100%");
+						model.set("height", "100%");
+					},
+					show: function (dom, model, module) {
+						console.log(module);
+						console.log(module.plugins);
+					},
+				},
+			},
+		});
+	</script>
 </html>
