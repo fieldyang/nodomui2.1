@@ -20,20 +20,14 @@
 	</head>
 	<body>
 		<div>
-			<button e-click="showDlg">打开</button>
-			<!--
-            name        如果需要操作dialog，则需要设置
-            title       dialog 标题
-            autoOpen    是否自动打开，如果设置，则首次渲染时自动打开
-            onOpen      打开时事件
-            onClose     关闭时事件
-        -->
-			<ui-dialog name="dlg" class="dialog" autoOpen onOpen="onOpen" onClose="onClose">
-				<div>12213</div>
-				<ui-buttongroup>
-					<ui-button theme="active" size="small" icon="close" e-click="closeDlg">关闭</ui-button>
-				</ui-buttongroup>
-			</ui-dialog>
+			<div>{{JSON.stringify(groupUser)}}</div>
+			<ui-relationmap
+				x-field="groupUser"
+				listField="users,groups"
+				valueField="uid,gid"
+				displayField="userName,groupName"
+			>
+			</ui-relationmap>
 		</div>
 	</body>
 	<script>
@@ -41,49 +35,32 @@
 			module: {
 				el: "div",
 				data: {
-					userName: "yang",
-					sexy: "F",
-					agree: "Y",
-					education: "3",
-					birth: "1980-1-2",
-					plantime: "2020-8-5 8:45:00",
-					starttime: "10:00",
-					hobby: 2,
-					photos: [],
-					edus: [
-						{ id: 1, title: "高中" },
-						{ id: 2, title: "专科" },
-						{ id: 3, title: "本科" },
-						{ id: 4, title: "硕士" },
-						{ id: 5, title: "博士" },
+					groupUser: [
+						{ gid: 1, uid: 2 },
+						{ gid: 1, uid: 3 },
+						{ gid: 3, uid: 4 },
+						{ gid: 2, uid: 1 },
 					],
-					hobbies: [
-						{ hid: 1, htitle: "体育", icon: "prompt", desc: "体育运动很不错" },
-						{ hid: 2, htitle: "阅读", icon: "search", desc: "阅读让人睿智" },
-						{ hid: 3, htitle: "健身", icon: "close", desc: "健身让人上瘾" },
-						{ hid: 4, htitle: "电脑游戏", icon: "minus", desc: "好玩可别贪玩" },
-						{ hid: 5, htitle: "户外运动", icon: "add", desc: "感受大自然，轻呼吸" },
-						{ hid: 6, htitle: "旅游", icon: "prompt", desc: "读万卷书，行万里路" },
-						{ hid: 7, htitle: "吐槽", icon: "prompt", desc: "吐吐更健康" },
-						{ hid: 8, htitle: "发呆", icon: "prompt", desc: "人生那么长，歇一下又何妨" },
+					groups: [
+						{ gid: 1, groupName: "系统管理员" },
+						{ gid: 2, groupName: "店铺管理员" },
+						{ gid: 3, groupName: "用户管理员" },
+						{ gid: 4, groupName: "用户" },
+					],
+					users: [
+						{ uid: 1, userName: "yang" },
+						{ uid: 2, userName: "张三" },
+						{ uid: 3, userName: "李四" },
+						{ uid: 4, userName: "王武" },
+						{ uid: 5, userName: "field" },
 					],
 				},
-				methods: {
-					showDlg: function (dom, module, e) {
-						module.getNPlugin("dlg").open();
-					},
-					closeDlg: function (dom, model, module, e) {
-						module.getPlugin("dlg").close();
-					},
-					onOpen: function (model, module) {
-						console.log("open");
-					},
-					onClose: function (model, module) {
-						console.log("close");
-						console.log(model.data);
-					},
-				},
+				methods: {},
 			},
 		});
 	</script>
+</html>
+
+
+</html>
 </html>
