@@ -17,4 +17,5 @@ export * from './plugins/select';
 export * from './plugins/text';
 export * from './plugins/tip';
 export * from './plugins/toolbar';
+export * from './plugins/tree';
 
