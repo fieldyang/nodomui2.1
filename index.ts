@@ -15,4 +15,6 @@ export * from './plugins/radio';
 export * from './plugins/relationmap';
 export * from './plugins/select';
 export * from './plugins/text';
+export * from './plugins/tip';
 export * from './plugins/toolbar';
+
