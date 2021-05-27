@@ -9,21 +9,28 @@
 		<script src="./dist/nodomui.js"></script>
 		<link rel="stylesheet" href="./css/nodomui.css" />
 		<style>
-			.tip {
-				height: 200px;
+			.myclass {
+				width: 400px;
 			}
 		</style>
 	</head>
 	<body>
 		<div>
+			<ui-button e-click="clickItem">click</ui-button>
 			<ui-test></ui-test>
+			<!-- <label>同意条款:</label><br />
+			<ui-checkbox yesvalue="Y" novalue="N" x-field="agree">阅读并同意</ui-checkbox> -->
 		</div>
+		<!-- <div x-class="{'asdasd':'agree=='Y'}"></div> -->
 	</body>
 	<script>
 		nodom.app({
 			module: {
 				el: "div",
 				data: {
+					agree: "Y",
+					name: "阅读并同意",
+					age: "123",
 					levels: [
 						{
 							title: "商品管理",
@@ -48,7 +55,7 @@
 						},
 						{
 							title: "订单管理",
-							icon: "shopping-cart",
+							icon: "user",
 							rows: [
 								{ name: "发货", icon: "prompt" },
 								{ name: "取消申请", icon: "prompt" },
@@ -68,8 +75,8 @@
 					],
 				},
 				methods: {
-					clickItem: (dom, model, module, e) => {
-						console.log(model.data);
+					clickItem: (dom, module, e) => {
+						console.log(this.agree);
 					},
 				},
 			},

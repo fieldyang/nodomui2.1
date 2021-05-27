@@ -7,11 +7,11 @@
 		<title>nodomui example - panel usage</title>
 		<link rel="stylesheet" type="text/css" href="css/nodomui.css" />
 		<script src="../node_modules/nodom/dist/nodom.js"></script>
-		<script src="../bin/nodomui.js"></script>
+		<script src="../dist/nodomui.js"></script>
 	</head>
 	<body>
 		<div>
-			<ui-accordion style="width: 300px" x-model="result">
+			<ui-accordion style="width: 300px">
 				<div first data="levels" activeName="active"><b class="{{'nd-icon-' + icon}}"></b>{{title}}</div>
 				<a second data="rows" activeName="a1" itemClick="clickItem"
 					><b class="{{'nd-icon-' + icon}}"></b>{{name}}</a
