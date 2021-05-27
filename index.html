@@ -16,40 +16,7 @@
 	</head>
 	<body>
 		<div>
-			<p>简单用法</p>
-			<ui-tree
-				style="width: 300px; max-height: 200px"
-				name="tree1"
-				listField="rows"
-				icons="folderopen,folderclose"
-				displayField="title"
-				maxLevel="4"
-			>
-			</ui-tree>
-
-			<p>增加复选框</p>
-			<button e-click="getTreeValue">获取checked值</button>
-			<!--
-            listField       显示的数据行
-            valueField      值字段名
-            displayField    显示字段名
-            itemClick       item点击事件
-            checkName       选择字段名，如果没有此项，则不显示选择框
-            maxLevel        最大级数，默认3
-            icons           两个，以“,”分割，第一个为非叶子节点图标，第二个为叶子节点图标
-        -->
-			<ui-tree
-				style="width: 300px; max-height: 200px"
-				name="tree1"
-				listField="rows"
-				icons="folderopen,folderclose"
-				valueField="id"
-				displayField="title"
-				itemClick="clickItem"
-				checkName="checked"
-				maxLevel="4"
-			>
-			</ui-tree>
+			<ui-test></ui-test>
 		</div>
 	</body>
 	<script>
@@ -57,73 +24,52 @@
 			module: {
 				el: "div",
 				data: {
-					rows: [
+					levels: [
 						{
-							id: 1,
 							title: "商品管理",
-							checked: true,
+							icon: "insurance",
+							active: true,
 							rows: [
-								{ id: 2, title: "商品上架" },
-								{ id: 3, title: "商品下架" },
-								{ id: 4, title: "商品编辑" },
-								{
-									id: 5,
-									title: "商品统计",
-									checked: true,
-									rows: [
-										{ id: 6, title: "上架统计" },
-										{ id: 7, title: "下架统计" },
-										{
-											id: 8,
-											title: "销售统计",
-											rows: [
-												{ id: 9, title: "日统计" },
-												{ id: 10, title: "周统计" },
-												{ id: 11, title: "月统计" },
-												{ id: 12, title: "年统计" },
-											],
-										},
-									],
-								},
+								{ name: "商品上架", icon: "prompt" },
+								{ name: "商品下架", icon: "prompt" },
+								{ name: "商品编辑", icon: "prompt" },
+								{ name: "商品统计", icon: "prompt" },
 							],
 						},
 						{
-							id: 13,
 							title: "商家管理",
+							icon: "edit",
 							rows: [
-								{ id: 14, title: "商家审核" },
-								{ id: 15, title: "商家关店" },
-								{ id: 16, title: "临时关闭" },
-								{ id: 17, title: "商家统计" },
+								{ name: "商家审核", icon: "prompt" },
+								{ name: "商家关店", icon: "prompt" },
+								{ name: "临时关闭", icon: "prompt" },
+								{ name: "商家统计", icon: "prompt" },
 							],
 						},
 						{
-							id: 18,
 							title: "订单管理",
+							icon: "shopping-cart",
 							rows: [
-								{ id: 19, title: "发货" },
-								{ id: 20, title: "取消申请" },
-								{ id: 21, title: "删除订单" },
+								{ name: "发货", icon: "prompt" },
+								{ name: "取消申请", icon: "prompt" },
+								{ name: "删除订单", icon: "prompt" },
 							],
 						},
 						{
-							id: 22,
 							title: "安全管理",
+							icon: "user",
 							rows: [
-								{ id: 23, title: "角色管理" },
-								{ id: 24, title: "用户管理" },
-								{ id: 25, title: "资源管理" },
-								{ id: 26, title: "权限管理" },
+								{ name: "角色管理", icon: "prompt" },
+								{ name: "用户管理", icon: "user" },
+								{ name: "资源管理", icon: "prompt" },
+								{ name: "权限管理", icon: "prompt" },
 							],
 						},
 					],
 				},
 				methods: {
-					clickItem: function (dom, module) {
-						console.log(this);
-					},
-					getTreeValue: function (dom, module) {
-						console.log(module.getNPlugin("tree1").getValue());
+					clickItem: (dom, model, module, e) => {
+						console.log(model.data);
 					},
 				},
 			},
