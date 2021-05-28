@@ -1,6 +1,9 @@
 import { DefineElementManager, Directive, Element } from 'nodom';
 import { pluginBase } from './pluginBase';
 import { UITool } from './uibase';
+
+enum 
+
 export class UITEXT extends pluginBase {
     tagName: string = 'UI-TEXT'
 
