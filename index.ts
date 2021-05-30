@@ -5,6 +5,7 @@ export * from './plugins/checkbox';
 export * from './plugins/dialog';
 export * from './plugins/file';
 export * from './plugins/floatbox';
+export * from './plugins/form';
 export * from './plugins/layout';
 export * from './plugins/list';
 export * from './plugins/listtransfer';

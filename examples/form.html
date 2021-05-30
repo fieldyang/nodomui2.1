@@ -1,94 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>nodomui example - panel usage</title>
-    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
-    <script src='js/nodom.js'></script>
-    <script src='../bin/nodomui.js'></script>
-    <style>
-       form{
-           /* width:600px; */
-       }
-    </style>
-</head>
-<body>
-    <div>
-        
-        <ui-button e-click='setValue'>设置值</ui-button>
-        <div>
-            <div>姓名：<span>{{userName}}</span></div>
-            <div>出生日期：<span>{{birth}}</span></div>
-            <div>学历：<span>{{education}}</span></div>
-        </div>
-        <ui-form class='form' labelWidth='80'>
-            <row>
-                <item>
-                    <label>姓名:</label>
-                    <ui-text x-field='userName' value='{{userName}}' icon='search'></ui-text>
-                    <unit></unit>
-                </item>
-                <item>
-                    <label>性别:</label>
-                    <ui-radio  x-field='sexy'>
-                        <span value='M'>男</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span value='F'>女</span>
-                    </ui-radio>
-                </item>
-            </row>
-            <row>
-                <item>
-                    <label>速度:</label>
-                    <ui-text x-field='userName' value='{{userName}}' icon='search'></ui-text>
-                    <unit>m/s</unit>
-                </item>
-                <item>
-                    <label>体重:</label>
-                    <ui-text x-field='userName' value='{{userName}}' icon='search'></ui-text>
-                    <unit>kg</unit>
-                </item>
-                
-            </row>
-                
-            <row>
-                <item>
-                    <label>出生日期:</label>
-                    <ui-datetime class='nd-form-input' x-field='birth' type='date' value="{{birth|date:'yyyy-MM-dd HH:mm:ss.S'}}"></ui-datetime>
-                    <unit></unit>
-                </item>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>nodomui example - panel usage</title>
+		<link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+		<script src="../node_modules/nodom/dist/nodom.js"></script>
+		<script src="../dist/nodomui.js"></script>
+		<style>
+			form {
+				/* width:600px; */
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<ui-button e-click="setValue">设置值</ui-button>
+			<div>
+				<div>姓名：<span>{{userName}}</span></div>
+				<div>出生日期：<span>{{birth}}</span></div>
+				<div>学历：<span>{{education}}</span></div>
+			</div>
+			<ui-form class="form" labelWidth="80">
+				<row>
+					<item>
+						<label>姓名:</label>
+						<ui-text x-field="userName" value="{{userName}}" icon="search"></ui-text>
+						<unit></unit>
+					</item>
+					<item>
+						<label>性别:</label>
+						<ui-radio x-field="sexy">
+							<span value="M">男</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<span value="F">女</span>
+						</ui-radio>
+					</item>
+				</row>
 
-                <item>
-                    <label>开始时间:</label>
-                    <ui-datetime class='nd-form-input' x-field='starttime' type='time' showMs/>
-                </item>
-            </row>
-            <row>
-                <item>
-                    <label>计划时间:</label>
-                    <!-- showms 是否显示毫秒 -->
-                    <ui-datetime class='nd-form-input' x-field='plantime' type='datetime' showms/>
-                </item>
-            </row>
-            <row>
-                <item>
-                    <label>学历:</label>
-                    <!--
+				<row>
+					<item>
+						<label>速度:</label>
+						<ui-text x-field="userName" value="{{userName}}" icon="search"></ui-text>
+						<unit>m/s</unit>
+					</item>
+					<item>
+						<label>体重:</label>
+						<ui-text x-field="userName" value="{{userName}}" icon="search"></ui-text>
+						<unit>kg</unit>
+					</item>
+				</row>
+
+				<!-- <row>
+					<item>
+						<label>出生日期:</label>
+						<ui-datetime
+							class="nd-form-input"
+							x-field="birth"
+							type="date"
+							value="{{birth|date:'yyyy-MM-dd HH:mm:ss.S'}}"
+						></ui-datetime>
+						<unit></unit>
+					</item>
+
+					<item>
+						<label>开始时间:</label>
+						<ui-datetime class="nd-form-input" x-field="starttime" type="time" showMs />
+					</item>
+				</row>
+				<row>
+					<item>
+						<label>计划时间:</label>
+						<ui-datetime class="nd-form-input" x-field="plantime" type="datetime" showms />
+					</item>
+				</row> -->
+				<row>
+					<item>
+						<label>学历:</label>
+						<!--
                         x-field 绑定字段
                         valueField 对应数组中对象的值字段名
                         displayField 对应数组中对象的显示字段名
                         listField  下拉列表对应数据
                         allowFilter 允许过滤器
                     -->
-                    <ui-select style='width:200px !important;' x-field='education' valueField='id' displayField='title' allowFilter listField='edus' showEmpty>
-                    </ui-select>
-                </item>
-            </row>
-            <!-- 
+						<ui-select
+							style="width: 200px !important"
+							x-field="education"
+							valueField="id"
+							displayField="title"
+							allowFilter
+							listField="edus"
+							showEmpty
+						>
+						</ui-select>
+					</item>
+				</row>
+				<!-- 
             <div>
                 <label>爱好:</label> -->
-                <!--
+				<!--
                     x-field 绑定字段
                     valueField 对应数组中对象的值字段名
                     displayField 对应数组中对象的显示字段名
@@ -96,132 +107,153 @@
                     allowFilter 允许过滤
                     listWidth   下拉列表宽度，默认与输入框相同
                 -->
-                <!-- <ui-select x-field='hobby' valueField='hid' displayField='htitle' listField='hobbies' multiselect allowFilter listWidth='500'>
+				<!-- <ui-select x-field='hobby' valueField='hid' displayField='htitle' listField='hobbies' multiselect allowFilter listWidth='500'>
                     <div class='hobitem'><span class='id'>{{hid}}</span> <span class='title'>{{htitle}} </span> <span class='desc'>{{desc}}</span></div>
                 </ui-select>
             </div> -->
 
-            <row>
-                <item>
-                    <label>生活照:</label>
-                    <ui-file x-field='photos' name='photo1' multiple valueField='id' displayField="url"  uploadName='file'
-                    uploadUrl='http://localhost:3000/upload' fileType='image' maxCount='5'></ui-file>
-                </item>
-            </row>
-            
-            <row>
-                <item>
-                    <label>爱好</label>
-                    <ui-list x-field='hobby' valueField='hid' 
-                        displayField='htitle' multiselect 
-                        listField='hobbies' 
-                        listType='row'>
-                        <div>
-                            <b class='{{"nd-icon-" + icon }}'></b>
-                            <span style='width:100px;display:inline-block;'>{{htitle}}</span>
-                            <span>{{desc}}</span>
-                        </div>
-                    </ui-list>
-                </item>
-            </row>
-            <row>
-                <item>
-                    <label>同意条款:</label>
-                    <ui-checkbox  yesvalue='Y' novalue='N'  x-field='agree'>阅读并同意</ui-checkbox>
-                </item>
-            </row>
-        </ui-form>
-        <ui-floatbox />
-    </div>
-</body>
-<script>
-    $.a({
-        module:{
-            el:'div',
-            data:{
-                names:[{name:'yang'},{name:'lei'},{name:'xxx'},{name:'xxx'},{name:'xxx'},{name:'xxx'},{name:'xxx'},{name:'xxx'}],
-                userName:'yang',
-                sexy:'F',
-                agree:'Y',
-                education:'3',
-                birth:'1616472327123',
-                plantime:'2020-8-5 8:45:00',
-                starttime:'10:00',
-                hobby:2,
-                photos:[],
-                edus:[
-                    {id:1,title:'高中',},
-                    {id:2,title:'专科'},
-                    {id:3,title:'本科'},
-                    {id:4,title:'硕士'},
-                    {id:5,title:'博士'}
-                ],
-                hobbies:[
-                    {hid:1,htitle:'体育',icon:'prompt',desc:'体育运动很不错'},
-                    {hid:2,htitle:'阅读',icon:'search',desc:'阅读让人睿智'},
-                    {hid:3,htitle:'健身',icon:'close',desc:'健身让人上瘾'},
-                    {hid:4,htitle:'电脑游戏',icon:'minus',desc:'好玩可别贪玩'},
-                    {hid:5,htitle:'户外运动',icon:'add',desc:'感受大自然，轻呼吸'},
-                    {hid:6,htitle:'旅游',icon:'prompt',desc:'读万卷书，行万里路'},
-                    {hid:7,htitle:'吐槽',icon:'prompt',desc:'吐吐更健康'},
-                    {hid:8,htitle:'发呆',icon:'prompt',desc:'人生那么长，歇一下又何妨'},
-                ]
-            },
-            methods:{
-                setValue:function(dom,model,module,e){
-                    // model.set('userName','field');
-                    // model.set('education','1');
-                    // console.log(module.getPlugin('photos').reset(module));
-                    // model.data.edus.splice(0,model.data.edus.length,{id:1,title:'aaa',},
-                    // {id:2,title:'bbb'},
-                    // {id:3,title:'ccc'},
-                    // {id:4,title:'ddd'})
-                    
-                    // model.data.hobbies.push({
-                    //     hid:9,htitle:'健身1',icon:'close',desc:'健身让人上瘾'
-                    // })
-                    model.data.edus.push({id:6,title:'博士1'})
-                },
-                showDlg:function(dom,model,module,e){
-                    model.set('showdlg', true);
-                },
-                hideDlg:function(dom,model,module,e){
-                    model.set('showdlg', false);
-                },
-                uploadFile:function(dom,model,module,e){
-                    let xhr = new XMLHttpRequest();
-                    xhr.open('POST','http://localhost:3000/upload');
-                    let form = new FormData();
-                    let files = model.data['$file_photos'];
-                    for(let f of files){
-                        form.append('photo',f);
-                    }
-                    xhr.setRequestHeader('Content-Type','multipart/form-data');
-                    xhr.send(form);
-                    xhr.onload = (x)=>{
-                        let r = JSON.parse(xhr.responseText);
-                        for(let r1 of r.rows){
-                            model.data['photos'].push({
-                                imgId:r1.id,
-                                imgUrl:r1.url,
-                                fileName:r1.fileName
-                            });
-                        }
-                        model.set('$uploadstate_photos',0);
-                    }
-                },
-                delFile:function(dom,model,module,e){
-                    let rows = module.model.data['photos'];
-                    for(let i=0;i<rows.length;i++){
-                        if(rows[i].imgId === model.data['imgId']){
-                            rows.splice(i,1);
-                            break;
-                        }
-                    }
-                    
-                }
-            }
-        }
-    })
-</script>
+				<!-- <row>
+					<item>
+						<label>生活照:</label>
+						<ui-file
+							x-field="photos"
+							name="photo1"
+							multiple
+							valueField="id"
+							displayField="url"
+							uploadName="file"
+							uploadUrl="http://localhost:3000/upload"
+							fileType="image"
+							maxCount="5"
+						></ui-file>
+					</item>
+				</row> -->
+
+				<row>
+					<item>
+						<label>爱好</label>
+						<ui-list
+							x-field="hobby"
+							valueField="hid"
+							displayField="htitle"
+							multiselect
+							listField="hobbies"
+							listType="row"
+						>
+							<div>
+								<b class='{{"nd-icon-" + icon }}'></b>
+								<span style="width: 100px; display: inline-block">{{htitle}}</span>
+								<span>{{desc}}</span>
+							</div>
+						</ui-list>
+					</item>
+				</row>
+                
+				<row>
+					<item>
+						<label>同意条款:</label>
+						<ui-checkbox yesvalue="Y" novalue="N" x-field="agree">阅读并同意</ui-checkbox>
+					</item>
+				</row>
+			</ui-form>
+		</div>
+	</body>
+	<script>
+		nodom.app({
+			module: {
+				el: "div",
+				data: {
+					names: [
+						{ name: "yang" },
+						{ name: "lei" },
+						{ name: "xxx" },
+						{ name: "xxx" },
+						{ name: "xxx" },
+						{ name: "xxx" },
+						{ name: "xxx" },
+						{ name: "xxx" },
+					],
+					userName: "yang",
+					sexy: "F",
+					agree: "Y",
+					education: "3",
+					birth: "1616472327123",
+					plantime: "2020-8-5 8:45:00",
+					starttime: "10:00",
+					hobby: 2,
+					photos: [],
+					edus: [
+						{ id: 1, title: "高中" },
+						{ id: 2, title: "专科" },
+						{ id: 3, title: "本科" },
+						{ id: 4, title: "硕士" },
+						{ id: 5, title: "博士" },
+					],
+					hobbies: [
+						{ hid: 1, htitle: "体育", icon: "prompt", desc: "体育运动很不错" },
+						{ hid: 2, htitle: "阅读", icon: "search", desc: "阅读让人睿智" },
+						{ hid: 3, htitle: "健身", icon: "close", desc: "健身让人上瘾" },
+						{ hid: 4, htitle: "电脑游戏", icon: "minus", desc: "好玩可别贪玩" },
+						{ hid: 5, htitle: "户外运动", icon: "add", desc: "感受大自然，轻呼吸" },
+						{ hid: 6, htitle: "旅游", icon: "prompt", desc: "读万卷书，行万里路" },
+						{ hid: 7, htitle: "吐槽", icon: "prompt", desc: "吐吐更健康" },
+						{ hid: 8, htitle: "发呆", icon: "prompt", desc: "人生那么长，歇一下又何妨" },
+					],
+				},
+				methods: {
+					setValue: function (dom, model, module, e) {
+						// model.set('userName','field');
+						// model.set('education','1');
+						// console.log(module.getPlugin('photos').reset(module));
+						// model.data.edus.splice(0,model.data.edus.length,{id:1,title:'aaa',},
+						// {id:2,title:'bbb'},
+						// {id:3,title:'ccc'},
+						// {id:4,title:'ddd'})
+
+						// model.data.hobbies.push({
+						//     hid:9,htitle:'健身1',icon:'close',desc:'健身让人上瘾'
+						// })
+						model.data.edus.push({ id: 6, title: "博士1" });
+					},
+					showDlg: function (dom, model, module, e) {
+						model.set("showdlg", true);
+					},
+					hideDlg: function (dom, model, module, e) {
+						model.set("showdlg", false);
+					},
+					uploadFile: function (dom, model, module, e) {
+						let xhr = new XMLHttpRequest();
+						xhr.open("POST", "http://localhost:3000/upload");
+						let form = new FormData();
+						let files = model.data["$file_photos"];
+						for (let f of files) {
+							form.append("photo", f);
+						}
+						xhr.setRequestHeader("Content-Type", "multipart/form-data");
+						xhr.send(form);
+						xhr.onload = (x) => {
+							let r = JSON.parse(xhr.responseText);
+							for (let r1 of r.rows) {
+								model.data["photos"].push({
+									imgId: r1.id,
+									imgUrl: r1.url,
+									fileName: r1.fileName,
+								});
+							}
+							model.set("$uploadstate_photos", 0);
+						};
+					},
+					delFile: function (dom, model, module, e) {
+						let rows = module.model.data["photos"];
+						for (let i = 0; i < rows.length; i++) {
+							if (rows[i].imgId === model.data["imgId"]) {
+								rows.splice(i, 1);
+								break;
+							}
+						}
+					},
+				},
+			},
+		});
+	</script>
 </html>

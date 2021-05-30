@@ -10,26 +10,56 @@
 		<link rel="stylesheet" href="./css/nodomui.css" />
 		<style>
 			.app {
+				position: relative;
+				left: 200px;
+				top: 1000px;
 				width: 400px;
 				height: 400px;
 				background-color: cornflowerblue;
 			}
 			.child {
+				position: absolute;
+				left: 100px;
+				top: 100px;
 				width: 200px;
 				height: 200px;
 				background-color: darkcyan;
 			}
+			.root {
+				position: relative;
+				overflow: auto;
+				width: 800px;
+				height: 800px;
+				background-color: black;
+			}
 		</style>
 	</head>
 	<body>
-		<div>
-			<div class="app"><div class="child"></div></div>
+		<div class="root">
+			<div class="app">
+				<div class="child"></div>
+			</div>
 		</div>
 	</body>
 	<script>
+		function caclOffset(event) {
+			let [offsetX, offsetY] = [0, 0];
+			let path = event.composedPath();
+			for (const p of path) {
+				if (p["offsetTop"] && p["offsetLeft"]) {
+					if (p["offsetTop"] == 0 || p["offsetLeft"] == 0) {
+						break;
+					}
+					offsetX += p["offsetTop"];
+					offsetY += p["offsetLeft"];
+				}
+			}
+			return [offsetX, offsetY];
+		}
 		let div = document.querySelector(".app");
 		div.addEventListener("click", (e) => {
-			console.log(e);
+			let [x, y] = caclOffset(e);
+			console.log(x, y);
 		});
 		// nodom.app({
 		// 	module: {
