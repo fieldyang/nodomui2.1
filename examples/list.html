@@ -1,100 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>nodomui example - panel usage</title>
-    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
-    <script src='js/nodom.js'></script>
-    <script src='../bin/nodomui.js'></script>
-    
-    <style>
-         .list1{
-             width:500px;
-             height:100px;
-         }
-         .item1{
-             width:100px;
-         }
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>nodomui example - panel usage</title>
+		<link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+		<script src="../node_modules/nodom/dist/nodom.js"></script>
+		<script src="../dist/nodomui.js"></script>
 
-         .item1 img{
-             width:60px;
-         }
+		<style>
+			.list1 {
+				width: 500px;
+				height: 100px;
+			}
+			.item1 {
+				width: 100px;
+			}
 
-         .item1 div{
-             font-size:16px;
-             text-align:center;
-         }
-    </style>
-</head>
-<body>
-    <div>
-        <p>横向单选list</p>
-        <ui-list x-field='hobby' valueField='hid' displayField='htitle'
-            listField='hobbies' type='col' 
-            itemClick='clickItem'
-            ></ui-list>
+			.item1 img {
+				width: 60px;
+			}
 
-        <p>纵向多选list</p>
-        <ui-list class='list1' x-field='hobby' valueField='hid' displayField='htitle'
-            listField='hobbies' type='row' multiselect 
-            itemClick='clickItem'
-            ></ui-list>
-        <p>带禁用项list</p>
-        <ui-list x-field='hobby' valueField='hid' displayField='htitle' disableField='disable' 
-            listField='hobbies' type='col' 
-            itemClick='clickItem'
-            ></ui-list>
-            
-        <p>自定义list1</p>
-        <ui-list x-field='hobby' class='list1' valueField='hid' displayField='htitle'
-            listField='hobbies' type='row' 
-            itemClick='clickItem'
-            >
-            <div>
-                <b class='{{"nd-icon-" + icon }}'></b>
-                <span>{{htitle}}</span>
-                <span>{{desc}}</span>
-            </div>
-        </ui-list>
+			.item1 div {
+				font-size: 16px;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<ui-test></ui-test>
+			<!-- <p>横向单选list</p>
+			<ui-list
+				x-field="hobby"
+				valueField="hid"
+				displayField="htitle"
+				listField="hobbies"
+				type="col"
+				itemClick="clickItem"
+			></ui-list>
 
-        <p>自定义list2</p>
-        <ui-list 
-            listField='hobbies' type='col' 
-            itemClick='clickItem'
-            >
-            <div class='item1' align='center'>
-                <!-- <img src='{{icon}}'> -->
-                <b class='nd-icon-{{icon}}' style='font-size:30px'></b>
-                <div>{{htitle}}</div>
-            </div>
-        </ui-list>
-        
+			<p>纵向多选list</p>
+			<ui-list
+				class="list1"
+				x-field="hobby"
+				valueField="hid"
+				displayField="htitle"
+				listField="hobbies"
+				type="row"
+				multiselect
+				itemClick="clickItem"
+			></ui-list>
+			<p>带禁用项list</p>
+			<ui-list
+				x-field="hobby"
+				valueField="hid"
+				displayField="htitle"
+				disableField="disable"
+				listField="hobbies"
+				type="col"
+				itemClick="clickItem"
+			></ui-list>
 
-    </div>
-</body>
-<script>
-    nodom.newApp({
-        module:{
-            el:'div',
-            data:{
-                hobby:2,
-                hobbies:[
-                    {hid:1,htitle:'体育',icon:'message',desc:'体育运动很不错'},
-                    {hid:2,htitle:'阅读',icon:'search',desc:'阅读让人睿智'},
-                    {hid:3,htitle:'健身',icon:'home',disable:true,desc:'健身让人上瘾'},
-                    {hid:4,htitle:'电脑游戏',icon:'user',desc:'好玩可别贪玩'},
-                    {hid:5,htitle:'户外运动',icon:'password',desc:'感受大自然，轻呼吸'},
-                    {hid:6,htitle:'旅游',icon:'prompt',disable:true,desc:'读万卷书，行万里路'}
-                ]
-            },
-            methods:{
-                clickItem:function(dom,model,module,e){
-                    console.log(model.data);
-                }
-            }
-        }
-    })
-</script>
+			<p>自定义list1</p>
+			<ui-list
+				x-field="hobby"
+				class="list1"
+				valueField="hid"
+				displayField="htitle"
+				listField="hobbies"
+				type="row"
+				itemClick="clickItem"
+			>
+				<div>
+					<b class='{{"nd-icon-" + icon }}'></b>
+					<span>{{htitle}}</span>
+					<span>{{desc}}</span>
+				</div>
+			</ui-list>
+
+			<p>自定义list2</p>
+			<ui-list listField="hobbies" type="col" itemClick="clickItem">
+				<div class="item1" align="center">
+					<b class="nd-icon-{{icon}}" style="font-size: 30px"></b>
+					<div>{{htitle}}</div>
+				</div>
+			</ui-list> -->
+		</div>
+	</body>
+	<script>
+		nodom.app({
+			module: {
+				el: "div",
+				data: {
+					hobby: 2,
+					hobbies: [
+						{ hid: 1, htitle: "体育", icon: "message", desc: "体育运动很不错" },
+						{ hid: 2, htitle: "阅读", icon: "search", desc: "阅读让人睿智" },
+						{ hid: 3, htitle: "健身", icon: "home", disable: true, desc: "健身让人上瘾" },
+						{ hid: 4, htitle: "电脑游戏", icon: "user", desc: "好玩可别贪玩" },
+						{ hid: 5, htitle: "户外运动", icon: "password", desc: "感受大自然，轻呼吸" },
+						{ hid: 6, htitle: "旅游", icon: "prompt", disable: true, desc: "读万卷书，行万里路" },
+					],
+				},
+				methods: {
+					clickItem: function (dom, module, e) {
+						console.log(this);
+					},
+				},
+			},
+		});
+	</script>
 </html>

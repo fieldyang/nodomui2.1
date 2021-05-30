@@ -1,10 +1,29 @@
-import { DefineElementManager, Directive, Element } from 'nodom';
+import { Compiler, DefineElementManager, Directive, Element } from 'nodom';
 import { pluginBase } from './pluginBase';
-import { UITool } from './uibase';
+import { ICONPOS, UITool } from './uibase';
 
-enum 
+interface IUIText {
+    /**
+   * select绑定的数据字段名
+   */
+    dataName: string;
 
-export class UITEXT extends pluginBase {
+    /**
+     * 绑定的value值
+     */
+    value: string;
+
+    /**
+     * 图标
+     */
+    icon?: string;
+    /**
+     * 图标位置 left,right
+     */
+    iconpos?: ICONPOS;
+}
+
+export class UIText extends pluginBase {
     tagName: string = 'UI-TEXT'
 
     /**
@@ -13,47 +32,77 @@ export class UITEXT extends pluginBase {
     dataName: string;
 
     /**
+     * 绑定的value值
+     */
+    value: string;
+
+    /**
      * 图标
      */
     icon: string;
     /**
      * 图标位置 left,right
      */
-    iconpos: string;
+    iconpos: ICONPOS;
 
-    constructor(element: Element, parent?: Element) {
-        super(element);
-        // this.extraParmas = {};
-        UITool.handleUIParam(element, this,
-            ['icon', 'iconpos'],
-            ['icon', 'iconPos'],
-            ['', 'left']
-        );
-        this.UITextGenerate(element);
+    constructor(params: Element | IUIText, parent?: Element) {
+        super(params);
+        let element = new Element();
+        if (params instanceof Element) {
+            element = params;
+            UITool.handleUIParam(element, this,
+                ['icon', 'iconpos'],
+                ['icon', 'iconPos'],
+                ['', 'left']
+            );
+            this.generate(element, true);
+        } else {
+            Object.keys(params).forEach(key => {
+                this[key] = params[key]
+            })
+            this.generate(element, false);
+        }
         element.tagName = 'div';
         element.defineEl = this;
         this.element = element;
     }
 
-    UITextGenerate(element: Element) {
+    /**
+    * 生成插件的内容
+    * @param rootDom 插件产生的虚拟dom
+    * @param genMode 生成虚拟dom的方式，true:ast编译的模板的方式，false:传入配置对象的方式
+    */
+    private generate(element: Element, genMode: boolean) {
         element.addClass('nd-text');
-        //生成id
-        let field = element.getDirective('field');
         let input: Element = new Element('input');
         input.setProp('type', 'text');
 
         element.add(input);
 
-        //替换directive到input
-        input.addDirective(new Directive('field', field.value, input));
-
-        let vProp = element.getProp('value');
-        if (!vProp) {
-            vProp = element.getProp('value', true);
-            input.setProp('value', vProp, true);
+        if (genMode === false) {
+            let field = this.dataName;
+            new Directive('field', field, input);
+            if (this.value && this.value !== '') {
+                let expr = Compiler.compileExpression(this.value);
+                if (typeof expr === 'string') {
+                    input.setProp('value', expr);
+                } else {
+                    input.setProp('value', expr, true);
+                }
+            }
         } else {
-            input.setProp('value', vProp);
+            let field = element.getDirective('field');
+            new Directive('field', field.value, input);
+            // 设置value值
+            let vProp = element.getProp('value');
+            if (!vProp) {
+                vProp = element.getProp('value', true);
+                input.setProp('value', vProp, true);
+            } else {
+                input.setProp('value', vProp);
+            }
         }
+
 
         //清除rootDom的指令和事件
         element.removeDirectives(['field']);
@@ -74,6 +123,6 @@ export class UITEXT extends pluginBase {
 
 DefineElementManager.add('UI-TEXT', {
     init: function (element: Element, parent?: Element) {
-        new UITEXT(element, parent);
+        new UIText(element, parent);
     }
 })
