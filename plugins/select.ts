@@ -57,6 +57,10 @@ interface IUISelect {
     * 自定义模板串 用于通过配置生成下拉框
     */
     customTemplate?: string;
+    /**
+    * 父插件的附加数据项
+    */
+    parentDataName?: string;
 }
 
 /**
@@ -69,6 +73,11 @@ export class UISelect extends pluginBase {
      * 附加数据项名
      */
     extraDataName: string;
+
+    /**
+     * 父插件的附加数据项
+     */
+    parentDataName: string;
     /**
      * select绑定的数据字段名
      */
@@ -177,7 +186,7 @@ export class UISelect extends pluginBase {
         }
 
         //修改model
-        rootDom.addDirective(new Directive('model', this.extraDataName, rootDom));
+        new Directive('model', this.extraDataName, rootDom);
 
         // 下拉框是floatbox
         // this.float = new UIFloatBox({})
@@ -235,6 +244,7 @@ export class UISelect extends pluginBase {
                     if (plugin) {
                         this.hideList.apply(plugin);
                     } else {
+                        // module.model
                         this.hideList();
                     }
                 }
@@ -263,10 +273,9 @@ export class UISelect extends pluginBase {
 
         showDom.addEvent(new NEvent('click',
             (dom, module, e, el) => {
-                console.log(module.model);
-
                 if (dom.model.show) {
-                    me.hideList(module.model);
+                    // module.model
+                    me.hideList();
                     // dom.model.show = false;
                     // this.float.hide();
                 } else {
@@ -306,10 +315,13 @@ export class UISelect extends pluginBase {
         let me = this;
         super.beforeRender(module, dom);
         this.listKey = dom.children[1].key;
-
         let model: Model;
-        if (this.needPreRender) {
+        if (this.parentDataName && this.parentDataName != '') {
+            model = module.model.$query(this.parentDataName)
+        } else {
             model = module.model;
+        }
+        if (this.needPreRender) {
             model[this.extraDataName] = {
                 show: false,     //下拉框显示
                 display: '',     //显示内容
@@ -317,10 +329,14 @@ export class UISelect extends pluginBase {
                 datas: []        //下拉框数据
             }
 
-
             //增加过滤器方法
             module.addMethod(this.filterMethodId, () => {
-                let model: Model = this.model;
+                let model: Model;
+                if (this.parentDataName && this.parentDataName != '') {
+                    model = module.model.$query(this.parentDataName)
+                } else {
+                    model = module.model;
+                }
                 let rows = model[this.extraDataName].datas;
                 if (rows) {
                     return rows.filter((item) => {
@@ -332,18 +348,22 @@ export class UISelect extends pluginBase {
             //注册click事件到全局事件管理器
             UIEventRegister.addEvent('click', module.id, dom.key,
                 (module: Module, dom: Element, inOrout: boolean, e: Event) => {
-                    let model: Model = module.model;
+
+                    let model: Model;
+                    if (this.parentDataName && this.parentDataName != '') {
+                        model = module.model.$query(this.parentDataName)
+                    } else {
+                        model = module.model;
+                    }
                     //外部点击则关闭
                     if (!inOrout && model[this.extraDataName].show) {
                         model[this.extraDataName].show = true;
-                        // this.float.hide()
-                        me.hideList(model);
+                        // this.float.hide() model
+                        me.hideList();
                     }
                 }
             );
         }
-
-        model = module.model;
 
         let data = model[this.extraDataName];
         //下拉值初始化
@@ -374,12 +394,18 @@ export class UISelect extends pluginBase {
             value = [value];
         }
         let module: Module = ModuleFactory.get(this.moduleId);
-        //原model
-        let pmodel = module.model;
-        let value1 = pmodel[this.dataName];
+        let model: Model;
+        if (this.parentDataName && this.parentDataName != '') {
+            model = module.model.$query(this.parentDataName)
+        } else {
+            //原model
+            model = module.model;
+        }
+
+        let value1 = model[this.dataName];
         if (value !== value1) {
             //设置新值
-            pmodel[this.dataName] = value;
+            model[this.dataName] = value;
             if (this.onChange !== '') { //change 事件
                 let foo;
                 let tp = typeof this.onChange;
@@ -389,12 +415,12 @@ export class UISelect extends pluginBase {
                     foo = this.onChange;
                 }
                 if (foo) {
-                    foo.apply(null, [pmodel, module, value, this.value]);
+                    foo.apply(null, [model, module, value, this.value]);
                 }
             }
         }
         this.value = value;
-        this.genSelectedAndDisplay();
+        this.genSelectedAndDisplay(model);
     }
 
     /**
@@ -426,13 +452,13 @@ export class UISelect extends pluginBase {
      * 设置选中和显示内容
      * @param module    模块
      */
-    genSelectedAndDisplay() {
+    genSelectedAndDisplay(model: Model) {
         if (!this.dataName) {
             return;
         }
-        let module: Module = ModuleFactory.get(this.moduleId);
+        // let module: Module = ModuleFactory.get(this.moduleId);
         //附加数据model
-        let model: Model = module.model;
+        // let model: Model = module.model;
         let text;
 
         if (this.multiSelect) {
@@ -449,7 +475,7 @@ export class UISelect extends pluginBase {
             text = ta.join(',');
         } else {
             for (let d of model[this.extraDataName].datas) {
-                if (this.value === d[this.valueField]) {
+                if (this.value == d[this.valueField]) {
                     text = d[this.displayField];
                     d.___selected = true;
                 } else {
@@ -468,7 +494,12 @@ export class UISelect extends pluginBase {
     hideList(model?: Model) {
         if (!model) {
             let module: Module = ModuleFactory.get(this.moduleId);
-            model = module.model;
+            if (this.parentDataName && this.parentDataName != '') {
+                model = module.model.$query(this.parentDataName)
+            } else {
+                //原model
+                model = module.model;
+            }
         }
         model[this.extraDataName].show = false;
         model[this.extraDataName].query = '';

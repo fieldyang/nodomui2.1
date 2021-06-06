@@ -1,8 +1,16 @@
 import { DefineElementManager, Element, NEvent } from "nodom";
 import { pluginBase } from "./pluginBase";
 import { ICONPOS, SIZE, THEME, UITool } from "./uibase";
-
-
+/** 如果需要new的方式新建 可以参考下面
+        let ui = new UIButton({
+            size: SIZE.NORMAL,
+            icon: "search",
+            iconPos: ICONPOS.LEFT,
+            text: '按钮',
+            theme: THEME.ACTIVE,
+            clickEvent: 'itemClick'
+        })
+ */
 interface IUIButtonCfg extends Object {
     /**
     * 按钮大小 small normal large
@@ -36,6 +44,7 @@ interface IUIButtonCfg extends Object {
      * 按钮绑定的事件
      */
     clickEvent?: string;
+
 }
 
 /**
@@ -77,6 +86,7 @@ export class UIButton extends pluginBase {
      */
     clickEvent: string;
 
+
     constructor(params: Element | IUIButtonCfg, parent?: Element) {
         super(params);
         let element = new Element();
@@ -108,7 +118,6 @@ export class UIButton extends pluginBase {
     /**
      * 生成插件的内容
      * @param rootDom 插件产生的虚拟dom
-     * @param genMode 生成虚拟dom的方式，true:ast编译的模板的方式，false:传入配置对象的方式
      */
     private generate(rootDom: Element) {
 

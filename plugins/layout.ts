@@ -1,10 +1,28 @@
-import { DefineElementManager, Directive, Element, Model, Module, NEvent, Util } from "nodom";
+import { Compiler, DefineElementManager, Directive, Element, Model, Module, NEvent, Util } from "nodom";
 import { pluginBase } from "./pluginBase";
+
+/**
+         let ui = new UILayout({
+            customTemplate:
+                `
+                这里写html模板
+                `
+        })
+ */
+
+
+interface IUILayout extends Object {
+    /**
+    * 渲染模板，使用new 的时候需要的内部模板
+    */
+    customTemplate?: string;
+}
+
 
 /**
  * layout 插件
  */
-class UILayout extends pluginBase {
+export class UILayout extends pluginBase {
     /**
      * tag name
      */
@@ -15,8 +33,21 @@ class UILayout extends pluginBase {
      */
     extraDataName: string;
 
-    constructor(element: Element, parent?: Element) {
-        super(element);
+    /**
+     * 渲染模板，使用new 的时候需要的内部模板
+     */
+    customTemplate: string;
+
+    constructor(params: Element | IUILayout, parent?: Element) {
+        super(params);
+        let element = new Element();
+        if (params instanceof Element) {
+            element = params;
+        } else {
+            Object.keys(params).forEach(key => {
+                this[key] = params[key]
+            })
+        }
         this.generate(element);
         element.tagName = 'div';
         element.defineEl = this;
@@ -31,7 +62,7 @@ class UILayout extends pluginBase {
         rootDom.addClass('nd-layout');
         //设置附加数据项名
         this.extraDataName = '$ui_layout_' + Util.genId();
-
+        new Directive('model', this.extraDataName, rootDom)
         //增加middle 容器
         let middleCt: Element = new Element();
         middleCt.addClass('nd-layout-middle');
@@ -39,6 +70,10 @@ class UILayout extends pluginBase {
         let items = {};
         //位置
         let locs = ['north', 'west', 'center', 'east', 'south'];
+        if (this.customTemplate && this.customTemplate != '') {
+            let oe = Compiler.compile(this.customTemplate);
+            rootDom.children = oe.children;
+        }
         for (let i = 0; i < rootDom.children.length; i++) {
             let item: Element = rootDom.children[i];
             if (!item.tagName) {
@@ -89,12 +124,11 @@ class UILayout extends pluginBase {
     beforeRender(module: Module, dom: Element) {
         super.beforeRender(module, dom);
         if (this.needPreRender) {
-            let model: Model = module.model;
-            console.log(model);
-            console.log(this.extraDataName);
+            let model: Model;
+            model = this.model;
             model[this.extraDataName] = {
                 openWest: true, //west是否展开
-                openEast: true, //east是否展开
+                openEast: true, //East是否展开
                 westWidth: 0, //west原始宽度
                 eastWidth: 0 //east原始宽度
             }
@@ -134,7 +168,9 @@ class UILayout extends pluginBase {
                     }
                     icon.addDirective(new Directive('class', "{'nd-icon-arrow-right':'" + this.extraDataName + ".openEast','nd-icon-arrow-left':'!" + this.extraDataName + ".openEast'}", icon));
                     icon.addEvent(new NEvent('click', (dom, module, e, el) => {
-                        let data = dom.model[me.extraDataName];
+                        console.log(this.model);
+
+                        let data = this.model[me.extraDataName];
                         //east 容器
                         let eastEl: HTMLElement = el.parentNode.parentNode;
                         let compStyle: CSSStyleDeclaration = window.getComputedStyle(eastEl);
@@ -161,7 +197,9 @@ class UILayout extends pluginBase {
 
                     icon.addDirective(new Directive('class', "{'nd-icon-arrow-left':'" + this.extraDataName + ".openWest','nd-icon-arrow-right':'!" + this.extraDataName + ".openWest'}", icon));
                     icon.addEvent(new NEvent('click', (dom, module, e, el) => {
-                        let data = dom.model[me.extraDataName];
+                        console.log(this.model);
+
+                        let data = this.model[me.extraDataName];
                         //west 容器
                         let westEl: HTMLElement = el.parentNode.parentNode;
                         let compStyle: CSSStyleDeclaration = window.getComputedStyle(westEl);

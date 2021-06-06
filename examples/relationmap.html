@@ -13,14 +13,14 @@
 	<body>
 		<div>
 			<div>{{JSON.stringify(groupUser)}}</div>
-			<ui-test></ui-test>
-			<!-- <ui-relationmap
+			<!-- <ui-test></ui-test> -->
+			<ui-relationmap
 				x-field="groupUser"
 				listField="users,groups"
 				valueField="uid,gid"
 				displayField="userName,groupName"
 			>
-			</ui-relationmap> -->
+			</ui-relationmap>
 		</div>
 	</body>
 	<script>
@@ -48,7 +48,11 @@
 						{ uid: 5, userName: "field" },
 					],
 				},
-				methods: {},
+				methods: {
+					onBeforeFirstRender: function (module) {
+						console.log(this);
+					},
+				},
 			},
 		});
 	</script>

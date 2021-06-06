@@ -1,28 +1,56 @@
-import { DefineElementManager, Element } from "nodom";
+import { Compiler, DefineElementManager, Element } from "nodom";
 import { pluginBase } from "./pluginBase";
 import { UITool } from "./uibase";
 
 /**
+         let ui = new UIForm({
+            labelWidth: 100,
+            customTemplate:
+                `
+                这里写HTML模板
+                `
+        })
+         new Directive('model', "$$", ui.element)
+ */
+interface IUIForm extends Object {
+    /**
+    * label宽度，默认100
+     */
+    labelWidth?: number;
+    /**
+    * 自定义模板串
+    */
+    customTemplate: string;
+}
+/**
  * form 插件
  */
-class UIForm extends pluginBase {
+export class UIForm extends pluginBase {
     tagName: string = 'UI-FORM';
-    /**
-     * 附加数据项名
-     */
-    extraDataName: string;
-
     /**
      * label宽度，默认100
      */
     labelWidth: number;
 
-    constructor(element: Element, parent?: Element) {
-        super(element);
-        UITool.handleUIParam(element, this,
-            ['labelwidth|number'],
-            ['labelWidth'],
-            [100]);
+    /**
+    * 自定义模板串
+    */
+    customTemplate: string;
+
+    constructor(params: Element | IUIForm, parent?: Element) {
+        super(params);
+        let element = new Element();
+        if (params instanceof Element) {
+            element = params;
+            UITool.handleUIParam(element, this,
+                ['labelwidth|number'],
+                ['labelWidth'],
+                [100]);
+        } else {
+            Object.keys(params).forEach(key => {
+                this[key] = params[key]
+            })
+        }
         this.generate(element);
         element.tagName = 'form';
         element.defineEl = this;
@@ -35,7 +63,10 @@ class UIForm extends pluginBase {
      */
     private generate(rootDom: Element) {
         rootDom.addClass('nd-form');
-        console.log(rootDom);
+        if (this.customTemplate && this.customTemplate != '') {
+            let oe = Compiler.compile(this.customTemplate);
+            rootDom.children = oe.children;
+        }
 
         for (let c of rootDom.children) {
             if (c.tagName.toUpperCase() !== 'ROW') {
@@ -67,7 +98,10 @@ class UIForm extends pluginBase {
                 }
             }
         }
+
+
     }
+
 }
 
 DefineElementManager.add('UI-FORM', {

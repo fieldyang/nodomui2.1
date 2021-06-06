@@ -1,59 +1,60 @@
-// @import "base","icon","button";
+@import "base", "icon", "button";
 /*pagenation*/
-.nd-pagination{
-    padding:$nd-padding*2 $nd-padding;
-    @include nd-color(1);
-    input,select{
-        border:1px solid $nd-color3;
-        border-radius:$nd-padding;
-        padding:$nd-padding;
-    }
-    > *{
-        margin-right:$nd-padding*4;
-        display:inline-block;
-    }
-    .nd-pagination-pagect{
-        > * {
-            cursor: pointer;
-            &:hover{
-                color:$nd-activecolor;
-            }
-        }
+.nd-pagination {
+	padding: $nd-padding * 2 $nd-padding;
+	@include nd-color(1);
+	input,
+	select {
+		border: 1px solid $nd-color3;
+		border-radius: $nd-padding;
+		padding: $nd-padding;
+	}
+	> * {
+		margin-right: $nd-padding * 4;
+		display: inline-block;
+	}
+	.nd-pagination-pagect {
+		> * {
+			cursor: pointer;
+			&:hover {
+				color: $nd-activecolor;
+			}
+		}
 
-        .nd-pagination-active{
-            color:$nd-activecolor;
-        }
+		.nd-pagination-active {
+			color: $nd-activecolor;
+		}
 
-        .nd-pagination-disable{
-            @extend .nd-disable;
-        }
-        .nd-pagination-page{
-            padding:0 $nd-padding;
-        }
-        .nd-pagination-leftarrow{
-            @include nd-clickicon('arrow-left');
-        }
-        .nd-pagination-leftarrow1{
-            @include nd-clickicon('double-arrow-left');
-        }
+		.nd-pagination-disable {
+			@extend .nd-disable;
+		}
+		.nd-pagination-page {
+			padding: 0 $nd-padding;
+		}
+		.nd-pagination-leftarrow {
+			@include nd-clickicon("arrow-left");
+		}
+		.nd-pagination-leftarrow1 {
+			@include nd-clickicon("double-arrow-left");
+		}
 
-        .nd-pagination-rightarrow{
-            @include nd-clickicon('arrow-right');
-        }
+		.nd-pagination-rightarrow {
+			@include nd-clickicon("arrow-right");
+		}
 
-        .nd-pagination-rightarrow1{
-            @include nd-clickicon('double-arrow-right');
-        }
-    }
+		.nd-pagination-rightarrow1 {
+			@include nd-clickicon("double-arrow-right");
+		}
+	}
 
-    .nd-pagination-total{
-        padding:0 $nd-padding;
-    }
+	.nd-pagination-total {
+		padding: 0 $nd-padding;
+	}
 
-    .nd-pagination-go{
-        input{
-            width:50px;
-            @extend .nd-input;
-        }
-    }
+	.nd-pagination-go {
+		input {
+			width: 50px;
+			@extend .nd-input;
+		}
+	}
 }

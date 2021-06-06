@@ -139,12 +139,9 @@ export class UIListTransfer extends pluginBase {
         //点击事件
         itemDom.addEvent(new NEvent('click',
             function (dom, module) {
-                console.log(this);
+                console.log(dom.model, module.model, this);
 
                 this.selected = !this.selected;
-
-                console.log(this);
-
             }
         ));
         //item文本显示内容
@@ -206,15 +203,15 @@ export class UIListTransfer extends pluginBase {
      */
     beforeRender(module: Module, dom: Element) {
         super.beforeRender(module, dom);
-        //uidom model
+        //module model
         let model: Model = module.model;
+        // new Directive('model', "$$", dom)
         if (this.needPreRender) {
             model[this.extraDataName] = {
                 //数据
                 datas: []
             }
             let datas = model[this.listField];
-            console.log(datas);
 
             model[this.extraDataName].datas = datas;
             // Util.clone(datas);
@@ -238,7 +235,7 @@ export class UIListTransfer extends pluginBase {
                 d.isValue = false;
             }
         }
-        pmodel[this.extraDataName].data = rows;
+        pmodel[this.extraDataName].datas = rows;
     }
     /**
      * 移动数据

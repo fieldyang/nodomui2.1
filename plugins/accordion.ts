@@ -1,6 +1,19 @@
-import { DefineElementManager, Directive, Element, Expression, Model, Module, NEvent, Util } from "nodom";
+import { DefineElementManager, Directive, Element, Expression, Model, NEvent } from "nodom";
 import { pluginBase } from "./pluginBase";
 
+/** 如果需要new的方式新建 可以参考下面
+   let ui = new UIAccordion({
+            active1: 'active',
+            active2: 'a1',
+            field1: 'levels',
+            field2: 'rows',
+            dispalyName1: 'title',
+            dispalyName2: 'name',
+            iconName1: 'icon',
+            iconName2: 'icon',
+            itemclick: "clickItem",
+        })
+ */
 interface IUIAccordionCfg extends Object {
     /**
     * 第一级字段名
@@ -43,6 +56,7 @@ interface IUIAccordionCfg extends Object {
     * 样式名称
     */
     className?: string
+
 }
 
 /**
@@ -104,6 +118,7 @@ export class UIAccordion extends pluginBase {
      */
     className: string
 
+
     constructor(params: Element | IUIAccordionCfg, parent?: Element) {
         super(params);
         let rootDom = new Element();
@@ -118,7 +133,6 @@ export class UIAccordion extends pluginBase {
             })
             this.generate(rootDom, false);
         }
-
         rootDom.tagName = 'div';
         rootDom.defineEl = this;
         this.element = rootDom;
@@ -130,6 +144,7 @@ export class UIAccordion extends pluginBase {
      * @param genMode 生成虚拟dom的方式，true:ast编译的模板的方式，false:传入配置对象的方式
      */
     private generate(rootDom: Element, genMode: boolean) {
+        let me = this;
         rootDom.addClass('nd-accordion');
         let firstDom: Element = new Element();
         let secondDom: Element = new Element();
@@ -146,9 +161,20 @@ export class UIAccordion extends pluginBase {
             new Directive('repeat', this.field1, firstDom);
             firstDiv.addClass('nd-accordion-first');
             // 添加事件
-            let methodId = '$nodomGenMethod' + Util.genId();
-            firstDiv.addEvent(new NEvent('click', methodId));
-            this.method1 = methodId;
+            firstDiv.addEvent(new NEvent('click', function (dom, module, e) {
+                let pmodel: Model = me.model;
+                let data = pmodel[me.field1];
+                //选中字段名
+                let f: string = me.active1;
+                //取消之前选中
+                for (let d of data) {
+                    if (d[f] === true) {
+                        d[f] = false;
+                    }
+                }
+                dom.model[f] = true;
+
+            }));
             // 生成span
             let span = new Element('span');
             if (this.iconName1 != '') {
@@ -182,9 +208,23 @@ export class UIAccordion extends pluginBase {
                 a.addEvent(new NEvent('click', this.itemclick));
             }
 
-            methodId = '$nodomGenMethod' + Util.genId();
-            a.addEvent(new NEvent('click', methodId));
-            this.method2 = methodId;
+            // methodId = '$nodomGenMethod' + Util.genId();
+            a.addEvent(new NEvent('click', function (dom, module, e) {
+                let pmodel: Model = me.model;
+                let data = pmodel[me.field1];
+                //选中字段名
+                let f: string = me.active2;
+                //取消之前选中
+                for (let d of data) {
+                    for (let d1 of d[me.field2]) {
+                        if (d1[f] === true) {
+                            d1[f] = false;
+                        }
+                    }
+                }
+                dom.model[f] = true;
+            }));
+            // this.method2 = methodId;
 
             new Directive('class', "{'nd-accordion-selected':'" + this.active2 + "'}", a);
             if (this.iconName2 != '') {
@@ -193,6 +233,7 @@ export class UIAccordion extends pluginBase {
                 let ra: Array<any> = ['n', 'd', '-', 'i', 'c', 'o', 'n', '-'];
                 let exp = new Expression(this.iconName2);
                 ra.push(exp);
+                b.setProp('class', ra, true);
                 a.add(b);
             }
             txt = new Element();
@@ -222,9 +263,20 @@ export class UIAccordion extends pluginBase {
                     new Directive('repeat', item.getProp('data'), firstDom);
                     item.addClass('nd-accordion-first');
                     //增加事件
-                    let methodId = '$nodomGenMethod' + Util.genId();
-                    item.addEvent(new NEvent('click', methodId));
-                    this.method1 = methodId;
+                    item.addEvent(new NEvent('click', function (dom, module, e) {
+                        let pmodel: Model = me.model;
+                        let data = pmodel[me.field1];
+                        //选中字段名
+                        let f: string = me.active1;
+                        //取消之前选中
+                        for (let d of data) {
+                            if (d[f] === true) {
+                                d[f] = false;
+                            }
+                        }
+                        dom.model[f] = true;
+
+                    }));
 
                     activeName1 = item.getProp('activename') || 'active';
                     //存激活field name
@@ -268,55 +320,6 @@ export class UIAccordion extends pluginBase {
             }
             firstDom.add(secondDom);
             rootDom.children = [firstDom];
-        }
-    }
-    /**
-     * 渲染前执行
-     * @param module 
-     * @param uidom
-     */
-    beforeRender(module: Module, uidom: Element) {
-        const me = this;
-        super.beforeRender(module, uidom);
-        //添加第一层click事件
-        if (this.needPreRender) {
-
-            module.addMethod(this.method1,
-                (dom, module, e) => {
-                    console.log(dom, module, e);
-                    let pmodel: Model = module.model;
-                    let data = pmodel[me.field1];
-                    //选中字段名
-                    let f: string = me.active1;
-                    //取消之前选中
-                    for (let d of data) {
-                        if (d[f] === true) {
-                            d[f] = false;
-                        }
-                    }
-                    dom.model[f] = true;
-                }
-            );
-
-            // //添加第二层click事件
-            module.addMethod(this.method2,
-                (dom, module, e) => {
-                    let pmodel: Model = module.model;
-                    let data = pmodel[me.field1];
-
-                    //选中字段名
-                    let f: string = me.active2;
-                    //取消之前选中
-                    for (let d of data) {
-                        for (let d1 of d[me.field2]) {
-                            if (d1[f] === true) {
-                                d1[f] = false;
-                            }
-                        }
-                    }
-                    dom.model[f] = true;
-                }
-            );
         }
     }
 }

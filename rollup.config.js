@@ -11,9 +11,9 @@ export default {
 		sourcemap: true, //生成映射文件
 	},
 	external: ["nodom", path.resolve("./node_modules/nodom")],
-	globals: {
-		ndoom: "nodom",
-	},
+	// globals: {
+	// 	ndoom: "nodom",
+	// },
 	plugins: [
 		nodeResolve(),
 		commonjs({

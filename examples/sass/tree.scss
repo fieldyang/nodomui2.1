@@ -1,49 +1,48 @@
-// @import "base";
+@use 'sass:math';
+@import "base";
 /********** tree ***********/
-.nd-tree{
-    @extend .nd-commonbox;
-    overflow:auto;
-    .nd-tree-nodect{
-        
-        .nd-tree-node{
-            display:inline-block;
-            padding:$nd-padding;
-            &:hover{
-                @extend .nd-item-hovercolor;
-            }
-        }
-        
-        .nd-tree-icon{
-            display:inline-block;
-            margin-right:$nd-padding/2;
-            // width:1em;
-        }        
-        
-        .nd-tree-node-open{
-            transform:rotate(90deg);
-        }
+.nd-tree {
+	@extend .nd-commonbox;
+	overflow: auto;
+	.nd-tree-nodect {
+		.nd-tree-node {
+			display: inline-block;
+			padding: $nd-padding;
+			&:hover {
+				@extend .nd-item-hovercolor;
+			}
+		}
 
-        //checkbox
-        .nd-tree-uncheck{
-            @include nd-clickicon('checkbox');
-        }
+		.nd-tree-icon {
+			display: inline-block;
+			margin-right: math.div($nd-padding, 2);
+			// width:1em;
+		}
 
-        .nd-tree-checked{
-            @include nd-clickicon('checked');
-        }
-    }
-    
+		.nd-tree-node-open {
+			transform: rotate(90deg);
+		}
 
-    .nd-tree-subct{
-        display:none;
-        padding-left:1em;
-    }
+		//checkbox
+		.nd-tree-uncheck {
+			@include nd-clickicon("checkbox");
+		}
 
-    .nd-tree-show{
-        display:block;
-    }
+		.nd-tree-checked {
+			@include nd-clickicon("checked");
+		}
+	}
 
-    .nd-tree-level{
-        padding:5px 10px;
-    }
+	.nd-tree-subct {
+		display: none;
+		padding-left: 1em;
+	}
+
+	.nd-tree-show {
+		display: block;
+	}
+
+	.nd-tree-level {
+		padding: 5px 10px;
+	}
 }

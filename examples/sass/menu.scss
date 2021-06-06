@@ -1,80 +1,81 @@
-// @import "base","icon";
+@import "base", "icon";
 /********** menu ***********/
-.nd-menu{
-    z-index: $nd-menu-index;
-    font-size:$nd-fontnormal;
-    position:relative;
-    @include nd-color(3);
-    .nd-menu-subct{
-        z-index:$nd-menu-index;
-        display:block;
-        position:absolute;
-        top:0px;
-        @extend .nd-box-default;
-        @include nd-color(3);
-        .nd-menu-nodect{
-            position:relative;
-            line-height:30px;
-            height:30px;
-            width:100%;
-            .nd-menu-node, a.nd-menu-node{
-                color:$nd-forecolor1;
-                padding:0 $nd-padding*2;
-                /*子菜单箭头*/
-                .nd-menu-subicon{
-                    float:right;
-                    margin-right:$nd-padding;
-                    @extend .nd-icon-right;
-                }
+.nd-menu {
+	z-index: $nd-menu-index;
+	font-size: $nd-fontnormal;
+	position: relative;
+	@include nd-color(3);
+	.nd-menu-subct {
+		z-index: $nd-menu-index;
+		display: block;
+		position: absolute;
+		top: 0px;
+		@extend .nd-box-default;
+		@include nd-color(3);
+		.nd-menu-nodect {
+			position: relative;
+			line-height: 30px;
+			height: 30px;
+			width: 100%;
+			.nd-menu-node,
+			a.nd-menu-node {
+				color: $nd-forecolor1;
+				padding: 0 $nd-padding * 2;
+				/*子菜单箭头*/
+				.nd-menu-subicon {
+					float: right;
+					margin-right: $nd-padding;
+					@extend .nd-icon-right;
+				}
 
-                b{
-                    width:20px;
-                    display:inline-block;
-                }
-                &:hover{
-                    @extend .nd-item-hovercolor;
-                }
-            }
-            &:hover{
-                @extend .nd-item-hovercolor;
-            }
-        }
-    }
+				b {
+					width: 20px;
+					display: inline-block;
+				}
+				&:hover {
+					@extend .nd-item-hovercolor;
+				}
+			}
+			&:hover {
+				@extend .nd-item-hovercolor;
+			}
+		}
+	}
 
-    /*第一级菜单*/
-    .nd-menu-first{
-        display:inline-block;
-    }
+	/*第一级菜单*/
+	.nd-menu-first {
+		display: inline-block;
+	}
 
-    /*第一级非popup菜单*/
-    .nd-menu-first-nopop{
-        display:inline-block;
-        position:relative;
-        box-shadow: none !important;
-        > .nd-menu-nodect{
-            display:inline-block;
-            width:auto;
-        }
-    }
+	/*第一级非popup菜单*/
+	.nd-menu-first-nopop {
+		display: inline-block;
+		position: relative;
+		box-shadow: none !important;
+		> .nd-menu-nodect {
+			display: inline-block;
+			width: auto;
+		}
+	}
 }
 
-.nd-menu-popup{
-    position:fixed;
-    left:0;
-    top:0;
-    width:100%;
+.nd-menu-popup {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
 }
 
-.nd-menu-left{
-    position:absolute;
-    top:0;
-    bottom:0;
-    min-width: 30px;
-    @include nd-color(3);
-    > .nd-menu-subct{
-        position:relative;
-        box-shadow: none !important;
-        height:100%;
-        width:inherit;
-    }
+.nd-menu-left {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	min-width: 30px;
+	@include nd-color(3);
+	> .nd-menu-subct {
+		position: relative;
+		box-shadow: none !important;
+		height: 100%;
+		width: inherit;
+	}
 }

@@ -2,6 +2,19 @@ import { DefineElementManager, Element } from "nodom";
 import { pluginBase } from "./pluginBase";
 
 /**
+ *   let btn = new UIButtonGroup().element;
+        let ui = new UIButton({
+            size: SIZE.NORMAL,
+            icon: "search",
+            iconPos: ICONPOS.LEFT,
+            text: '按钮',
+            theme: THEME.ACTIVE,
+            clickEvent: 'itemClick'
+        })
+        btn.add(ui.element)
+ */
+
+/**
  * buttongroup 插件
  */
 export class UIButtonGroup extends pluginBase {
