@@ -118,7 +118,6 @@ export class UIAccordion extends pluginBase {
      */
     className: string
 
-
     constructor(params: Element | IUIAccordionCfg, parent?: Element) {
         super(params);
         let rootDom = new Element();
@@ -207,8 +206,6 @@ export class UIAccordion extends pluginBase {
             if (this.itemclick != '') {
                 a.addEvent(new NEvent('click', this.itemclick));
             }
-
-            // methodId = '$nodomGenMethod' + Util.genId();
             a.addEvent(new NEvent('click', function (dom, module, e) {
                 let pmodel: Model = me.model;
                 let data = pmodel[me.field1];
@@ -224,7 +221,6 @@ export class UIAccordion extends pluginBase {
                 }
                 dom.model[f] = true;
             }));
-            // this.method2 = methodId;
 
             new Directive('class', "{'nd-accordion-selected':'" + this.active2 + "'}", a);
             if (this.iconName2 != '') {

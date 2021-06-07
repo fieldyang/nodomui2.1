@@ -4,6 +4,24 @@ import { pluginBase } from "./pluginBase";
 import { UISelect } from "./select";
 import { UITool } from "./uibase";
 
+/**
+ * new UIPagination({
+            totalName: 'total',
+            pageSize: 10,
+            showTotal: true,
+            showGo: true,
+            currentPage: 1,
+            showNum: 10,
+            pageSizeData: [10, 20, 30, 50],
+            steps: 10,
+            dataUrl: 'data/grid1.json',
+            pageName: 'page',
+            sizeName: 'rows',
+            onChange: 'changePage',
+            onBeforeReq: 'beforeReq',
+            onReq: 'reqData'
+        })
+ */
 interface IUIPagination extends Object {
     /**
  * 总条数字段名
@@ -232,7 +250,7 @@ export class UIPagination extends pluginBase {
         this.extraDataName = '$ui_pagination_' + Util.genId();
 
         //增加附加数据模型
-        new Directive('model', this.extraDataName, rootDom);
+        // new Directive('model', this.extraDataName, rootDom);
         //显示共x条
         if (this.showTotal) {
             let totalDom: Element = new Element('div');
@@ -287,7 +305,7 @@ export class UIPagination extends pluginBase {
         //页面数字
         let page: Element = new Element('span');
         page.addClass('nd-pagination-page');
-        new Directive('repeat', 'pages', page);
+        new Directive('repeat', this.extraDataName + '.pages', page);
         new Directive('class', "{'nd-pagination-active':'active'}", page)
         let txt: Element = new Element();
         txt.expressions = [new Expression('no')];
@@ -309,36 +327,41 @@ export class UIPagination extends pluginBase {
         //页面号点击事件
         page.addEvent(new NEvent('click',
             (dom, module) => {
-                let model: Model = dom.model;
-                model['pageNo'] = model['no'];
+                let model: Model = this.model[this.extraDataName];
+                model['pageNo'] = dom.model['no'];
             }
         ));
         left.addEvent(new NEvent('click',
             (dom, module) => {
+                let model: Model = this.model[this.extraDataName];
                 if (dom.hasClass('nd-pagination-disable')) {
                     return;
                 }
                 if (this.currentPage === 1) {
                     return;
                 }
-                dom.model['pageNo'] = --this.currentPage;
+                model['pageNo'] = --this.currentPage;
             }
         ));
 
         right.addEvent(new NEvent('click',
             (dom, module) => {
+                console.log(dom, module);
+
+                let model: Model = this.model[this.extraDataName];
                 if (dom.hasClass('nd-pagination-disable')) {
                     return;
                 }
                 if (this.currentPage === this.pageCount) {
                     return;
                 }
-                dom.model['pageNo'] = ++this.currentPage;
+                model['pageNo'] = ++this.currentPage;
             }
         ));
 
         left1.addEvent(new NEvent('click',
             (dom, module) => {
+                let model: Model = this.model[this.extraDataName];
                 if (dom.hasClass('nd-pagination-disable')) {
                     return;
                 }
@@ -346,12 +369,13 @@ export class UIPagination extends pluginBase {
                 if (page < 1) {
                     page = 1;
                 }
-                dom.model['pageNo'] = page;
+                model['pageNo'] = page;
             }
         ));
 
         right1.addEvent(new NEvent('click',
             (dom, module) => {
+                let model: Model = this.model[this.extraDataName];
                 if (dom.hasClass('nd-pagination-disable')) {
                     return;
                 }
@@ -359,7 +383,7 @@ export class UIPagination extends pluginBase {
                 if (page > this.pageCount) {
                     page = this.pageCount;
                 }
-                dom.model['pageNo'] = page;
+                model['pageNo'] = page;
             }
         ));
         //显示第x页及输入框
@@ -371,8 +395,8 @@ export class UIPagination extends pluginBase {
             goDom.add(txt);
             let input: Element = new Element('input');
             input.setProp('type', 'number');
-            input.addDirective(new Directive('field', 'pageNo', input));
-            input.setProp('value', new Expression('pageNo'), true);
+            new Directive('field', this.extraDataName + '.pageNo', input);
+            input.setProp('value', new Expression(this.extraDataName + '.pageNo'), true);
             goDom.add(input);
             txt = new Element();
             txt.textContent = NUITipWords.page;
@@ -387,10 +411,10 @@ export class UIPagination extends pluginBase {
      * @param steps 
      */
     private cacMinMax(moduleId: number) {
-        let module = ModuleFactory.get(moduleId);
-        if (!module) {
-            module = ModuleFactory.get(this.moduleId);
-        }
+        // let module = ModuleFactory.get(moduleId);
+        // if (!module) {
+        //     module = ModuleFactory.get(this.moduleId);
+        // }
         let step = this.showNum / 2 | 0;
         this.minPage = this.currentPage - step;
         this.maxPage = this.currentPage + step;
@@ -510,10 +534,10 @@ export class UIPagination extends pluginBase {
      * @param module    模块
      */
     private changeParams(moduleId?: number) {
-        let module = ModuleFactory.get(moduleId)
-        if (!module) {
-            module = ModuleFactory.get(this.moduleId);
-        }
+        // let module = ModuleFactory.get(moduleId)
+        // if (!module) {
+        //     module = ModuleFactory.get(this.moduleId);
+        // }
 
         let btnAllow: number = 0;
         //页面号数据数组
@@ -533,7 +557,7 @@ export class UIPagination extends pluginBase {
             btnAllow = 2;
         }
 
-        let model: Model = module.model[this.extraDataName];
+        let model: Model = this.model[this.extraDataName];
         //设置箭头状态值
         model['btnAllow'] = btnAllow;
         model['pages'] = pageArr;
@@ -547,7 +571,7 @@ export class UIPagination extends pluginBase {
         if (!this.needPreRender) {
             return;
         }
-        let model: Model = module.model;
+        let model: Model = this.model;
         let total = model.$query(this.totalName) || 0;
         model[this.extraDataName] = {
             total: total,

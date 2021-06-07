@@ -176,7 +176,7 @@ export class UIList extends pluginBase {
         this.extraDataName = '$ui_list_' + Util.genId();
 
         //增加附加model
-        rootDom.addDirective(new Directive('model', this.extraDataName, rootDom));
+        // rootDom.addDirective(new Directive('model', this.extraDataName, rootDom));
         if (this.type === 'row') {
             rootDom.addClass('nd-list');
         } else {
@@ -218,7 +218,7 @@ export class UIList extends pluginBase {
         itemDom.addClass('nd-list-item');
         // itemDom.addDirective(new Directive('repeat', 'datas', itemDom));
         // new Directive('model', this.extraDataName, itemDom)
-        itemDom.addDirective(new Directive('repeat', "datas", itemDom));
+        itemDom.addDirective(new Directive('repeat', this.extraDataName + ".datas", itemDom));
         //点击事件
         itemDom.addEvent(new NEvent('click',
             (dom, module) => {

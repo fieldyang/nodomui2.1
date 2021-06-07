@@ -56,7 +56,7 @@ export class UIButton extends pluginBase {
     /**
      * 按钮大小 small normal large
      */
-    size: string;
+    size: string = SIZE.NORMAL;
 
     /**
      * 按钮图标
@@ -66,7 +66,7 @@ export class UIButton extends pluginBase {
     /**
      * 图片位置  left top right bottom
      */
-    iconPos: string;
+    iconPos: string = ICONPOS.LEFT;
 
     /**
      * 背景透明
@@ -126,18 +126,18 @@ export class UIButton extends pluginBase {
         clsArr.push('nd-btn-' + this.size);
 
         //图标位置
-        if (this.icon !== '') {
+        if (this.iconPos && this.iconPos !== '') {
             clsArr.push('nd-btn-' + this.iconPos);
         }
 
         if (this.nobg) {
             clsArr.push('nd-btn-nobg');
-        } else if (this.theme !== '') {
+        } else if (this.theme && this.theme !== '') {
             clsArr.push('nd-btn-' + this.theme);
         }
 
         //是否无文本
-        if (this.text === '') {
+        if (this.text && this.text === '') {
             clsArr.push('nd-btn-notext');
         }
 

@@ -17,24 +17,8 @@
 			<!-- dataUrl='data/grid1.json' 	 -->
 			<button e-click="setTotal">setTotal</button>
 			<p>增加change事件和req事件</p>
-			<!-- <ui-test></ui-test> -->
-			<!-- new UIPagination({
-            totalName: 'total',
-            pageSize: 10,
-            showTotal: true,
-            showGo: true,
-            currentPage: 1,
-            showNum: 10,
-            pageSizeData: [10, 20, 30, 50],
-            steps: 10,
-            dataUrl: 'data/grid1.json',
-            pageName: 'page',
-            sizeName: 'rows',
-            onChange: 'changePage',
-            onBeforeReq: 'beforeReq',
-            onReq: 'reqData'
-        }).element -->
-			<ui-pagination
+			<ui-test></ui-test>
+			<!-- <ui-pagination
 				totalName="total"
 				pageName="page"
 				sizeName="rows"
@@ -48,7 +32,7 @@
 				onReq="reqData"
 				onBeforeReq="beforeReq"
 				dataUrl="data/grid1.json"
-			/>
+			/> -->
 		</div>
 	</body>
 	<script>
@@ -56,7 +40,7 @@
 			module: {
 				el: "div",
 				data: {
-					total: 0,
+					// total: 0,
 				},
 				methods: {
 					setTotal: function (dom, module) {

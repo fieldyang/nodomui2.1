@@ -13,14 +13,15 @@
 	<body>
 		<div>
 			<div>{{JSON.stringify(groupUser)}}</div>
-			<!-- <ui-test></ui-test> -->
-			<ui-relationmap
+			<ui-test></ui-test>
+			<!-- <ui-relationmap
 				x-field="groupUser"
 				listField="users,groups"
 				valueField="uid,gid"
 				displayField="userName,groupName"
 			>
-			</ui-relationmap>
+			</ui-relationmap> -->
+			<ui-button e-click="log">log</ui-button>
 		</div>
 	</body>
 	<script>
@@ -49,8 +50,8 @@
 					],
 				},
 				methods: {
-					onBeforeFirstRender: function (module) {
-						console.log(this);
+					log: function (dom, module) {
+						console.log(this.groupUser);
 					},
 				},
 			},

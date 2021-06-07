@@ -59,8 +59,10 @@
 					],
 				},
 				methods: {
-					change(dom) {
-						this.selectedUser = "1";
+					onBeforeFirstRender: function (module) {
+						this.$watch("selectedUser", (oldVal, newVal) => {
+							console.log(`oldVal = ${oldVal}, newVal = ${newVal}`);
+						});
 					},
 				},
 			},

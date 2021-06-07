@@ -2,6 +2,29 @@ import { Compiler, DefineElementManager, Directive, Element, Expression, Filter,
 import { pluginBase } from "./pluginBase";
 import { UITool } from "./uibase";
 
+/**
+ *   let ui = new UIListTransfer({
+            dataName: 'selectedUser',
+            listField: 'users',
+            valueField: 'uid',
+            displayField: "userName"
+        })
+ */
+
+/** 带自定义的
+  let ui = new UIListTransfer({
+            dataName: 'selectedUser',
+            listField: 'users',
+            valueField: 'uid',
+            displayField: "userName",
+            customTemplate: `
+                <div>
+                    <span style="width: 100px; display: inline-block">{{userName}}</span>
+                    <span>{{company}}</span>
+                </div>
+            `
+        })
+ */
 interface IUIListTransfer extends Object {
 
     /**
@@ -95,7 +118,7 @@ export class UIListTransfer extends pluginBase {
         this.extraDataName = '$ui_listtransfer_' + Util.genId();
 
         //更改model
-        rootDom.addDirective(new Directive('model', this.extraDataName, rootDom));
+        // rootDom.addDirective(new Directive('model', this.extraDataName, rootDom));
 
         rootDom.addClass('nd-listtransfer');
         //从field指令获取dataName
@@ -134,13 +157,11 @@ export class UIListTransfer extends pluginBase {
         }
         itemDom.addClass('nd-list-item');
 
-        new Directive('repeat', 'datas', itemDom, undefined, "select:value:{isValue:false}");
+        new Directive('repeat', this.extraDataName + '.datas', itemDom, undefined, "select:value:{isValue:false}");
         new Directive('class', "{'nd-list-item-active':'selected'}", itemDom);
         //点击事件
         itemDom.addEvent(new NEvent('click',
             function (dom, module) {
-                console.log(dom.model, module.model, this);
-
                 this.selected = !this.selected;
             }
         ));
@@ -204,7 +225,7 @@ export class UIListTransfer extends pluginBase {
     beforeRender(module: Module, dom: Element) {
         super.beforeRender(module, dom);
         //module model
-        let model: Model = module.model;
+        let model: Model = this.model;
         // new Directive('model', "$$", dom)
         if (this.needPreRender) {
             model[this.extraDataName] = {
@@ -212,9 +233,7 @@ export class UIListTransfer extends pluginBase {
                 datas: []
             }
             let datas = model[this.listField];
-
             model[this.extraDataName].datas = datas;
-            // Util.clone(datas);
         }
         this.setValueSelected(module);
     }
@@ -224,7 +243,7 @@ export class UIListTransfer extends pluginBase {
      * @param module 
      */
     private setValueSelected(module: Module) {
-        let pmodel: Model = module.model;
+        let pmodel: Model = this.model;
         let value = pmodel[this.dataName];
         let va = value.split(',');
         let rows = pmodel[this.extraDataName].datas;
@@ -244,7 +263,7 @@ export class UIListTransfer extends pluginBase {
      * @param all       true 全部移动  false 移动选中的项
      */
     private transfer(module: Module, direction: number, all: boolean) {
-        let model: Model = module.model;
+        let model: Model = this.model;
         let datas = model[this.extraDataName].datas;
         let isValue: boolean = direction === 1 ? true : false;
         for (let d of datas) {
@@ -263,7 +282,7 @@ export class UIListTransfer extends pluginBase {
      * @param module    模块
      */
     private updateValue(module: Module) {
-        let pmodel: Model = module.model;
+        let pmodel: Model = this.model;
         let a = [];
         for (let d of pmodel[this.extraDataName].datas) {
             if (d.isValue) {

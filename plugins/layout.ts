@@ -62,7 +62,7 @@ export class UILayout extends pluginBase {
         rootDom.addClass('nd-layout');
         //设置附加数据项名
         this.extraDataName = '$ui_layout_' + Util.genId();
-        new Directive('model', this.extraDataName, rootDom)
+        // new Directive('model', this.extraDataName, rootDom)
         //增加middle 容器
         let middleCt: Element = new Element();
         middleCt.addClass('nd-layout-middle');
@@ -168,8 +168,6 @@ export class UILayout extends pluginBase {
                     }
                     icon.addDirective(new Directive('class', "{'nd-icon-arrow-right':'" + this.extraDataName + ".openEast','nd-icon-arrow-left':'!" + this.extraDataName + ".openEast'}", icon));
                     icon.addEvent(new NEvent('click', (dom, module, e, el) => {
-                        console.log(this.model);
-
                         let data = this.model[me.extraDataName];
                         //east 容器
                         let eastEl: HTMLElement = el.parentNode.parentNode;

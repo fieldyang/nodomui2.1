@@ -20,7 +20,7 @@ import { pluginBase } from "./pluginBase";
 export class UIButtonGroup extends pluginBase {
     tagName: string = 'UI-BUTTONGROUP';
 
-    constructor(params?: Element, parent?: Element) {
+    constructor(params?: Element | Object, parent?: Element) {
         super(params);
         let element = new Element();
         if (params instanceof Element) {

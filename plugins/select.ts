@@ -3,6 +3,34 @@ import { NUITipWords } from "./msg_zh";
 import { pluginBase } from "./pluginBase";
 import { UIEventRegister, UITool } from "./uibase";
 
+/**
+  let ui = new UISelect({
+            dataName: 'hobby1',
+            listField: "hobbies",
+            valueField: "hid",
+            displayField: "htitle",
+            onChange: "change",
+            showEmpty: true
+        })
+ */
+
+/** 自定义元素
+  let ui = new UISelect({
+            dataName: 'hobby1',
+            listField: "hobbies",
+            valueField: "hid",
+            displayField: "htitle",
+            onChange: "change",
+            showEmpty: true,
+            customTemplate:
+                `
+            <div class="hobitem">
+                    <span class="id">{{hid}}</span> <span class="title">{{htitle}} </span>
+                    <span class="desc">{{desc}}</span>
+                </div>
+                `
+        })
+ */
 interface IUISelect {
     /**
      * select绑定的数据字段名
@@ -143,8 +171,6 @@ export class UISelect extends pluginBase {
     */
     customTemplate: string;
 
-    // float: UIFloatBox;
-
     constructor(params: Element | IUISelect, parent?: Element) {
         super(params);
         let element = new Element();
@@ -186,21 +212,17 @@ export class UISelect extends pluginBase {
         }
 
         //修改model
-        new Directive('model', this.extraDataName, rootDom);
+        // new Directive('model', this.extraDataName, rootDom);
 
-        // 下拉框是floatbox
-        // this.float = new UIFloatBox({})
-        // let floatBox = this.float.element;
+
         //下拉框
         let listDom: Element = new Element('div');
-        // let div = floatBox.children[0];
-        // floatBox.children[0].add(listDom)
+
         listDom.addClass('nd-select-list');
         if (this.listWidth) {
             listDom.assets.set('style', 'width:' + this.listWidth + 'px');
         }
-        new Directive('show', 'show', listDom);
-        // floatBox.addDirective(new Directive('show', 'show', listDom));
+        new Directive('show', this.extraDataName + '.show', listDom);
         let itemDom: Element;
 
         if (this.customTemplate && this.customTemplate != '') {
@@ -229,30 +251,30 @@ export class UISelect extends pluginBase {
         item.children = itemDom.children;
         item.addClass('nd-select-itemcontent');
         itemDom.addClass('nd-select-item');
-        let directive: Directive = new Directive('repeat', 'datas', itemDom);
-        itemDom.addDirective(directive);
-        itemDom.addDirective(new Directive('class', "{'nd-select-selected':'selected'}", itemDom));
+        let directive = new Directive('repeat', this.extraDataName + '.datas', itemDom);
+        new Directive('class', "{'nd-select-selected':'___selected'}", itemDom);
         let icon: Element = new Element('b');
         icon.addClass('nd-select-itemicon');
         itemDom.children = [item, icon];
         //点击事件
         itemDom.addEvent(new NEvent('click',
             (dom, module) => {
-                let name = this.name || this.dataName;
-                let plugin = this.moduleId ? this : module.getNPlugin(name);
+                // let name = this.name || this.dataName;
+                // let plugin = this
+                // let plugin = this.moduleId ? this : module.getNPlugin(name);
                 if (!this.multiSelect) {
-                    if (plugin) {
-                        this.hideList.apply(plugin);
-                    } else {
-                        // module.model
-                        this.hideList();
-                    }
+                    // if (plugin) {
+                    //     this.hideList.apply(plugin);
+                    // } else {
+                    //     // module.model
+                    this.hideList();
+                    // }
                 }
-                if (plugin) {
-                    this.select.apply(plugin, [dom.model]);
-                } else {
-                    this.select(dom.model);
-                }
+                // if (plugin) {
+                //     this.select.apply(plugin, [dom.model]);
+                // } else {
+                this.select(dom.model);
+                // }
             }
         ));
 
@@ -266,20 +288,23 @@ export class UISelect extends pluginBase {
         if (this.multiSelect) {
             input.setProp('readonly', true);
         }
-        input.setProp('value', new Expression('display'), true);
+        input.setProp('value', new Expression(this.extraDataName + '.display'), true);
         showDom.add(input);
         icon = new Element('b');
         //点击展开或收拢 showDom
 
         showDom.addEvent(new NEvent('click',
             (dom, module, e, el) => {
-                if (dom.model.show) {
+                console.log(dom, module, e, el);
+
+                let model = this.model[this.extraDataName]
+                if (model["show"]) {
                     // module.model
                     me.hideList();
                     // dom.model.show = false;
                     // this.float.hide();
                 } else {
-                    dom.model.show = true;
+                    model["show"] = true;
                     // this.float.show(e, 0);
                     let height = el.offsetHeight;
                     let y = e.clientY + el.offsetHeight - e.offsetY;
@@ -298,7 +323,7 @@ export class UISelect extends pluginBase {
             //input上覆盖一个query input
             let queryDom: Element = new Element('input');
             queryDom.addClass('nd-select-search');
-            queryDom.addDirective(new Directive('field', 'query', queryDom));
+            queryDom.addDirective(new Directive('field', this.extraDataName + '.query', queryDom));
             queryDom.addDirective(new Directive('class', "{'nd-select-search-active':'show'}", queryDom));
             showDom.add(queryDom);
         }
@@ -315,12 +340,7 @@ export class UISelect extends pluginBase {
         let me = this;
         super.beforeRender(module, dom);
         this.listKey = dom.children[1].key;
-        let model: Model;
-        if (this.parentDataName && this.parentDataName != '') {
-            model = module.model.$query(this.parentDataName)
-        } else {
-            model = module.model;
-        }
+        let model: Model = this.model;
         if (this.needPreRender) {
             model[this.extraDataName] = {
                 show: false,     //下拉框显示
@@ -328,15 +348,9 @@ export class UISelect extends pluginBase {
                 query: '',       //查询串
                 datas: []        //下拉框数据
             }
-
             //增加过滤器方法
             module.addMethod(this.filterMethodId, () => {
-                let model: Model;
-                if (this.parentDataName && this.parentDataName != '') {
-                    model = module.model.$query(this.parentDataName)
-                } else {
-                    model = module.model;
-                }
+                let model: Model = this.model;
                 let rows = model[this.extraDataName].datas;
                 if (rows) {
                     return rows.filter((item) => {
@@ -349,12 +363,7 @@ export class UISelect extends pluginBase {
             UIEventRegister.addEvent('click', module.id, dom.key,
                 (module: Module, dom: Element, inOrout: boolean, e: Event) => {
 
-                    let model: Model;
-                    if (this.parentDataName && this.parentDataName != '') {
-                        model = module.model.$query(this.parentDataName)
-                    } else {
-                        model = module.model;
-                    }
+                    let model: Model = this.model;
                     //外部点击则关闭
                     if (!inOrout && model[this.extraDataName].show) {
                         model[this.extraDataName].show = true;
@@ -368,12 +377,12 @@ export class UISelect extends pluginBase {
         let data = model[this.extraDataName];
         //下拉值初始化
         if (this.listField && data.datas.length === 0 && model[this.listField]) {
-            let rows = model[this.listField];
+            let rows = Util.clone(model[this.listField]);
             //增加empty 选项
             if (this.showEmpty) {
                 let d = {};
                 d[this.displayField] = NUITipWords.emptySelect;
-                d['selected'] = false;
+                d['___selected'] = false;
                 rows.unshift(d);
             }
             model[this.extraDataName].datas = rows;
@@ -394,13 +403,7 @@ export class UISelect extends pluginBase {
             value = [value];
         }
         let module: Module = ModuleFactory.get(this.moduleId);
-        let model: Model;
-        if (this.parentDataName && this.parentDataName != '') {
-            model = module.model.$query(this.parentDataName)
-        } else {
-            //原model
-            model = module.model;
-        }
+        let model: Model = this.model;
 
         let value1 = model[this.dataName];
         if (value !== value1) {
@@ -441,6 +444,7 @@ export class UISelect extends pluginBase {
             } else {
                 this.value.push(v);
             }
+            // model["___selected"] = !model["___selected"]
         } else {
             if (!model["___selected"]) {
                 this.value = v;
@@ -494,12 +498,7 @@ export class UISelect extends pluginBase {
     hideList(model?: Model) {
         if (!model) {
             let module: Module = ModuleFactory.get(this.moduleId);
-            if (this.parentDataName && this.parentDataName != '') {
-                model = module.model.$query(this.parentDataName)
-            } else {
-                //原model
-                model = module.model;
-            }
+            model = this.model
         }
         model[this.extraDataName].show = false;
         model[this.extraDataName].query = '';
