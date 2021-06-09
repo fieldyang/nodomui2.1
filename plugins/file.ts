@@ -3,16 +3,37 @@ import { NUITipWords } from "./msg_zh";
 import { pluginBase } from "./pluginBase";
 import { UITool } from "./uibase";
 
+/**
+ *         let ui = new UIFile({
+            dataName: 'files',
+            displayField: 'fileName',
+            urlField: 'url',
+            uploadName: 'file',
+            valueField: 'id',
+            uploadUrl: 'http://localhost:3000/upload'
+        })
+ */
+
+/** 多文件
+ * let ui = new UIFile({
+    dataName: 'photos',
+    displayField: 'fileName',
+    urlField: 'url',
+    uploadName: 'file',
+    valueField: 'id',
+    uploadUrl: 'http://localhost:3000/upload',
+    multiple: true,
+    fileType: "image",
+    maxCount: 5
+})
+ */
+
+
 interface IUIFile extends Object {
     /**
     * 绑定字段名
     */
     dataName: string;
-
-    /**
-     * 支持多个文件
-     */
-    multiple: boolean;
 
     /**
      * 保存给dataName的值，一般是两个如'id,url',给dataName的值格式是{id:**,url:**}或[{id:**,url:**},...](multiple 方式)
@@ -28,58 +49,42 @@ interface IUIFile extends Object {
      * 用于显示的字段(必须属于returnFields)
      */
     displayField: string;
-
-    /**
-     * 上传类型，如果为image，上传成功后显示缩略图，否则显示文件名
-     */
-    fileType: string;
-
-    /**
-     * 状态  0初始化 1上传中 2上传结束
-     */
-    state: number;
-
-    /**
-     * 可上传文件数量
-     */
-    maxCount: number;
-
     /**
      * 上传url
      */
     uploadUrl: string;
-
-    /**
-     * 删除url
-     */
-    deleteUrl: string;
-
     /**
      * 上传名，默认 file
      */
     uploadName: string;
 
     /**
-     * 当前上传数量
+     * 上传类型，如果为image，上传成功后显示缩略图，否则显示文件名
      */
-    count: number;
+    fileType?: string;
 
     /**
-     * 文件名
+     * 可上传文件数量
      */
-    fileName: string;
+    maxCount?: number;
 
     /**
-     * 附加显示名，如果displayName不存在，则显示extraDisplayName
+     * 删除url
      */
-    extraDisplayName: string;
+    deleteUrl?: string;
+
+    /**
+ * 支持多个文件
+ */
+    multiple?: boolean;
+
 }
 
 
 /**
  * checkbox
  */
-class UIFile extends pluginBase {
+export class UIFile extends pluginBase {
     tagName: string = 'UI-FILE';
     /**
      * 绑定字段名
@@ -109,12 +114,7 @@ class UIFile extends pluginBase {
     /**
      * 上传类型，如果为image，上传成功后显示缩略图，否则显示文件名
      */
-    fileType: string;
-
-    /**
-     * 状态  0初始化 1上传中 2上传结束
-     */
-    state: number = 0;
+    fileType?: string;
 
     /**
      * 可上传文件数量
@@ -136,20 +136,8 @@ class UIFile extends pluginBase {
      */
     uploadName: string;
 
-    /**
-     * 当前上传数量
-     */
-    count: number = 0;
 
-    /**
-     * 文件名
-     */
-    fileName: string;
 
-    /**
-     * 附加显示名，如果displayName不存在，则显示extraDisplayName
-     */
-    extraDisplayName: string;
 
     constructor(params: Element | IUIFile, parent?: Element) {
         super(params);
@@ -193,15 +181,14 @@ class UIFile extends pluginBase {
             this.maxCount = 1;
         }
         rootDom.children = [this.genShowDom(), this.genUploadDom()];
-        console.log(rootDom);
 
     }
 
     /**
      * 产生上传dom
-     * @returns     上传后的显示dom
+     * @returns     上传前
      */
-    private genUploadDom(): Element {
+    private genShowDom(): Element {
         const me = this;
         //上传容器
         let uploadDom: Element = new Element('div');
@@ -216,14 +203,14 @@ class UIFile extends pluginBase {
 
         //input file change事件
         fDom.addEvent(new NEvent('change',
-            (dom: Element, module: Module, e, el) => {
+            (dom, module, e, el) => {
                 if (!el.files) {
                     return;
                 }
                 //上传标志
-                dom.model[me.extraDataName + '.state'] = 1;
+                this.model[me.extraDataName].state = 1;
                 //上传显示
-                dom.model[me.extraDataName + '.uploading'] = NUITipWords.uploading;
+                this.model[me.extraDataName].uploading = NUITipWords.uploading;
                 let form = new FormData();
                 for (let f of el.files) {
                     form.append(me.uploadName, f);
@@ -239,10 +226,12 @@ class UIFile extends pluginBase {
                     type: 'json'
                 }).then((r) => {
                     //上传显示
-                    dom.model[me.extraDataName + '.state'] = 0;
+                    this.model[me.extraDataName].state = 0;
                     //设置显示数据
-                    dom.model[me.dataName].push(r);
-                });
+                    this.model[me.dataName].push(r);
+                }).catch(r => {
+                    this.reset(module);
+                })
             }
         ));
 
@@ -271,7 +260,7 @@ class UIFile extends pluginBase {
      * 创建显示dom
      * @returns     上传后的显示dom
      */
-    private genShowDom(): Element {
+    private genUploadDom(): Element {
         const me = this;
         //文件显示container
         let ctDom: Element = new Element('div');
@@ -330,7 +319,7 @@ class UIFile extends pluginBase {
      * @param id        res id
      */
     private removeFile(module: Module, id: any) {
-        let pm: Model = module.model;
+        let pm: Model = this.model;
         let rows = pm[this.dataName];
         //从上传结果中删除
         if (Array.isArray(rows)) {
@@ -348,7 +337,7 @@ class UIFile extends pluginBase {
     beforeRender(module: Module, dom: Element) {
         super.beforeRender(module, dom);
         if (this.needPreRender) {
-            let model = module.model;
+            let model = this.model;
             //增加附加model
             if (model) {
                 model[this.extraDataName] = {
@@ -364,7 +353,7 @@ class UIFile extends pluginBase {
      * @param module    模块
      */
     public reset(module) {
-        let model = module.model;
+        let model = this.model;
         //增加附加model
         if (model) {
             model[this.extraDataName] = {

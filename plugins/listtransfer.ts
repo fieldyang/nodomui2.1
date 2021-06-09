@@ -1,4 +1,4 @@
-import { Compiler, DefineElementManager, Directive, Element, Expression, Filter, Model, Module, NEvent, Util } from "nodom";
+import { Compiler, DefineElementManager, Directive, Element, Expression, Filter, Model, modelCloneExpKey, Module, NEvent, Util } from "nodom";
 import { pluginBase } from "./pluginBase";
 import { UITool } from "./uibase";
 
@@ -232,7 +232,10 @@ export class UIListTransfer extends pluginBase {
                 //数据
                 datas: []
             }
-            let datas = model[this.listField];
+            let datas = Util.clone(model[this.listField], modelCloneExpKey).map(item => {
+                item.selected = false;
+                return item
+            })
             model[this.extraDataName].datas = datas;
         }
         this.setValueSelected(module);

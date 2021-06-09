@@ -1,4 +1,4 @@
-import { Compiler, DefineElementManager, Directive, Element, Expression, Model, Module, NEvent, Util } from "nodom";
+import { Compiler, DefineElementManager, Directive, Element, Expression, Model, modelCloneExpKey, Module, NEvent, Util } from "nodom";
 import { pluginBase } from "./pluginBase";
 import { UITool } from "./uibase";
 
@@ -282,7 +282,7 @@ export class UIList extends pluginBase {
             let rows = model[this.listField];
             //复制新数据
             if (rows && Array.isArray(rows)) {
-                rows = Util.clone(rows);
+                rows = Util.clone(rows, modelCloneExpKey);
 
                 //初始化选中状态
                 if (this.valueField !== '') {

@@ -8,7 +8,7 @@ export * from './plugins/floatbox';
 export * from './plugins/form';
 export * from './plugins/layout';
 export * from './plugins/list';
-// export * from './plugins/listtransfer';
+export * from './plugins/listtransfer';
 export * from './plugins/loading';
 // export * from './plugins/menu';
 export * from './plugins/pagination';

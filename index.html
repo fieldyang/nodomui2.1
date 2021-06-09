@@ -7,14 +7,20 @@
 		<title>nodomui example - panel usage</title>
 		<script src="./node_modules/nodom/dist/nodom.js"></script>
 		<script src="./dist/nodomui.js"></script>
-		<link rel="stylesheet" href="./css/nodomui.css" />
+		<link rel="stylesheet" href="./examples/css/nodomui.css" />
 	</head>
+	<style>
+		.my {
+			background-color: blanchedalmond;
+		}
+	</style>
 	<body>
 		<div>
 			<ui-button e-click="change">change</ui-button>
-			<ui-test></ui-test>
+			<!-- <ui-test></ui-test> -->
 			<!-- <ui-text x-field="data"></ui-text> -->
-			<h1>{{data}}</h1>
+			<div x-class="{'my':'data2'}" x-model="_data">d123123123</div>
+			<h1>{{JSON.stringify(data)}}</h1>
 		</div>
 	</body>
 	<script>
@@ -23,17 +29,20 @@
 				el: "div",
 				data: {
 					agree: "Y",
-					data: 123,
+					data: {
+						data1: "21231",
+					},
 				},
 				methods: {
 					change: function (dom, module, e) {
-						this.data = 321;
-						console.log(dom, module, e);
+						let temp = this._data;
+						temp.data2 = !temp.data2;
+						console.log(this);
 					},
 					onBeforeFirstRender: function (module) {
-						this.$watch("agree", (a, b) => {
-							console.log(a, b);
-						});
+						// this._data = nodom.Util.clone(this.data);
+                        let _data = 
+						console.log(this);
 					},
 				},
 			},

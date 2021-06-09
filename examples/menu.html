@@ -1,193 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta title="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>nodomui example - panel usage</title>
+		<link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+		<script src="../node_modules/nodom/dist/nodom.js"></script>
+		<script src="../dist/nodomui.js"></script>
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta title="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>nodomui example - panel usage</title>
-    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
-    <script src='js/nodom.js'></script>
-    <script src='../bin/nodomui.js'></script>
-</head>
-
-<body>
-    <div>
-        <ui-menu listField='rows' maxLevel='5' width='150'>
-            <a x-route='{{url}}' icon="icon" e-click='clickItem'>{{title}}</a>
-        </ui-menu>
-        <button e-click='setData'>setData</button>
-        <p>
-            右键点击打开弹出菜单
-        </p>
-        <ui-menu listField='rows' popup maxLevel='5' width='150'>
-            <a x-route='{{url}}' icon="icon" e-click='clickItem'>{{title}}</a>
-        </ui-menu>
-    </div>
-</body>
-<script>
-    nodom.newApp({
-        module: {
-            el: 'div',
-            data: {
-                rows: [{
-                    title: '',
-                    icon: 'menu',
-                    rows: [{
-                            title: '商家管理',
-                            icon: 'user',
-                            rows: [{
-                                    title: '商家审核',
-                                    icon: 'search'
-                                },
-                                {
-                                    title: '商家关店',
-                                    icon: 'search'
-                                },
-                                {
-                                    title: '临时关闭',
-                                    icon: 'search'
-                                },
-                                {
-                                    title: '商家统计',
-                                    rows: [{
-                                            title: '发货',
-                                            icon: 'add'
-                                        },
-                                        {
-                                            title: '取消申请',
-                                            icon: 'close'
-                                        },
-                                        {
-                                            title: '删除订单',
-                                            icon: 'del'
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            title: '订单管理',
-                            icon: 'cart',
-                            rows: [{
-                                    title: '发货',
-                                    icon: 'add'
-                                },
-                                {
-                                    title: '取消申请',
-                                    icon: 'close'
-                                },
-                                {
-                                    title: '删除订单',
-                                    icon: 'del'
-                                }
-                            ]
-                        },
-                        {
-                            title: '商品管理',
-                            icon: 'cart',
-                            checked: true,
-                            rows: [{
-                                    title: '商品上架',
-                                    icon: 'add'
-                                },
-                                {
-                                    title: '商品下架',
-                                    icon: 'minus'
-                                },
-                                {
-                                    title: '商品审核'
-                                },
-                                {
-                                    title: '商品统计',
-                                    active: true,
-                                    checked: true,
-                                    rows: [{
-                                            title: '上架统计'
-                                        },
-                                        {
-                                            title: '下架统计'
-                                        },
-                                        {
-                                            title: '销售统计',
-                                            rows: [{
-                                                    title: '日统计',
-                                                    "rows": [{
-                                                            title: '时统计'
-                                                        },
-                                                        {
-                                                            title: '分统计'
-                                                        },
-                                                        {
-                                                            title: '秒统计'
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    title: '周统计'
-                                                },
-                                                {
-                                                    title: '月统计'
-                                                },
-                                                {
-                                                    title: '年统计'
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            title: '安全管理',
-                            icon: 'insurance',
-                            rows: [{
-                                    title: '角色管理',
-                                    icon: 'insurance'
-                                },
-                                {
-                                    title: '用户管理',
-                                    icon: 'user'
-                                },
-                                {
-                                    title: '资源管理',
-                                    icon: 'insurance'
-                                },
-                                {
-                                    title: '权限管理',
-                                    icon: 'insurance'
-                                }
-                            ]
-                        }
-                    ]
-                }]
-            },
-            methods: {
-                clickItem: function (dom, model, module) {
-                    console.log(model);
-                },
-                setData: function (dom, model) {
-                    model.set('rows', [{
-                            title: '商家管理',
-                            icon: 'user'
-                        },
-                        {
-                            title: '订单管理',
-                            icon: 'cart'
-                        },
-                        {
-                            title: '商品管理',
-                            icon: 'cart'
-                        },
-                        {
-                            title: '安全管理',
-                            icon: 'insurance'
-                        }
-                    ])
-                }
-            }
-        }
-    });
-</script>
-
+	<body>
+		<div>
+			<ui-menu listField="rows" maxLevel="5" width="150">
+				<a x-route="{{url}}" icon="icon" e-click="clickItem">{{title}}</a>
+			</ui-menu>
+			<button e-click="setData">setData</button>
+			<p>右键点击打开弹出菜单</p>
+			<ui-menu listField="rows" popup maxLevel="5" width="150">
+				<a x-route="{{url}}" icon="icon" e-click="clickItem">{{title}}</a>
+			</ui-menu>
+		</div>
+	</body>
+	<script>
+		nodom.app({
+			module: {
+				el: "div",
+				data: {
+					rows: [
+						{
+							title: "",
+							icon: "menu",
+							rows: [
+								{
+									title: "商家管理",
+									icon: "user",
+									rows: [
+										{
+											title: "商家审核",
+											icon: "search",
+										},
+										{
+											title: "商家关店",
+											icon: "search",
+										},
+										{
+											title: "临时关闭",
+											icon: "search",
+										},
+										{
+											title: "商家统计",
+											rows: [
+												{
+													title: "发货",
+													icon: "add",
+												},
+												{
+													title: "取消申请",
+													icon: "close",
+												},
+												{
+													title: "删除订单",
+													icon: "del",
+												},
+											],
+										},
+									],
+								},
+								{
+									title: "订单管理",
+									icon: "cart",
+									rows: [
+										{
+											title: "发货",
+											icon: "add",
+										},
+										{
+											title: "取消申请",
+											icon: "close",
+										},
+										{
+											title: "删除订单",
+											icon: "del",
+										},
+									],
+								},
+								{
+									title: "商品管理",
+									icon: "cart",
+									checked: true,
+									rows: [
+										{
+											title: "商品上架",
+											icon: "add",
+										},
+										{
+											title: "商品下架",
+											icon: "minus",
+										},
+										{
+											title: "商品审核",
+										},
+										{
+											title: "商品统计",
+											active: true,
+											checked: true,
+											rows: [
+												{
+													title: "上架统计",
+												},
+												{
+													title: "下架统计",
+												},
+												{
+													title: "销售统计",
+													rows: [
+														{
+															title: "日统计",
+															rows: [
+																{
+																	title: "时统计",
+																},
+																{
+																	title: "分统计",
+																},
+																{
+																	title: "秒统计",
+																},
+															],
+														},
+														{
+															title: "周统计",
+														},
+														{
+															title: "月统计",
+														},
+														{
+															title: "年统计",
+														},
+													],
+												},
+											],
+										},
+									],
+								},
+								{
+									title: "安全管理",
+									icon: "insurance",
+									rows: [
+										{
+											title: "角色管理",
+											icon: "insurance",
+										},
+										{
+											title: "用户管理",
+											icon: "user",
+										},
+										{
+											title: "资源管理",
+											icon: "insurance",
+										},
+										{
+											title: "权限管理",
+											icon: "insurance",
+										},
+									],
+								},
+							],
+						},
+					],
+				},
+				methods: {
+					clickItem: function (dom, module) {
+						console.log(this);
+					},
+					setData: function (dom) {
+						this.rows = [
+							{
+								title: "商家管理",
+								icon: "user",
+							},
+							{
+								title: "订单管理",
+								icon: "cart",
+							},
+							{
+								title: "商品管理",
+								icon: "cart",
+							},
+							{
+								title: "安全管理",
+								icon: "insurance",
+							},
+						];
+					},
+				},
+			},
+		});
+	</script>
 </html>

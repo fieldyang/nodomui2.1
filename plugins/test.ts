@@ -1,5 +1,5 @@
 import { DefineElementManager, Element, Module, Util } from "nodom";
-import { UIPagination } from "..";
+import { UIListTransfer } from "./listtransfer";
 import { pluginBase } from "./pluginBase";
 
 /**
@@ -23,24 +23,26 @@ export class UITest extends pluginBase {
     private generate(rootDom: Element) {
         this.extraDataName = '$ui_test_' + Util.genId();
         console.log(11);
-        let ui = new UIPagination({
-            totalName: 'total',
-            pageSize: 10,
-            showTotal: true,
-            showGo: true,
-            currentPage: 1,
-            showNum: 10,
-            pageSizeData: [10, 20, 30, 50],
-            steps: 10,
-            dataUrl: 'data/grid1.json',
-            pageName: 'page',
-            sizeName: 'rows',
-            onChange: 'changePage',
-            onBeforeReq: 'beforeReq',
-            onReq: 'reqData'
+        let ui = new UIListTransfer({
+            dataName: 'selectedUser1',
+            listField: 'users',
+            valueField: 'uid',
+            displayField: "userName"
         })
-
+        let ui2 = new UIListTransfer({
+            dataName: 'selectedUser2',
+            listField: 'users',
+            valueField: 'uid',
+            displayField: "userName",
+            customTemplate: `
+                <div>
+                    <span style="width: 100px; display: inline-block">{{userName}}</span>
+                    <span>{{company}}</span>
+                </div>
+            `
+        })
         rootDom.add(ui.element)
+        rootDom.add(ui2.element)
     }
     /**
    * 前置渲染
