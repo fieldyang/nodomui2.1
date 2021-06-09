@@ -18,11 +18,11 @@
 	<body>
 		<div>
 			<ui-test></ui-test>
-			<!-- <p>简单用法</p>
+			<p>简单用法</p>
 			<button e-click="change">修改</button>
-			<ui-listtransfer
+			<!-- <ui-listtransfer
 				style="height: 200px; max-width: 500px"
-				x-field="selectedUser"
+				x-field="selectedUser1"
 				valueField="uid"
 				displayField="userName"
 				listField="users"
@@ -31,7 +31,7 @@
 			<p>自定义</p>
 			<ui-listtransfer
 				style="height: 200px; max-width: 500px"
-				x-field="selectedUser"
+				x-field="selectedUser2"
 				valueField="uid"
 				displayField="userName"
 				listField="users"
@@ -48,7 +48,8 @@
 			module: {
 				el: "div",
 				data: {
-					selectedUser: "3,4",
+					selectedUser1: "3,4",
+					selectedUser2: "3,4",
 					users: [
 						{ uid: 1, userName: "yang lei", company: "swust" },
 						{ uid: 2, userName: "张三", company: "阿里" },
@@ -59,8 +60,13 @@
 					],
 				},
 				methods: {
-					change(dom) {
-						this.selectedUser = "1";
+					change: function (dom, module) {
+						console.log(this);
+					},
+					onBeforeFirstRender: function (module) {
+						this.$watch("selectedUser", (oldVal, newVal) => {
+							console.log(`oldVal = ${oldVal}, newVal = ${newVal}`);
+						});
 					},
 				},
 			},

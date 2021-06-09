@@ -6,7 +6,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "rollup -c",
-        "sass": "sass ./examples/css/nodomui.sass ./example/css/nodomui.css"
+        "sass": "sass ./examples/css/nodomui.scss ./example/css/nodomui.css",
+        "dev": "webpack-dev-server --open"
     },
     "repository": {
         "type": "git",
@@ -24,5 +25,6 @@
         "rollup": "^2.48.0",
         "rollup-plugin-typescript2": "^0.30.0",
         "typescript": "^4.2.4"
-    }
+    },
+    "dependencies": {}
 }

@@ -1,8 +1,23 @@
-import { DefineElementManager, Directive, Element, Expression, Model, Module, NEvent, Util } from "nodom";
+import { Compiler, DefineElementManager, Directive, Element, Expression, Model, Module, NEvent, Util } from "nodom";
 import { pluginBase } from "./pluginBase";
 import { UITool } from "./uibase";
 
-interface IUIRadio {
+/** 传入自定义内容
+          let ui = new UIRadio({
+            dataName: 'education',
+            // dataName: 'sexy',
+            listField: 'edus',
+            valueField: 'id',
+            displayField: 'title',
+            itemMargin: 10
+            // customTemplate: `
+            // <span value="M">男</span>
+            // <span value="F">女</span>`
+        })
+ */
+
+
+interface IUIRadio extends Object {
     /**
      * 数据项名
      */
@@ -11,22 +26,27 @@ interface IUIRadio {
     /**
      * 显示数据项名
      */
-    displayField: string;
+    displayField?: string;
 
     /**
      * 值数据项名
      */
-    valueField: string;
+    valueField?: string;
 
     /**
      * 列表数据名
      */
-    listField: string;
+    listField?: string;
 
     /**
      * 选择项的左右margin值
      */
     itemMargin?: number;
+
+    /**
+    * 渲染模板，使用new 的时候需要的内部模板
+    */
+    customTemplate?: string;
 
 }
 
@@ -65,6 +85,11 @@ export class UIRadio extends pluginBase {
      */
     checkName: string;
 
+    /**
+    * 渲染模板，使用new 的时候需要的内部模板
+    */
+    customTemplate: string;
+
     constructor(params: Element | IUIRadio, parent?: Element) {
         super(params);
         let element = new Element()
@@ -74,14 +99,12 @@ export class UIRadio extends pluginBase {
                 ['valuefield', 'displayfield', 'listfield', 'itemmargin|number'],
                 ['valueField', 'displayField', 'listField', 'itemMargin'],
                 ['', '', '', 5]);
-            this.generate(element, true);
         } else {
             Object.keys(params).forEach(key => {
                 this[key] = params[key]
             })
-            this.generate(element, false);
         }
-
+        this.generate(element);
         element.tagName = 'span';
         element.defineEl = this;
         this.element = element;
@@ -92,7 +115,8 @@ export class UIRadio extends pluginBase {
      * @param rootDom 插件产生的虚拟dom
      * @param genMode 生成虚拟dom的方式，true:ast编译的模板的方式，false:传入配置对象的方式
      */
-    private generate(rootDom: Element, genMode: boolean) {
+    private generate(rootDom: Element) {
+        let me = this;
         rootDom.addClass('nd-radio');
 
         let field = rootDom.getDirective('field');
@@ -101,9 +125,29 @@ export class UIRadio extends pluginBase {
             rootDom.removeDirectives(['field']);
         }
 
-        // 通过配置项生成选择项
-        // this.valueField !== '' && this.displayField !== '' && this.listField !== ''
-        if (genMode === false) {
+        // 自定义元素模板
+        if (this.customTemplate && this.customTemplate != '') {
+            let oe = Compiler.compile(this.customTemplate)
+            rootDom.children = oe.children;
+
+            for (let c of rootDom.children) {
+                if (c.tagName) {
+                    let icon: Element = new Element('b');
+                    icon.addClass('nd-radio-unactive');
+                    icon.addDirective(new Directive('class', "{'nd-radio-active':'" + this.dataName + "==\"" + c.getProp('value') + "\"'}", icon));
+                    c.children.unshift(icon);
+                    //点击事件
+                    c.addEvent(new NEvent('click',
+                        (dom, module) => {
+                            dom.model[this.dataName] = dom.getProp('value');
+                        }
+                    ));
+                }
+            }
+            return;
+        }
+        if (rootDom.children.length === 0) {
+            // 通过数据生成
             //自定义checkname
             this.checkName = '$ui_radio_' + Util.genId();
             let item: Element = new Element('span');
@@ -120,8 +164,7 @@ export class UIRadio extends pluginBase {
             item.assets.set('style', 'margin:0 ' + this.itemMargin + 'px;');
             item.addEvent(new NEvent('click',
                 (dom, module) => {
-                    let model1: Model = module.model;
-
+                    let model1: Model = me.model;
                     let datas: Array<object> = model1[this.listField];
                     // 所有选项的select置false
                     if (datas) {
@@ -130,13 +173,14 @@ export class UIRadio extends pluginBase {
                         }
                     }
                     //当前点击项置true
-                    model1[this.checkName] = true;
+                    dom.model[this.checkName] = true;
                     //修改实际数据项
                     model1[this.dataName] = dom.getProp('value');
                 }
             ));
             rootDom.children = [item];
-        } else { //通过子节点生成选择项
+        } else {
+            //通过子节点生成选择项
             for (let c of rootDom.children) {
                 if (c.tagName) {
                     let icon: Element = new Element('b');
@@ -152,6 +196,7 @@ export class UIRadio extends pluginBase {
                 }
             }
         }
+
     }
 
     /**
@@ -161,7 +206,7 @@ export class UIRadio extends pluginBase {
      */
     beforeRender(module: Module, dom: Element) {
         super.beforeRender(module, dom);
-        let model = module.model;
+        let model = this.model;
         if (this.checkName) {
             let datas: Array<object> = model[this.listField];
             if (datas) {

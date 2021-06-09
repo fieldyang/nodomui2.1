@@ -1,49 +1,52 @@
-// @import "base.scss";
+@import "base.scss";
 /******* layout *******/
-.nd-layout{
-    display:flex;
-    flex-direction: column;
-    position: absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
+.nd-layout {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 
-    .nd-layout-north,.nd-layout-south,.nd-layout-west,.nd-layout-east{
-        overflow:auto;
-        box-sizing: border-box;
-        position:relative;
-        @include nd-color(1);
-    }
-    
-    .nd-layout-middle{
-        display:flex;
-        box-sizing: border-box;
-        overflow:hidden;
-        flex:1;    
-        .nd-layout-center{
-            flex:1;
-            overflow:auto;
-        }
+	.nd-layout-north,
+	.nd-layout-south,
+	.nd-layout-west,
+	.nd-layout-east {
+		overflow: auto;
+		box-sizing: border-box;
+		position: relative;
+		@include nd-color(1);
+	}
 
-        .nd-layout-header{
-            @include nd-color(6);
-            height: 40px;
-            line-height:40px;
-            padding:0 $nd-padding;
-            border-radius:$nd-radius $nd-radius 0 0;
-            
-            display:flex;
-            .nd-layout-title{
-                flex:1;
-                text-align:center;
-            }
-            min-width:40px;
+	.nd-layout-middle {
+		display: flex;
+		box-sizing: border-box;
+		overflow: hidden;
+		flex: 1;
+		.nd-layout-center {
+			flex: 1;
+			overflow: auto;
+		}
 
-            b{
-                width:30px;
-                @extend .nd-canclick;
-            }
-        }
-    }
+		.nd-layout-header {
+			@include nd-color(6);
+			height: 40px;
+			line-height: 40px;
+			padding: 0 $nd-padding;
+			border-radius: $nd-radius $nd-radius 0 0;
+
+			display: flex;
+			.nd-layout-title {
+				flex: 1;
+				text-align: center;
+			}
+			min-width: 40px;
+
+			b {
+				width: 30px;
+				@extend .nd-canclick;
+			}
+		}
+	}
 }

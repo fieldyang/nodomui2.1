@@ -8,11 +8,6 @@
 		<link rel="stylesheet" type="text/css" href="css/nodomui.css" />
 		<script src="../node_modules/nodom/dist/nodom.js"></script>
 		<script src="../dist/nodomui.js"></script>
-		<style>
-			form {
-				/* width:600px; */
-			}
-		</style>
 	</head>
 	<body>
 		<div>
@@ -22,7 +17,8 @@
 				<div>出生日期：<span>{{birth}}</span></div>
 				<div>学历：<span>{{education}}</span></div>
 			</div>
-			<ui-form class="form" labelWidth="80">
+			<!-- <ui-test></ui-test> -->
+			<ui-form>
 				<row>
 					<item>
 						<label>姓名:</label>
@@ -37,7 +33,6 @@
 						</ui-radio>
 					</item>
 				</row>
-
 				<row>
 					<item>
 						<label>速度:</label>
@@ -51,7 +46,7 @@
 					</item>
 				</row>
 
-				<!-- <row>
+				<row>
 					<item>
 						<label>出生日期:</label>
 						<ui-datetime
@@ -71,9 +66,10 @@
 				<row>
 					<item>
 						<label>计划时间:</label>
+						<!-- showms 是否显示毫秒 -->
 						<ui-datetime class="nd-form-input" x-field="plantime" type="datetime" showms />
 					</item>
-				</row> -->
+				</row>
 				<row>
 					<item>
 						<label>学历:</label>
@@ -112,7 +108,7 @@
                 </ui-select>
             </div> -->
 
-				<!-- <row>
+				<row>
 					<item>
 						<label>生活照:</label>
 						<ui-file
@@ -127,7 +123,7 @@
 							maxCount="5"
 						></ui-file>
 					</item>
-				</row> -->
+				</row>
 
 				<row>
 					<item>
@@ -148,7 +144,6 @@
 						</ui-list>
 					</item>
 				</row>
-                
 				<row>
 					<item>
 						<label>同意条款:</label>
@@ -213,7 +208,7 @@
 						// model.data.hobbies.push({
 						//     hid:9,htitle:'健身1',icon:'close',desc:'健身让人上瘾'
 						// })
-						model.data.edus.push({ id: 6, title: "博士1" });
+						this.edus.push({ id: 6, title: "博士1" });
 					},
 					showDlg: function (dom, model, module, e) {
 						model.set("showdlg", true);

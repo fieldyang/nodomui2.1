@@ -1,12 +1,40 @@
-import { Compiler, DefineElementManager, Directive, Element, Expression, Model, Module, NEvent, Util } from "nodom";
+import { Compiler, DefineElementManager, Directive, Element, Expression, Model, modelCloneExpKey, Module, NEvent, Util } from "nodom";
 import { pluginBase } from "./pluginBase";
 import { UITool } from "./uibase";
 
+/**
+  let ui = new UIList({
+            dataName: 'hobby',
+            listField: 'hobbies',
+            valueField: "hid",
+            displayField: "htitle",
+            type: "col",
+            clickEvent: "clickItem"
+        })
+ */
+
+/** 自定义元素
+  let ui = new UIList({
+            dataName: 'hobby',
+            listField: 'hobbies',
+            valueField: "hid",
+            displayField: "htitle",
+            type: "col",
+            clickEvent: 'clickItem',
+            customTemplate:
+                `
+                <div class="item1" align="center">
+                    <b class="nd-icon-{{icon}}" style="font-size: 30px"></b>
+                    <div>{{htitle}}</div>
+                </div>
+            `
+        })
+ */
 interface IUIList extends Object {
     /**
     * 绑定数据域名
     */
-    dataName?: string;
+    dataName: string;
 
     /**
      * 显示数据项名
@@ -41,7 +69,7 @@ interface IUIList extends Object {
     /**
      * click 事件名
      */
-    clickEvent: string;
+    clickEvent?: string;
 
     /**
      * 是否多选
@@ -114,6 +142,7 @@ export class UIList extends pluginBase {
      */
     customTemplate: string;
 
+
     constructor(params: Element | IUIList, parent?: Element) {
         super(params);
         let element = new Element();
@@ -147,7 +176,7 @@ export class UIList extends pluginBase {
         this.extraDataName = '$ui_list_' + Util.genId();
 
         //增加附加model
-        rootDom.addDirective(new Directive('model', this.extraDataName, rootDom));
+        // rootDom.addDirective(new Directive('model', this.extraDataName, rootDom));
         if (this.type === 'row') {
             rootDom.addClass('nd-list');
         } else {
@@ -187,7 +216,9 @@ export class UIList extends pluginBase {
             }
         }
         itemDom.addClass('nd-list-item');
-        itemDom.addDirective(new Directive('repeat', 'datas', itemDom));
+        // itemDom.addDirective(new Directive('repeat', 'datas', itemDom));
+        // new Directive('model', this.extraDataName, itemDom)
+        itemDom.addDirective(new Directive('repeat', this.extraDataName + ".datas", itemDom));
         //点击事件
         itemDom.addEvent(new NEvent('click',
             (dom, module) => {
@@ -210,9 +241,9 @@ export class UIList extends pluginBase {
         }
 
         if (this.disableName !== '') {
-            itemDom.addDirective(new Directive('class', "{'nd-list-item-active':'selected','nd-list-item-disable':'" + this.disableName + "'}", itemDom));
+            new Directive('class', "{'nd-list-item-active':'selected','nd-list-item-disable':'" + this.disableName + "'}", itemDom);
         } else {
-            itemDom.addDirective(new Directive('class', "{'nd-list-item-active':'selected'}", itemDom));
+            new Directive('class', "{'nd-list-item-active':'selected'}", itemDom);
         }
 
         //点击事件
@@ -228,40 +259,30 @@ export class UIList extends pluginBase {
      */
     beforeRender(module: Module, dom: Element) {
         super.beforeRender(module, dom);
-        //uidom model
-        let pmodel: Model;
         //附加数据model
-        let model;
+        let model: Model
+        model = this.model;
         if (this.needPreRender) {
-            pmodel = module.model;
-            pmodel[this.extraDataName] = {
+            model[this.extraDataName] = {
                 datas: []        //下拉框数据
             }
         }
 
-        if (!pmodel) {
-            pmodel = module.model;
-        }
-
-        if (!model) {
-            model = pmodel[this.extraDataName];
-        }
-
-        let data = model.datas;
+        let data = model[this.extraDataName].datas;
         //下拉值初始化
-        if (this.listField && data.length === 0 && pmodel[this.listField]) {
+        if (this.listField && data.length === 0 && model[this.listField]) {
             let valueArr: string[];
             if (this.dataName) {
-                let value = pmodel[this.dataName];
+                let value = model[this.dataName];
                 if (value && value !== '') {
                     valueArr = value.toString().split(',');
                 }
             }
 
-            let rows = pmodel[this.listField];
+            let rows = model[this.listField];
             //复制新数据
             if (rows && Array.isArray(rows)) {
-                rows = Util.clone(rows);
+                rows = Util.clone(rows, modelCloneExpKey);
 
                 //初始化选中状态
                 if (this.valueField !== '') {
@@ -275,7 +296,7 @@ export class UIList extends pluginBase {
                 }
 
                 //设置下拉数据
-                model.datas = rows;
+                model[this.extraDataName].datas = rows;
                 this.setValue(module);
             }
         }
@@ -287,10 +308,13 @@ export class UIList extends pluginBase {
      * @param value     值
      */
     setValue(module: Module, model?: Model) {
-        //原model
-        let pmodel = module.model;
+        //父级model
+        let pmodel;
+        pmodel = this.model
         //附加数据model
         let model1 = pmodel[this.extraDataName];
+        // let smodel = module.model;
+
         let rows = model1.datas;
         //显示数组
         //值数组

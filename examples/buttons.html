@@ -11,7 +11,19 @@
 	</head>
 	<body>
 		<div>
-			<!-- <ui-test></ui-test> -->
+			<ui-test></ui-test>
+			<!-- 
+            let ui = new UIButton({
+                    size: SIZE.NORMAL,
+                    icon: "search",
+                    iconPos: ICONPOS.LEFT,
+                    text: '按钮',
+                    theme: THEME.ACTIVE,
+                    clickEvent: 'itemClick'
+                })
+            new Directive('model', "$$", ui.element)
+             -->
+			<h1>{{data}}</h1>
 			<p>带buttongroup</p>
 			<ui-buttongroup>
 				<ui-button size="small" e-click="itemClick">small</ui-button>
@@ -41,9 +53,15 @@
 		nodom.app({
 			module: {
 				el: "div",
+				data: {
+					data: 1,
+				},
 				methods: {
 					itemClick: function (dom, module, e, el) {
-						alert("button clicked");
+						// alert("button clicked");
+						console.log(this);
+						console.log(dom, module);
+						this.data++;
 					},
 				},
 			},

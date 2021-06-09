@@ -31,7 +31,8 @@
 	<body>
 		<div>
 			<ui-test></ui-test>
-			<!-- <p>横向单选list</p>
+
+			<p>横向单选list</p>
 			<ui-list
 				x-field="hobby"
 				valueField="hid"
@@ -81,12 +82,12 @@
 			</ui-list>
 
 			<p>自定义list2</p>
-			<ui-list listField="hobbies" type="col" itemClick="clickItem">
+			<ui-list x-field="hobby" listField="hobbies" valueField="hid" type="col" itemClick="clickItem">
 				<div class="item1" align="center">
 					<b class="nd-icon-{{icon}}" style="font-size: 30px"></b>
 					<div>{{htitle}}</div>
 				</div>
-			</ui-list> -->
+			</ui-list>
 		</div>
 	</body>
 	<script>

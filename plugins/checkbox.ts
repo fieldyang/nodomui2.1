@@ -2,6 +2,14 @@ import { Compiler, DefineElementManager, Directive, Element, NEvent } from "nodo
 import { pluginBase } from "./pluginBase";
 import { UITool } from "./uibase";
 
+/**
+  let ui = new UICheckbox({
+        dataName: 'agree',
+        yesValue: "Y",
+        noValue: "N",
+        text: '阅读并同意'
+        })
+ */
 interface IUICheckboxCfg extends Object {
 
     /**
@@ -78,6 +86,7 @@ export class UICheckbox extends pluginBase {
      * @param genMode 生成虚拟dom的方式，true:ast编译的模板的方式，false:传入配置对象的方式
      */
     private generate(rootDom: Element, genMode: boolean) {
+        let me = this;
         if (genMode === true) {
             let field = rootDom.getDirective('field');
             if (field) {
@@ -104,19 +113,18 @@ export class UICheckbox extends pluginBase {
 
         //点击事件
         rootDom.addEvent(new NEvent('click',
-            (dom, module, e) => {
-                console.log(dom);
-
-                let v = dom.model[this.dataName];
-                if (v == this.yesValue) {
-                    dom.model[this.dataName] = this.noValue;
+            function (dom, module, e) {
+                let v = me.model[me.dataName];
+                if (v == me.yesValue) {
+                    me.model[me.dataName] = me.noValue;
                 } else {
-                    dom.model[this.dataName] = this.yesValue;
+                    me.model[me.dataName] = me.yesValue;
                 }
             }
         ));
 
     }
+
 }
 
 DefineElementManager.add('UI-CHECKBOX', {

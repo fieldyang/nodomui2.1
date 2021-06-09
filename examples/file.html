@@ -11,8 +11,9 @@
 	</head>
 	<body>
 		<div>
+			<ui-button e-click="information">info</ui-button>
 			<p>单文件</p>
-			<!-- deleteUrl='http://localhost:3000/delres' -->
+			<!-- <ui-test></ui-test> -->
 			<!--
             valueField      值字段
             displayField    显示字段
@@ -20,19 +21,26 @@
             uploadName      提交名
             uploadUrl       提交url
         -->
-			<ui-file
+			<!-- <ui-file
 				x-field="files"
 				valueField="id"
 				displayField="fileName"
 				urlField="url"
 				uploadName="file"
-				extraDisplayName="fff"
 				uploadUrl="http://localhost:3000/upload"
-			></ui-file>
+			></ui-file> -->
 
-			<!-- <p>多文件</p>
-        <ui-file x-field='photos' multiple valueField='id' displayField="url"  uploadName='file'
-        uploadUrl='http://localhost:3000/upload' fileType='image' maxCount='5'></ui-file> -->
+			<p>多文件</p>
+			<!-- <ui-file
+				x-field="photos"
+				multiple
+				valueField="id"
+				displayField="url"
+				uploadName="file"
+				uploadUrl="http://localhost:3000/upload"
+				fileType="image"
+				maxCount="5"
+			></ui-file> -->
 		</div>
 	</body>
 	<script>
@@ -40,8 +48,19 @@
 			module: {
 				el: "div",
 				data: {
-					files: [{ id: 2, fff: "bbbbb" }],
-					photos: [],
+					files: [{ id: "2", fileName: "file1", url: "123" }],
+					photos: [
+						{ id: "2", fileName: "file1", url: "123" },
+						{ id: "3", fileName: "file1", url: "123" },
+						{ id: "3", fileName: "file1", url: "123" },
+						{ id: "3", fileName: "file1", url: "123" },
+						{ id: "3", fileName: "file1", url: "123" },
+					],
+				},
+				methods: {
+					information: function (dom, module) {
+						console.log(this);
+					},
 				},
 			},
 		});

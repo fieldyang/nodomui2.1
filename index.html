@@ -7,72 +7,45 @@
 		<title>nodomui example - panel usage</title>
 		<script src="./node_modules/nodom/dist/nodom.js"></script>
 		<script src="./dist/nodomui.js"></script>
-		<link rel="stylesheet" href="./css/nodomui.css" />
-		<style>
-			.app {
-				position: relative;
-				left: 200px;
-				top: 1000px;
-				width: 400px;
-				height: 400px;
-				background-color: cornflowerblue;
-			}
-			.child {
-				position: absolute;
-				left: 100px;
-				top: 100px;
-				width: 200px;
-				height: 200px;
-				background-color: darkcyan;
-			}
-			.root {
-				position: relative;
-				overflow: auto;
-				width: 800px;
-				height: 800px;
-				background-color: black;
-			}
-		</style>
+		<link rel="stylesheet" href="./examples/css/nodomui.css" />
 	</head>
+	<style>
+		.my {
+			background-color: blanchedalmond;
+		}
+	</style>
 	<body>
-		<div class="root">
-			<div class="app">
-				<div class="child"></div>
-			</div>
+		<div>
+			<ui-button e-click="change">change</ui-button>
+			<!-- <ui-test></ui-test> -->
+			<!-- <ui-text x-field="data"></ui-text> -->
+			<div x-class="{'my':'data2'}" x-model="_data">d123123123</div>
+			<h1>{{JSON.stringify(data)}}</h1>
 		</div>
 	</body>
 	<script>
-		function caclOffset(event) {
-			let [offsetX, offsetY] = [0, 0];
-			let path = event.composedPath();
-			for (const p of path) {
-				if (p["offsetTop"] && p["offsetLeft"]) {
-					if (p["offsetTop"] == 0 || p["offsetLeft"] == 0) {
-						break;
-					}
-					offsetX += p["offsetTop"];
-					offsetY += p["offsetLeft"];
-				}
-			}
-			return [offsetX, offsetY];
-		}
-		let div = document.querySelector(".app");
-		div.addEventListener("click", (e) => {
-			let [x, y] = caclOffset(e);
-			console.log(x, y);
+		nodom.app({
+			module: {
+				el: "div",
+				data: {
+					agree: "Y",
+					data: {
+						data1: "21231",
+					},
+				},
+				methods: {
+					change: function (dom, module, e) {
+						let temp = this._data;
+						temp.data2 = !temp.data2;
+						console.log(this);
+					},
+					onBeforeFirstRender: function (module) {
+						// this._data = nodom.Util.clone(this.data);
+                        let _data = 
+						console.log(this);
+					},
+				},
+			},
 		});
-		// nodom.app({
-		// 	module: {
-		// 		el: "div",
-		// 		data: {
-		// 			data: new Set(),
-		// 		},
-		// 		methods: {
-		// 			clickItem: function (dom, module, e) {
-		// 				// console.log(this.data.size);
-		// 			},
-		// 		},
-		// 	},
-		// });
 	</script>
 </html>

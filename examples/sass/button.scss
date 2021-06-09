@@ -1,77 +1,78 @@
-// @import "base";
-
+@use 'sass:math';
+@import "base";
 /**按钮**/
-button,.nd-btn{
-    display:inline-block;
-    @extend .nd-canclick;
-    @include nd-color(8);
-    
-    border-radius: $nd-radius;
-    border:0px;
-    padding:$nd-padding $nd-btn-padding-left;
+button,
+.nd-btn {
+	display: inline-block;
+	@extend .nd-canclick;
+	@include nd-color(8);
 
-    > b{
-        margin-right:$nd-padding/2;
-    }
-    &:hover{
-        background-color:lighten($nd-color8,5%);
-        color:$nd-forecolor2;
-    }
+	border-radius: $nd-radius;
+	border: 0px;
+	padding: $nd-padding $nd-btn-padding-left;
+
+	> b {
+		margin-right: math.div($nd-padding, 2);
+	}
+	&:hover {
+		background-color: lighten($nd-color8, 5%);
+		color: $nd-forecolor2;
+	}
 }
 
 /*无背景色*/
-.nd-btn-nobg{
-    background-color:transparent;
+.nd-btn-nobg {
+	background-color: transparent;
 }
 
 /*有图标*/
-.nd-btn-small{
-    font-size:$nd-fontsmall;
+.nd-btn-small {
+	font-size: $nd-fontsmall;
 }
 
-.nd-btn-normal{
-    font-size:$nd-fontnormal;
+.nd-btn-normal {
+	font-size: $nd-fontnormal;
 }
 
-.nd-btn-large{
-    font-size:$nd-fontlargest;
+.nd-btn-large {
+	font-size: $nd-fontlargest;
 }
 /*无文字*/
-.nd-btn-notext{
-    padding:$nd-btn-padding-top;
+.nd-btn-notext {
+	padding: $nd-btn-padding-top;
 }
 
 /*图标纵向*/
-.nd-btn-vert{
-    display:block;
+.nd-btn-vert {
+	display: block;
 }
 
 /*不同色按钮*/
 @mixin nd-btn-bg($color) {
-    background-color:$color;
-    color: $nd-forecolor4;
-    &:hover{
-        background-color:lighten($color,10%);
-        color:lighten($nd-forecolor4,10%);
-    }
+	background-color: $color;
+	color: $nd-forecolor4;
+	&:hover {
+		background-color: lighten($color, 10%);
+		color: lighten($nd-forecolor4, 10%);
+	}
 }
 
 /*active背景色*/
-.nd-btn-active{
-    @include nd-btn-bg($nd-activecolor);
+.nd-btn-active {
+	@include nd-btn-bg($nd-activecolor);
 }
 
 /*success 背景色*/
-.nd-btn-success{
-    @include nd-btn-bg($nd-successcolor);
+.nd-btn-success {
+	@include nd-btn-bg($nd-successcolor);
 }
 
 /*warn背景色*/
-.nd-btn-warn{
-    @include nd-btn-bg($nd-warncolor);
+.nd-btn-warn {
+	@include nd-btn-bg($nd-warncolor);
 }
 
 /*warn背景色*/
-.nd-btn-error{
-    @include nd-btn-bg($nd-errorcolor);
+.nd-btn-error {
+	@include nd-btn-bg($nd-errorcolor);
 }

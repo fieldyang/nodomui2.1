@@ -2,16 +2,19 @@ import { Compiler, DefineElementManager, Directive, Element } from 'nodom';
 import { pluginBase } from './pluginBase';
 import { ICONPOS, UITool } from './uibase';
 
-interface IUIText {
+/**
+ let ui = new UIText({
+            dataName: 'data',
+            icon: 'search',
+            iconpos: ICONPOS.RIGHT
+        })
+ */
+
+interface IUIText extends Object {
     /**
    * select绑定的数据字段名
    */
     dataName: string;
-
-    /**
-     * 绑定的value值
-     */
-    value: string;
 
     /**
      * 图标
@@ -21,6 +24,7 @@ interface IUIText {
      * 图标位置 left,right
      */
     iconpos?: ICONPOS;
+
 }
 
 export class UIText extends pluginBase {
@@ -102,7 +106,6 @@ export class UIText extends pluginBase {
                 input.setProp('value', vProp);
             }
         }
-
 
         //清除rootDom的指令和事件
         element.removeDirectives(['field']);

@@ -1,65 +1,64 @@
-// @import "base","icon";
+@import "base", "icon";
 /*list box*/
-.nd-list{
-    overflow:auto;
-    
-    @extend .nd-commonbox;
-    
-    .nd-list-item{
-        display:flex;
-        // line-height:30px;
-        @extend .nd-canclick;
-        padding:$nd-padding;
-        .nd-list-icon{
-            flex:0;
-            padding:0;
-            width:15px;
-            display:inline-block;
-        }
+.nd-list {
+	overflow: auto;
 
-        .nd-list-itemcontent{
-            flex:1;
-        }
+	@extend .nd-commonbox;
 
-        &:hover{
-            @extend .nd-hover-active;
-        }
-    }
+	.nd-list-item {
+		display: flex;
+		// line-height:30px;
+		@extend .nd-canclick;
+		padding: $nd-padding;
+		.nd-list-icon {
+			flex: 0;
+			padding: 0;
+			width: 15px;
+			display: inline-block;
+		}
 
-    .nd-list-item-active{
-        @extend .nd-item-selectcolor;
-        .nd-list-icon{
-            @extend .nd-icon-select;
-        }
-    }
+		.nd-list-itemcontent {
+			flex: 1;
+		}
 
-    .nd-list-item-disable{
-        @extend .nd-disable;
-    }
+		&:hover {
+			@extend .nd-hover-active;
+		}
+	}
+
+	.nd-list-item-active {
+		@extend .nd-item-selectcolor;
+		.nd-list-icon {
+			@extend .nd-icon-select;
+		}
+	}
+
+	.nd-list-item-disable {
+		@extend .nd-disable;
+	}
 }
 
-
 /*横向*/
-.nd-list-horizontal{
-    // border-radius:$nd-padding;
-    overflow:auto;
-    .nd-list-item{
-        @extend .nd-canclick;
-        display:inline-block;
-        padding:$nd-padding * 2;
-        border-radius:$nd-padding;
-        margin:$nd-padding;
+.nd-list-horizontal {
+	// border-radius:$nd-padding;
+	overflow: auto;
+	.nd-list-item {
+		@extend .nd-canclick;
+		display: inline-block;
+		padding: $nd-padding * 2;
+		border-radius: $nd-padding;
+		margin: $nd-padding;
 
-        &:hover{
-            @extend .nd-item-hovercolor;
-        }
-    }
+		&:hover {
+			@extend .nd-item-hovercolor;
+		}
+	}
 
-    .nd-list-item-active{
-        @extend .nd-item-selectcolor;
-    }
+	.nd-list-item-active {
+		@extend .nd-item-selectcolor;
+	}
 
-    .nd-list-item-disable{
-        @extend .nd-disable;
-    }
+	.nd-list-item-disable {
+		@extend .nd-disable;
+	}
 }

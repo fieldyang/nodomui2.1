@@ -2,6 +2,15 @@ import { DefineElementManager, Directive, Element, Expression, Model, Module, NE
 import { pluginBase } from "./pluginBase";
 import { UITool } from "./uibase";
 
+/**
+        let ui = new UIRelationMap({
+            dataName: 'groupUser',
+            listField: ['users', 'groups'],
+            valueField: ['uid', 'gid'],
+            displayField: ["userName", "groupName"]
+        })
+ */
+
 interface IUIRelationMap extends Object {
     /**
     * 值名数组 [xname,yname]
@@ -109,7 +118,6 @@ export class UIRelationMap extends pluginBase {
         //行元素
         let tr: Element = new Element('tr');
         new Directive('repeat', this.listField[1], tr);
-        // new Directive('repeat', '$$' + this.mapName, tr);
         tr.addClass('nd-relationmap-row');
         td = new Element('td');
         td.addClass('nd-relationmap-head');
@@ -144,9 +152,7 @@ export class UIRelationMap extends pluginBase {
     beforeRender(module: Module, uidom: Element) {
         super.beforeRender(module, uidom);
         //增加列表格渲染数据
-        let model: Model = module.model;
-        // 给里面那一层repeat绑上正确的model
-        // uidom.children[1].children[1].model = model;
+        let model: Model = this.model;
 
         let rowData = model[this.listField[1]];
         if (!rowData) {
@@ -195,9 +201,7 @@ export class UIRelationMap extends pluginBase {
      * @param model 
      */
     switchValue(module: Module, dom: Element) {
-        console.log(module, dom);
-
-        let model: Model = module.model;
+        let model: Model = this.model;
         let data = model[this.dataName];
         let id1 = dom.model['id1'];
         let id2 = dom.model['id2'];

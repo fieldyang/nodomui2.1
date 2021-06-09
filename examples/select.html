@@ -13,6 +13,7 @@
 		<div>
 			<button e-click="changeData">changeData</button>
 			<p>简单使用</p>
+			<ui-test></ui-test>
 			<!--
             x-field 绑定字段
             valueField 对应数组中对象的值字段名
@@ -33,20 +34,39 @@
 			</ui-select>
 
 			<!-- <p>多选方式</p>
-        <ui-select x-field='hobby1' valueField='hid' displayField='htitle' listField='hobbies' multiselect>
-        </ui-select>
-        
-        <p>自定义</p>
-        <ui-select x-field='hobby2' valueField='hid' displayField='htitle' listField='hobbies' multiselect listWidth='500'>
-            <div class='hobitem'><span class='id'>{{hid}}</span> <span class='title'>{{htitle}} </span> 
-            <span class='desc'>{{desc}}</span></div>
-        </ui-select> 
+			<ui-select x-field="hobby1" valueField="hid" displayField="htitle" listField="hobbies" multiselect>
+			</ui-select> -->
+			<!-- multiselect -->
+			<!-- <p>自定义</p>
+			<ui-select
+				x-field="hobby2"
+				valueField="hid"
+				multiselect
+				displayField="htitle"
+				listField="hobbies"
+				listWidth="500"
+			>
+				<div class="hobitem">
+					<span class="id">{{hid}}</span> <span class="title">{{htitle}} </span>
+					<span class="desc">{{desc}}</span>
+				</div>
+			</ui-select> -->
 
-        <p>带过滤功能</p>
-        <ui-select x-field='hobby3' valueField='hid' displayField='htitle' listField='hobbies' showEmpty allowFilter listWidth='500'>
-            <div class='hobitem'><span class='id'>{{hid}}</span> <span class='title'>{{htitle}} </span> 
-            <span class='desc'>{{desc}}</span></div>
-        </ui-select> -->
+			<!-- <p>带过滤功能</p> -->
+			<!-- <ui-select
+				x-field="hobby3"
+				valueField="hid"
+				displayField="htitle"
+				listField="hobbies"
+				showEmpty
+				allowFilter
+				listWidth="500"
+			>
+				<div class="hobitem">
+					<span class="id">{{hid}}</span> <span class="title">{{htitle}} </span>
+					<span class="desc">{{desc}}</span>
+				</div>
+			</ui-select> -->
 		</div>
 	</body>
 	<script>
@@ -70,14 +90,14 @@
 					change: function (model, module, newValue, oldValue) {
 						console.log(model, module, newValue, oldValue);
 					},
-					changeData: function (dom, model, module) {
+					changeData: function (dom, module) {
 						// model.set('hobbies',[
 						//     {hid:1,htitle:'体育',icon:'message',desc:'体育运动很不错'},
 						//     {hid:2,htitle:'阅读',icon:'search',desc:'阅读让人睿智'},
 						//     {hid:3,htitle:'健身',icon:'home',disable:true,desc:'健身让人上瘾'}
 						// ]);
-						model.data.hobbies.shift();
-						model.set("hobby", 1);
+						this.hobbies.shift();
+						this.hobby = 1;
 					},
 				},
 			},

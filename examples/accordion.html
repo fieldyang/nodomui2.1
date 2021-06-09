@@ -12,6 +12,7 @@
 	</head>
 	<body>
 		<div>
+			<!-- <ui-test></ui-test> -->
 			<ui-accordion style="width: 300px">
 				<div first data="levels" activeName="active"><b class="{{'nd-icon-' + icon}}"></b>{{title}}</div>
 				<a second data="rows" activeName="a1" itemClick="clickItem"
@@ -69,8 +70,8 @@
 					],
 				},
 				methods: {
-					clickItem: (dom, model, module, e) => {
-						console.log(model.data);
+					clickItem: function (dom, module, e) {
+						console.log(this);
 					},
 				},
 			},
