@@ -128,7 +128,6 @@ var nodom = (function (exports) {
             let mm = module.modelManager;
             let proxy = new Proxy(data, {
                 set: (src, key, value, receiver) => {
-                    // console.log('set', src, key, value);
                     //值未变,proxy 不处理
                     if (src[key] === value) {
                         return true;
@@ -139,17 +138,15 @@ var nodom = (function (exports) {
                         return true;
                     }
                     //不进行赋值
-                    if (typeof value !== 'object' || !value.$watch) {
+                    if (typeof value !== 'object' || (value === null || !value.$watch)) {
                         //更新渲染
-                        // src[key] = value;
-                        if (typeof (value) != 'function' && !key.startsWith('$'))
+                        if (typeof (value) != 'function' && (!['$moduleId', '$key'].includes(key)))
                             mm.update(proxy, key, src[key], value);
-                        return Reflect.set(src, key, value, receiver);
+                        // return Reflect.set(src, key, value, receiver)
                     }
                     return Reflect.set(src, key, value, receiver);
                 },
                 get: (src, key, receiver) => {
-                    // console.log('get', src, key);
                     // vue 的做法是变异 push 等方法避免追踪length 
                     // 但是我测试之后发现他还是会去追踪length
                     // if (Array.isArray(src) && arrayFunc.hasOwnProperty(key)) {
@@ -160,7 +157,7 @@ var nodom = (function (exports) {
                     if (data) {
                         return data;
                     }
-                    if (typeof res === 'object') {
+                    if (typeof res === 'object' && res !== null) {
                         //如果是的对象，则返回代理，便于后续激活get set方法                   
                         // 判断是否已经代理，如果未代理，则增加代理
                         if (!src[key].$watch) {
@@ -174,6 +171,15 @@ var nodom = (function (exports) {
                         // }
                     }
                     return res;
+                },
+                deleteProperty: function (src, key) {
+                    //如果删除对象，从mm中同步删除
+                    if (src[key] != null && typeof src[key] === 'object') {
+                        mm.delToDataMap(src[key]);
+                        mm.delModelToModelMap(src[key]);
+                    }
+                    delete src[key];
+                    return true;
                 }
             });
             proxy.$watch = this.$watch;
@@ -652,6 +658,15 @@ var nodom = (function (exports) {
                     if (cfg.singleton === undefined) {
                         cfg.singleton = true;
                     }
+                    //自定义标签名
+                    if (cfg.className) {
+                        DefineElementManager.add(cfg.className.toLocaleUpperCase(), {
+                            init: function (element, parent) {
+                                element.tagName = 'div';
+                                new Directive('module', cfg.class, element, parent);
+                            }
+                        });
+                    }
                     if (!cfg.lazy) {
                         yield this.initModule(cfg);
                     }
@@ -661,7 +676,7 @@ var nodom = (function (exports) {
             });
         }
         /**
-         * 出事化模块
+         * 初始化模块
          * @param cfg 模块类对象
          */
         static initModule(cfg) {
@@ -921,6 +936,14 @@ var nodom = (function (exports) {
             this.dataMap.set(data, model);
         }
         /**
+      * 删除从 dataNModelMap
+      * @param data      数据对象
+      * @param model     模型
+      */
+        delToDataMap(data) {
+            this.dataMap.delete(data);
+        }
+        /**
          * 从dataNModelMap获取model
          * @param data      数据对象
          * @returns         model
@@ -948,6 +971,14 @@ var nodom = (function (exports) {
             else {
                 this.modelMap.get(model).model = srcNModel;
             }
+        }
+        /**
+       * 删除源模型到到模型map
+       * @param model     模型代理
+       * @param srcNModel  源模型
+       */
+        delModelToModelMap(model) {
+            this.modelMap.delete(model);
         }
         /**
          * 从模型Map获取源模型
@@ -1058,6 +1089,10 @@ var nodom = (function (exports) {
      */
     class Module {
         /**
+         * 插件集合
+         */
+        // private plugins: Map<string, Plugin> = new Map();
+        /**
          * 构造器
          * @param config    模块配置
          */
@@ -1094,10 +1129,6 @@ var nodom = (function (exports) {
              * 子模块名id映射，如 {modulea:1}
              */
             this.moduleMap = new Map();
-            /**
-             * 插件集合
-             */
-            this.plugins = new Map();
             this.id = Util.genId();
             // 模块名字
             if (config && config.name) {
@@ -1183,6 +1214,21 @@ var nodom = (function (exports) {
                 }
                 //删除template
                 delete this.template;
+                //注册自定义标签模块
+                if (this.methodFactory.has('registerModule')) {
+                    let registers = Reflect.apply(this.methodFactory.get('registerModule'), null, []);
+                    if (Array.isArray(registers) && registers.length > 0) {
+                        registers.forEach(v => {
+                            DefineElementManager.add(v.name.toUpperCase(), {
+                                init: function (element, parent) {
+                                    element.tagName = 'div';
+                                    element.setProp('modulename', v.name);
+                                    new Directive('module', v.class, element, parent);
+                                }
+                            });
+                        });
+                    }
+                }
                 //如果已存在templateStr，则直接编译
                 if (!Util.isEmpty(templateStr)) {
                     this.virtualDom = Compiler.compile(templateStr);
@@ -1646,19 +1692,19 @@ var nodom = (function (exports) {
          * @param name      插件名
          * @param plugin    插件
          */
-        addNPlugin(name, plugin) {
-            if (name) {
-                this.plugins.set(name, plugin);
-            }
-        }
+        // public addNPlugin(name: string, plugin: Plugin) {
+        //     if (name) {
+        //         this.plugins.set(name, plugin);
+        //     }
+        // }
         /**
          * 获取插件
          * @param name  插件名
          * @returns     插件实例
          */
-        getNPlugin(name) {
-            return this.plugins.get(name);
-        }
+        // public getNPlugin(name: string): Plugin {
+        //     return this.plugins.get(name);
+        // }
         /**
          * 设置数据url
          * @param url   数据url
@@ -3491,7 +3537,6 @@ var nodom = (function (exports) {
                 let v = this.fields.length > 0 ? ',' + this.fields.join(',') : '';
                 execStr = 'function($module' + v + '){return ' + execStr + '}';
                 this.execFunc = eval('(' + execStr + ')');
-                // console.log(this.execFunc);
             }
         }
         /**
@@ -3594,7 +3639,7 @@ var nodom = (function (exports) {
                 else if (special.test(lastStr) && !isInBrace) {
                     express += exprStr.substring(first, last) + lastStr;
                     //特殊字符处理
-                    fields = fields.concat(exprStr.substring(first, last).match(/[\w^\.]+/g));
+                    fields = fields.concat(exprStr.substring(first, last).match(/[\$\w^\.]+/g));
                     if (lastStr == '=' || lastStr == '|' || lastStr == '&') { //处理重复字符，和表达式
                         if (lastStr == '|' && exprStr[last + 1] != '|') { //表达式处理
                             let str = filters[filters.length - 1] ? filters[filters.length - 1] : exprStr.substring(first, last);
@@ -3619,8 +3664,9 @@ var nodom = (function (exports) {
                 }
             }
             let endStr = exprStr.substring(first);
-            if (/^[A-Za-z0-9]+/.test(endStr) && endStr.indexOf(' ') === -1) {
-                let str = endStr.match(/\w+/)[0];
+            ///[A-Za-z0-9]+/.test(endStr)&&
+            if (endStr.indexOf(' ') === -1 && !endStr.startsWith('##TMP') && !endStr.startsWith(')')) {
+                let str = endStr.indexOf('.') != -1 ? endStr.substring(0, endStr.indexOf('.')) : endStr;
                 fields.push(str);
             }
             express += endStr;
@@ -3677,7 +3723,7 @@ var nodom = (function (exports) {
                 fields.push(express.split(' ')[0]);
             }
             fields = [...(new Set(fields))].filter((v) => {
-                return v != null && !v.startsWith('.') && !v.startsWith('$module') && !v.startsWith('TMP');
+                return v != null && !v.startsWith('.') && !v.startsWith('$module') && !v.startsWith('##TMP');
             });
             if (replaceMap.size) {
                 replaceMap.forEach((value, key) => {
@@ -3694,7 +3740,7 @@ var nodom = (function (exports) {
          * @param model 	模型 或 fieldObj对象
          * @returns 		计算结果
          */
-        val(model) {
+        val(model, dom) {
             let module = ModuleFactory.get(model.$moduleId);
             if (!model) {
                 model = module.model;
@@ -3711,7 +3757,7 @@ var nodom = (function (exports) {
             }
             catch (e) {
             }
-            return v === undefined || v === null ? '' : JSON.stringify(v);
+            return v === undefined || v === null ? '' : v;
             /**
              * 获取字段值
              * @param module    模块
@@ -3843,13 +3889,18 @@ var nodom = (function (exports) {
              */
             this.dontRenderSelf = false;
             /**
-             * 临时参数 map
+             * 插槽名
              */
+            // public slotName: any;
+            /**
+          * 临时参数 map
+          */
             this.tmpParamMap = new Map();
             this.tagName = tag; //标签
             //检查是否为svg
             if (tag && tag.toLowerCase() === 'svg') {
-                this.isSvgNode = true;
+                this.setTmpParam('isSvgNode', true);
+                // this.isSvgNode = true;
             }
             //key
             this.key = Util.genId() + '';
@@ -3879,8 +3930,8 @@ var nodom = (function (exports) {
                 this.model = module.model;
             }
             //自定义元素的前置渲染
-            if (this.plugin) {
-                this.plugin.beforeRender(module, this);
+            if (this.defineEl) {
+                this.defineEl.beforeRender(module, this);
             }
             if (this.tagName !== undefined) { //element
                 if (!this.handleDirectives(module)) {
@@ -3903,8 +3954,8 @@ var nodom = (function (exports) {
                 }
             }
             //自定义元素的后置渲染
-            if (this.plugin) {
-                this.plugin.afterRender(module, this);
+            if (this.defineEl) {
+                this.defineEl.afterRender(module, this);
             }
             return true;
         }
@@ -3965,7 +4016,12 @@ var nodom = (function (exports) {
                     if (!parent || !parent.children) {
                         break;
                     }
-                    let ind = parent.children.indexOf(this);
+                    let indexArr = [];
+                    parent.children.forEach(v => [
+                        indexArr.push(v.key)
+                    ]);
+                    // let ind = parent.children.indexOf(this);
+                    let ind = indexArr.indexOf(this.key);
                     if (ind !== -1) {
                         //element或fragment
                         if (this.type === 'html') {
@@ -4033,7 +4089,7 @@ var nodom = (function (exports) {
             function newEl(vdom, parent, parentEl) {
                 //创建element
                 let el;
-                if (vdom.isSvgNode) { //如果为svg node，则创建svg element
+                if (vdom.getTmpParam('isSvgNode')) { //如果为svg node，则创建svg element
                     el = Util.newSvgEl(vdom.tagName);
                 }
                 else {
@@ -4113,12 +4169,12 @@ var nodom = (function (exports) {
                 dst.key = Util.genId() + '';
             }
             //define element复制
-            if (this.plugin) {
+            if (this.defineEl) {
                 if (changeKey) {
-                    dst.plugin = this.plugin.clone(dst);
+                    dst.defineEl = this.defineEl.clone(dst);
                 }
                 else {
-                    dst.plugin = this.plugin;
+                    dst.defineEl = this.defineEl;
                 }
             }
             //指令复制
@@ -4195,7 +4251,7 @@ var nodom = (function (exports) {
             let value = '';
             exprArr.forEach((v) => {
                 if (v instanceof Expression) { //处理表达式
-                    let v1 = v.val(model);
+                    let v1 = v.val(model, this);
                     value += v1 !== undefined ? v1 : '';
                 }
                 else {
@@ -4541,8 +4597,22 @@ var nodom = (function (exports) {
          * @returns		虚拟dom/undefined
          */
         query(key) {
-            if (this.key === key) {
-                return this;
+            //defineEl
+            if (typeof key === 'object' && key != null) {
+                let res = true;
+                for (const [attr, value] of Object.entries(key)) {
+                    if (attr !== 'type' && (this.getProp(attr.toLocaleLowerCase()) || this[attr]) != value) {
+                        res = false;
+                        break;
+                    }
+                }
+                if (res) {
+                    return key.hasOwnProperty('type') && key['type'] !== 'element' ? this.defineEl : this;
+                }
+            }
+            else {
+                if (this.key === key)
+                    return this;
             }
             for (let i = 0; i < this.children.length; i++) {
                 let dom = this.children[i].query(key);
@@ -4563,6 +4633,8 @@ var nodom = (function (exports) {
             }
             let re = new ChangedDom();
             let change = false;
+            //找到过的dom map {domKey:true/false}，比较后，则添加到map
+            // let findedMap: Map<string, boolean> = new Map();
             if (this.tagName === undefined) { //文本节点
                 if (dst.tagName === undefined) {
                     if (this.textContent !== dst.textContent) {
@@ -4795,6 +4867,13 @@ var nodom = (function (exports) {
          */
         removeTmpParam(key) {
             this.tmpParamMap.delete(key);
+        }
+        /**
+         * 是否有临时参数
+         * @param key       参数名
+         */
+        hasTmpParam(key) {
+            return this.tmpParamMap.has(key);
         }
     }
 
@@ -5300,7 +5379,6 @@ var nodom = (function (exports) {
         static compile(elementStr) {
             // 这里是把模板串通过正则表达式匹配 生成AST
             let ast = this.compileTemplateToAst(elementStr);
-            // console.log(ast);
             let oe = new Element('div');
             // 将AST编译成抽象语法树
             this.compileAST(oe, ast);
@@ -5367,7 +5445,6 @@ var nodom = (function (exports) {
          * @param astObj
          */
         static handleAstNode(parent, astObj) {
-            // let de = PluginManager.get(astObj.tagName.toUpperCase());
             let de = DefineElementManager.get(astObj.tagName.toUpperCase());
             let child = new Element(astObj.tagName);
             parent.add(child);
@@ -5860,73 +5937,6 @@ var nodom = (function (exports) {
     //     }
     // }
 
-    /**
-     * 插件，插件为自定义元素方式实现
-     */
-    class DefineElement {
-        constructor(params) {
-        }
-        /**
-         * 初始化
-         */
-        init(dom, parent) { }
-        /**
-         * 前置渲染方法(dom render方法中获取modelId和parentKey后执行)
-         * @param module    模块
-         * @param uidom     虚拟dom
-         */
-        beforeRender(module, uidom) {
-            this.element = uidom;
-            this.moduleId = module.id;
-            if (!this.model || uidom.key !== this.key) {
-                this.key = uidom.key;
-                this.model = uidom.model;
-                //添加到模块
-                if (uidom.hasProp('name')) {
-                    module.addNPlugin(uidom.getProp('name'), this);
-                }
-                this.needPreRender = true;
-            }
-            else {
-                this.needPreRender = false;
-            }
-        }
-        /**
-         * 后置渲染方法(dom render结束后，渲染到html之前)
-         * @param module    模块
-         * @param uidom     虚拟dom
-         */
-        afterRender(module, uidom) { }
-        /**
-         * 克隆
-         */
-        clone(dst) {
-            let plugin = Reflect.construct(this.constructor, []);
-            //不拷贝属性
-            let excludeProps = ['key', 'element', 'modelId', 'moduleId'];
-            Util.getOwnProps(this).forEach((prop) => {
-                if (excludeProps.includes(prop)) {
-                    return;
-                }
-                plugin[prop] = Util.clone(this[prop]);
-            });
-            if (dst) {
-                plugin.element = dst;
-            }
-            return plugin;
-        }
-        /**
-         * 获取model
-         */
-        getModel() {
-            let module = ModuleFactory.get(this.moduleId);
-            if (!module) {
-                return null;
-            }
-            return this.model || null;
-        }
-    }
-
     const arrayFunc = new Map();
     ['push', 'pop', 'shift', 'unshift', 'splice'].forEach(key => {
         const method = Array.prototype[key];
@@ -5945,13 +5955,20 @@ var nodom = (function (exports) {
     /**
      * module 元素
      */
-    DefineElementManager.add('MODULE', {
+    DefineElementManager.add('NMODULE', {
         init: function (element, parent) {
-            element.tagName = 'div';
+            //tagname 默认div
+            if (element.hasProp('tag')) {
+                element.tagName = element.getProp('tag');
+                element.delProp('tag');
+            }
+            else {
+                element.tagName = 'div';
+            }
             //类名
             let clazz = element.getProp('classname');
             if (!clazz) {
-                throw new NError('itemnotempty', exports.NodomMessage.TipWords['element'], 'MODULE', 'classname');
+                throw new NError('itemnotempty', exports.NodomMessage.TipWords['element'], 'NMODULE', 'classname');
             }
             //模块名
             let moduleName = element.getProp('name');
@@ -5964,27 +5981,62 @@ var nodom = (function (exports) {
     /**
      * for 元素
      */
-    DefineElementManager.add('FOR', {
+    DefineElementManager.add('NFOR', {
         init: function (element, parent) {
-            element.tagName = 'div';
+            //tagname 默认div
+            if (element.hasProp('tag')) {
+                element.tagName = element.getProp('tag');
+                element.delProp('tag');
+            }
+            else {
+                element.tagName = 'div';
+            }
             //条件
             let cond = element.getProp('condition');
             if (!cond) {
-                throw new NError('itemnotempty', exports.NodomMessage.TipWords['element'], 'for', 'condition');
+                throw new NError('itemnotempty', exports.NodomMessage.TipWords['element'], 'NFOR', 'condition');
             }
             new Directive('repeat', cond, element, parent);
         }
     });
     /**
-     * if 元素
+     * recur 元素
      */
-    DefineElementManager.add('IF', {
+    DefineElementManager.add('NRECUR', {
         init: function (element, parent) {
-            element.tagName = 'div';
+            //tagname 默认div
+            if (element.hasProp('tag')) {
+                element.tagName = element.getProp('tag');
+                element.delProp('tag');
+            }
+            else {
+                element.tagName = 'div';
+            }
             //条件
             let cond = element.getProp('condition');
             if (!cond) {
-                throw new NError('itemnotempty', exports.NodomMessage.TipWords['element'], 'IF', 'condition');
+                throw new NError('itemnotempty', exports.NodomMessage.TipWords['element'], 'NRECUR', 'condition');
+            }
+            new Directive('recur', cond, element, parent);
+        }
+    });
+    /**
+     * if 元素
+     */
+    DefineElementManager.add('NIF', {
+        init: function (element, parent) {
+            //tagname 默认div
+            if (element.hasProp('tag')) {
+                element.tagName = element.getProp('tag');
+                element.delProp('tag');
+            }
+            else {
+                element.tagName = 'div';
+            }
+            //条件
+            let cond = element.getProp('condition');
+            if (!cond) {
+                throw new NError('itemnotempty', exports.NodomMessage.TipWords['element'], 'NIF', 'condition');
             }
             new Directive('if', cond, element, parent);
         }
@@ -5992,22 +6044,36 @@ var nodom = (function (exports) {
     /**
      * else 元素
      */
-    DefineElementManager.add('ELSE', {
+    DefineElementManager.add('NELSE', {
         init: function (element, parent) {
-            element.tagName = 'div';
+            //tagname 默认div
+            if (element.hasProp('tag')) {
+                element.tagName = element.getProp('tag');
+                element.delProp('tag');
+            }
+            else {
+                element.tagName = 'div';
+            }
             new Directive('else', null, element, parent);
         }
     });
     /**
      * elseif 元素
      */
-    DefineElementManager.add('ELSEIF', {
+    DefineElementManager.add('NELSEIF', {
         init: function (element, parent) {
-            element.tagName = 'div';
+            //tagname 默认div
+            if (element.hasProp('tag')) {
+                element.tagName = element.getProp('tag');
+                element.delProp('tag');
+            }
+            else {
+                element.tagName = 'div';
+            }
             //条件
             let cond = element.getProp('condition');
             if (!cond) {
-                throw new NError('itemnotempty', exports.NodomMessage.TipWords['element'], 'ELSEIF', 'condition');
+                throw new NError('itemnotempty', exports.NodomMessage.TipWords['element'], 'NELSEIF', 'condition');
             }
             new Directive('elseif', cond, element, parent);
         }
@@ -6015,22 +6081,36 @@ var nodom = (function (exports) {
     /**
      * endif 元素
      */
-    DefineElementManager.add('ENDIF', {
+    DefineElementManager.add('NENDIF', {
         init: function (element, parent) {
-            element.tagName = 'div';
+            //tagname 默认div
+            if (element.hasProp('tag')) {
+                element.tagName = element.getProp('tag');
+                element.delProp('tag');
+            }
+            else {
+                element.tagName = 'div';
+            }
             new Directive('endif', null, element, parent);
         }
     });
     /**
      * switch 元素
      */
-    DefineElementManager.add('SWITCH', {
+    DefineElementManager.add('NSWITCH', {
         init: function (element, parent) {
-            element.tagName = 'div';
+            //tagname 默认div
+            if (element.hasProp('tag')) {
+                element.tagName = element.getProp('tag');
+                element.delProp('tag');
+            }
+            else {
+                element.tagName = 'div';
+            }
             //条件
             let cond = element.getProp('condition');
             if (!cond) {
-                throw new NError('itemnotempty', exports.NodomMessage.TipWords['element'], 'switch', 'condition');
+                throw new NError('itemnotempty', exports.NodomMessage.TipWords['element'], 'NSWITCH', 'condition');
             }
             new Directive('switch', cond, element, parent);
         }
@@ -6038,15 +6118,28 @@ var nodom = (function (exports) {
     /**
      * case 元素
      */
-    DefineElementManager.add('CASE', {
+    DefineElementManager.add('NCASE', {
         init: function (element, parent) {
-            element.tagName = 'div';
+            //tagname 默认div
+            if (element.hasProp('tag')) {
+                element.tagName = element.getProp('tag');
+                element.delProp('tag');
+            }
+            else {
+                element.tagName = 'div';
+            }
             //条件
             let cond = element.getProp('condition');
             if (!cond) {
-                throw new NError('itemnotempty', exports.NodomMessage.TipWords['element'], 'CASE', 'condition');
+                throw new NError('itemnotempty', exports.NodomMessage.TipWords['element'], 'NCASE', 'condition');
             }
             new Directive('case', cond, element, parent);
+        }
+    });
+    DefineElementManager.add('SLOT', {
+        init: function (element, parent) {
+            element.tagName = 'div';
+            element.setTmpParam('slotName', element.getProp('name'));
         }
     });
 
@@ -6099,11 +6192,44 @@ var nodom = (function (exports) {
                         dir.extra.moduleId = m.id;
                     }
                     module.addChild(m.id);
+                    //插槽
+                    if (dom.children.length > 0) {
+                        let slotMap = new Map();
+                        dom.children.forEach((v) => {
+                            if (v.hasProp('slotName')) {
+                                slotMap.set(v.getProp('slotName'), v.clone(true));
+                            }
+                        });
+                        //有指令
+                        if (slotMap.size > 0) {
+                            let oldMap = findSlot(m.virtualDom);
+                            //原模块
+                            oldMap.forEach(slot => {
+                                let pd = m.getElement(slot.parentKey, true);
+                                let index = pd.children.findIndex((v) => { return v.key === slot.key; });
+                                if (index >= 0) {
+                                    if (slotMap.has(slot.getTmpParam('slotName'))) {
+                                        pd.children.splice(index, 1, slotMap.get(slot.getTmpParam('slotName')));
+                                    }
+                                }
+                            });
+                        }
+                    }
                     yield m.active();
                 }
             }
             else if (subMdl && subMdl.state !== 3) {
                 yield subMdl.active();
+            }
+            function findSlot(dom, res = new Map()) {
+                if (dom.hasTmpParam('slotName')) {
+                    res.set(dom.getTmpParam('slotName'), dom);
+                    return;
+                }
+                dom.children.forEach(v => {
+                    findSlot(v, res);
+                });
+                return res;
             }
         }));
         /**
@@ -6183,9 +6309,12 @@ var nodom = (function (exports) {
                 //设置modelId
                 node.model = rows[i];
                 //设置key
-                // if(rows[i].key)
-                // setKey(node, key, i);
-                setKey(node, key, rows[i].$key);
+                if (rows[i].$key) {
+                    setKey(node, key, rows[i].$key);
+                }
+                else {
+                    setKey(node, key, Util.genId());
+                }
                 rows[i].$index = i;
                 chds.push(node);
             }
@@ -6206,6 +6335,39 @@ var nodom = (function (exports) {
                 node.children.forEach((dom) => {
                     setKey(dom, dom.key, id);
                 });
+            }
+        });
+        /**
+         * 递归指令
+         * 作用：在dom内部递归，即根据数据层复制节点作为前一层的子节点
+         * 数据格式：
+         * data:{
+         *     recurItem:{
+        *          title:'第一层',
+        *          recurItem:{
+        *              title:'第二层',
+        *              recurItem:{...}
+        *          }
+        *      }
+         * }
+         * 模版格式：
+         * <div x-recursion='items'><span>{{title}}</span></div>
+         */
+        DirectiveManager.addType('recur', 2, (directive, dom, parent) => {
+        }, (directive, dom, module, parent) => {
+            let model = dom.model;
+            if (!model) {
+                return;
+            }
+            //得到rows数组的model
+            let data = model.$query(directive.value);
+            dom.model = data;
+            //处理内部递归节点
+            if (data[directive.value]) {
+                let node = dom.clone();
+                node.model = data;
+                //作为当前节点子节点
+                dom.add(node);
             }
         });
         /**
@@ -6235,7 +6397,7 @@ var nodom = (function (exports) {
                 let node = directive.extra.groups[i];
                 let dir = node.getDirective('if') || node.getDirective('elseif') || node.getDirective('else');
                 if (dir.value) { //if elseif指令
-                    let v = dir.value.val(dom.model);
+                    let v = dir.value.val(dom.model, dom);
                     if (v && v !== 'false') {
                         target = i;
                         break;
@@ -6332,7 +6494,7 @@ var nodom = (function (exports) {
                     node.dontRender = true;
                     continue;
                 }
-                let v = dir.value.val(dom.model);
+                let v = dir.value.val(dom.model, dom);
                 hasTrue = v && v !== 'false';
                 node.dontRender = !hasTrue;
             }
@@ -6370,7 +6532,7 @@ var nodom = (function (exports) {
             }
         }, (directive, dom, module, parent) => {
             let model = dom.model;
-            let v = directive.value.val(model);
+            let v = directive.value.val(model, dom);
             //渲染
             if (v && v !== 'false') {
                 dom.dontRender = false;
@@ -6413,7 +6575,7 @@ var nodom = (function (exports) {
             Util.getOwnProps(obj).forEach(function (key) {
                 let r = obj[key];
                 if (r instanceof Expression) {
-                    r = r.val(model);
+                    r = r.val(model, dom);
                 }
                 let ind = clsArr.indexOf(key);
                 if (!r || r === 'false') {
@@ -6757,6 +6919,21 @@ var nodom = (function (exports) {
             dom.dontRenderSelf = true;
         }, (directive, dom, module, parent) => {
         });
+        /**
+         * 粘指令，粘在前一个dom节点上，如果前一个节点repeat了多个分身，则每个分身都粘上
+         * 如果未指定model，则用被粘节点的model
+         */
+        DirectiveManager.addType('stick', 10, (directive, dom) => {
+        }, (directive, dom, module, parent) => {
+        });
+        /**
+         * 插槽指令
+         * 配合slot标签使用
+         */
+        DirectiveManager.addType('slot', 3, (directive, dom) => {
+            dom.setProp('slotName', directive.value);
+        }, (directive, dom, module, parent) => {
+        });
     })());
 
     /// <reference path="../nodom.ts" />
@@ -7031,6 +7208,230 @@ var nodom = (function (exports) {
         });
     })());
 
+    /**
+     * 插件，插件为自定义元素方式实现
+     */
+    class DefineElement {
+        constructor(params) {
+        }
+        /**
+         * 初始化
+         */
+        init(dom, parent) { }
+        /**
+         * 前置渲染方法(dom render方法中获取modelId和parentKey后执行)
+         * @param module    模块
+         * @param uidom     虚拟dom
+         */
+        beforeRender(module, uidom) {
+            this.element = uidom;
+            this.moduleId = module.id;
+            if (!this.model || uidom.key !== this.key) {
+                this.key = uidom.key;
+                this.model = uidom.model;
+                //添加到模块
+                if (uidom.hasProp('name')) {
+                    // module.addNPlugin(uidom.getProp('name'),this);       
+                    this.name = uidom.getProp('name');
+                }
+                this.needPreRender = true;
+            }
+            else {
+                this.needPreRender = false;
+            }
+        }
+        /**
+         * 后置渲染方法(dom render结束后，渲染到html之前)
+         * @param module    模块
+         * @param uidom     虚拟dom
+         */
+        afterRender(module, uidom) { }
+        /**
+         * 克隆
+         */
+        clone(dst) {
+            let plugin = Reflect.construct(this.constructor, []);
+            //不拷贝属性
+            let excludeProps = ['key', 'element', 'modelId', 'moduleId'];
+            Util.getOwnProps(this).forEach((prop) => {
+                if (excludeProps.includes(prop)) {
+                    return;
+                }
+                plugin[prop] = Util.clone(this[prop]);
+            });
+            if (dst) {
+                plugin.element = dst;
+            }
+            return plugin;
+        }
+        /**
+         * 获取model
+         */
+        getModel() {
+            let module = ModuleFactory.get(this.moduleId);
+            if (!module) {
+                return null;
+            }
+            return this.model || null;
+        }
+    }
+
+    class Img extends DefineElement {
+        constructor(params) {
+            super(params);
+            let rootDom = new Element();
+            if (params) {
+                rootDom = params;
+                this.init(params);
+            }
+            rootDom.tagName = 'div';
+            rootDom.defineEl = this;
+            this.element = rootDom;
+            console.log(this);
+        }
+        init(element) {
+            let that = this;
+            // this.preSrcName =  element.getProp('presrcname')||'preSrc';
+            // this.SrcName = element.getProp('srcname') || 'src';
+            if (element.hasProp('prename')) {
+                this.preSrcName = element.getProp('prename');
+                element.delProp('prename');
+            }
+            else {
+                this.preSrcName = 'preSrc';
+            }
+            if (element.hasProp('srcname')) {
+                this.srcName = element.getProp('srcname');
+                element.delProp('srcname');
+            }
+            else {
+                this.srcName = 'src';
+            }
+            if (element.hasProp('dataname')) {
+                this.dataName = element.getProp('dataname');
+                element.delProp('dataname');
+            }
+            else {
+                this.dataName = 'rows';
+            }
+            that.delay = 50;
+            element.addEvent(new NEvent('scroll', function (dom, module, e, el) {
+                if (this.$query('$timer'))
+                    clearTimeout(this.$query('$timer'));
+                let timer = setTimeout(() => {
+                    that.refresh(dom, el);
+                }, that.delay || 50);
+                this['$timer'] = timer;
+            }));
+            // element.defineEl=this;
+        }
+        ;
+        // <div style="max-height: 500px; overflow-y: scroll; display: flex; flex-wrap: wrap; flex-direction: rows;"
+        // 	e-scroll='scroll' e-click="click">
+        // 	<img x-repeat="rows" src="img/mvvm.png" data-src="{{src}}" width="100%">
+        // </div>
+        // scroll(dom, model, module, e, el) {
+        //     if (model.query('timer')) clearTimeout(model.query('timer'));
+        //     var timer = setTimeout(() => {
+        //             console.dir(el);
+        //             render();
+        //         },
+        //         50);
+        //     model.set('timer', timer);
+        //     function render() {
+        //         let height = el.offsetHeight;
+        //         var start = el.scrollTop,
+        //             end = start + height;
+        //         let isPosition;
+        //         let hasPosition = el.style.position == '';
+        //         for (var i = 0; i < el.children.length; i++) {
+        //             var item = el.children[i],
+        //                 elemTop = hasPosition ? item.offsetTop - el.offsetTop : item.offsetTop;
+        //             // console.log(item,start,end,elemTop);
+        //             // console.dir(item);
+        //             // console.log(el.scrollTop,height);
+        //             if (elemTop >= start && elemTop <= end) {
+        //                 if (item.getAttribute('data-src')) {
+        //                     item.setAttribute('src', item.getAttribute('data-src'));
+        //                     item.removeAttribute('data-src');
+        //                     // console.log(item.getAttribute('data-src'));
+        //                     // var src = item.attr('lay-src');
+        //                 }
+        //             }
+        //             if (elemTop > end) break;
+        //         }
+        //     }
+        beforeRender(module, dom) {
+            super.beforeRender(module, dom);
+            if (this.needPreRender) {
+                dom.setProp('overflow-y', 'scroll');
+                let child = dom.children[0];
+                let img = child.query({
+                    tagName: 'img'
+                });
+                img.setProp('src', new Expression(`${this.preSrcName}`), true);
+                new Directive('repeat', this.dataName, child, dom);
+            }
+        }
+        ;
+        afterRender(module, dom) {
+            if (this.needPreRender) {
+                let md = this.getModel();
+                md['$timer'] = null;
+                setTimeout(() => {
+                    this.refresh(dom, module.getNode(dom.key));
+                }, 50);
+            }
+            super.afterRender(module, dom);
+            this.imgs = this.getImgElement(dom);
+        }
+        getImgElement(dom, res = []) {
+            for (let i = 0; i < dom.children.length; i++) {
+                let item = dom.children[i];
+                if (item.tagName === 'img') {
+                    res.push(item);
+                }
+                if (item.children.length > 0) {
+                    this.getImgElement(item, res);
+                }
+            }
+            return res;
+        }
+        refresh(uidom, el) {
+            console.log(uidom, el);
+            let height = el.offsetHeight;
+            let start = el.scrollTop, end = start + height;
+            let hasPosition = el.style.position == '';
+            for (let i = 0; i < el.children.length; i++) {
+                for (let j = 0; j < el.children[i].children.length; j++) {
+                    let item = el.children[i].children[j];
+                    if (item.tagName.toLowerCase() !== 'img')
+                        continue;
+                    // let item: any = el.children[i],
+                    let elemTop = hasPosition ? item.offsetTop - el.offsetTop : item.offsetTop;
+                    console.log(elemTop, start, end);
+                    if (elemTop >= start && elemTop <= end) {
+                        let element = uidom.query(item.getAttribute('key'));
+                        console.log(element);
+                        let em = element.model;
+                        if (em.hasOwnProperty(this.srcName)) {
+                            em[this.preSrcName] = em[this.srcName];
+                            delete em[this.srcName];
+                        }
+                        console.log(em);
+                    }
+                    if (elemTop > end)
+                        break;
+                }
+            }
+        }
+    }
+    DefineElementManager.add('NIMG', {
+        init: function (element, parent) {
+            new Img(element);
+        }
+    });
+
     /*
      * 消息js文件 中文文件
      */
@@ -7201,9 +7602,7 @@ var nodom = (function (exports) {
                 this.key = uidom.key;
                 this.model = uidom.model;
                 //添加到模块
-                if (uidom.hasProp('name')) {
-                    module.addNPlugin(uidom.getProp('name'), this);
-                }
+                if (uidom.hasProp('name')) ;
                 this.needPreRender = true;
             }
             else {
@@ -7271,162 +7670,9 @@ var nodom = (function (exports) {
     }
     PluginManager.plugins = new Map();
 
-    //关闭右键菜单
-    document.oncontextmenu = function (e) {
-        e.preventDefault();
-    };
-    /**
-     * 工具类
-     */
-    class UITool {
-        /**
-         * 去掉字符串的空格
-         * @param src
-         */
-        static clearSpace(src) {
-            if (src && typeof src === 'string') {
-                return src.replace(/\s+/g, '');
-            }
-        }
-        /**
-         * 调整移动块位置
-         * @param module        模块
-         * @param key           待调整dom key
-         * @param x             目标x
-         * @param y             目标y
-         * @param distance      偏移量
-         * @param bodyHeight    当前document 高度
-         * @param changeSize    是否修改框size
-         */
-        static adjustPosAndSize(module, key, x, y, distance, bodyHeight, changeSize) {
-            let el = module.getNode(key);
-            //el可能还未出现，延迟处理
-            if (!el) {
-                setTimeout(() => {
-                    UITool.adjustPosAndSize(module, key, x, y, distance, document.body.scrollHeight, changeSize);
-                }, 0);
-            }
-            else {
-                let scTop = document.documentElement.scrollTop || document.body.scrollTop;
-                y += scTop;
-                let height = bodyHeight > window.innerHeight ? bodyHeight : window.innerHeight;
-                //设置最大高度
-                if (changeSize) {
-                    el.style.maxHeight = (window.innerHeight - 50) + 'px';
-                }
-                distance = distance || 0;
-                if (y + el.offsetHeight > height && y > el.offsetHeight + distance) {
-                    el.style.transform = 'translate(0,' + -(el.offsetHeight + distance) + 'px)';
-                }
-                else {
-                    el.style.transform = 'translate(0,0)';
-                }
-            }
-        }
-        /**
-         * 处理ui参数
-         * @param dom           待处理dom
-         * @param defDom        自定义dom对象
-         * @param paramArr      参数数组
-         * @param props         自定义对象属性数组
-         * @param defaultValues 自定义对象属性默认值
-         */
-        static handleUIParam(dom, defDom, paramArr, props, defaultValues) {
-            let error = false;
-            for (let i = 0; i < paramArr.length; i++) {
-                let pName = props[i];
-                let p = paramArr[i];
-                //参数类型
-                let type;
-                let pa;
-                if (p.includes('|')) {
-                    pa = p.split('|');
-                    p = pa[0];
-                    type = pa[1];
-                }
-                let v = dom.getProp(p);
-                if (v) {
-                    //去掉空格
-                    v = this.clearSpace(v);
-                    if (v !== '') {
-                        switch (type) {
-                            case 'number':
-                                if (!Util.isNumberString(v)) {
-                                    error = true;
-                                }
-                                else {
-                                    defDom[pName] = parseInt(v);
-                                }
-                                break;
-                            case 'array':
-                                let va = v.split(',');
-                                if (pa.length === 3) {
-                                    if (Util.isNumberString(pa[2])) { //数组长度判断
-                                        if (parseInt(pa[2]) > va.length) {
-                                            error = true;
-                                        }
-                                    }
-                                    else {
-                                        if (pa[2] === 'number') {
-                                            for (let i = 0; i < va.length; i++) {
-                                                let v1 = va[i];
-                                                if (!Util.isNumberString(v1)) {
-                                                    error = true;
-                                                    break;
-                                                }
-                                                va[i] = parseInt(v1);
-                                            }
-                                        }
-                                    }
-                                }
-                                if (!error) {
-                                    defDom[pName] = va;
-                                }
-                                break;
-                            case 'bool':
-                                //bool型可以不设置值，只需要设置该属性名即可
-                                if (v === 'true') {
-                                    defDom[pName] = true;
-                                }
-                                break;
-                            default:
-                                defDom[pName] = v;
-                        }
-                    }
-                }
-                //默认值
-                if (!v || v === '') {
-                    if (defaultValues && defaultValues[i] !== null) {
-                        defDom[pName] = defaultValues[i];
-                    }
-                    else {
-                        //bool只要有这个属性，则设置为true
-                        if (type === 'bool') {
-                            if (dom.hasProp(p)) {
-                                defDom[pName] = true;
-                            }
-                            else {
-                                defDom[pName] = false;
-                            }
-                        }
-                        else {
-                            error = true;
-                        }
-                    }
-                }
-                dom.delProp(p);
-                if (error) {
-                    throw new NError('config1', defDom.tagName, p);
-                }
-            }
-        }
-    }
-
     exports.Application = Application;
     exports.ChangedDom = ChangedDom;
     exports.Compiler = Compiler;
-    exports.DefineElement = DefineElement;
-    exports.DefineElementManager = DefineElementManager;
     exports.Directive = Directive;
     exports.DirectiveManager = DirectiveManager;
     exports.DirectiveType = DirectiveType;
@@ -7455,7 +7701,6 @@ var nodom = (function (exports) {
     exports.Router = Router;
     exports.Scheduler = Scheduler;
     exports.Serializer = Serializer;
-    exports.UITool = UITool;
     exports.Util = Util;
     exports.addModules = addModules;
     exports.app = app;
