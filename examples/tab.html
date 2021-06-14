@@ -1,141 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta title="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>nodomui example - panel usage</title>
-    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
-    <script src='js/nodom.js'></script>
-    <script src='../bin/nodomui.js'></script>
+	<head>
+		<meta charset="UTF-8" />
+		<meta title="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>nodomui example - panel usage</title>
+		<link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+		<script src="../node_modules/nodom/dist/nodom.js"></script>
+		<script src="../dist/nodomui.js"></script>
+		<script src="./js/config.js"></script>
 
-    <style>
-        .tab{
-            height:200px;
-        }
-    </style>
-</head>
-<body>
-    
-    <div>
-        <h2>简单使用</h2>
-        <!--
+		<style>
+			.tab {
+				height: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<!-- <h2>简单使用</h2> -->
+			<!--
             position tab位置 top right bottom left，默认top
         -->
-        <ui-tab position='top' allowClose>
-            <tab title='tab1'><p style='color:red'>this is tab1</p></tab>
-            <tab title='tab2'>this is tab2</tab>
-            <tab title='tab3'>this is tab3</tab>
-        </ui-tab>
-        <h2>自定义tab位置</h2>
-        <h3>左边</h3>
-        <ui-tab position='left' >
-            <tab title='tab1'>
-                <p style='color:red'>this is tab1</p>
-            </tab>
-            <tab title='tab2'>this is tab2</tab>
-            <tab title='tab3'>this is tab3</tab>
-        </ui-tab>
-        <h3>右边</h3>
-        <ui-tab position='right' >
-            <tab title='tab1'>
-                <p style='color:red'>this is tab1</p>
-            </tab>
-            <tab title='tab2'>this is tab2</tab>
-            <tab title='tab3'>this is tab3</tab>
-        </ui-tab>
-        <h3>底部</h3>
-        <ui-tab position='bottom' >
-            <tab title='tab1'>
-                <p style='color:red'>this is tab1</p>
-            </tab>
-            <tab title='tab2'>this is tab2</tab>
-            <tab title='tab3'>this is tab3</tab>
-        </ui-tab>
-        <!-- <h2>动态tab</h2>
-        <ui-button e-click='addToTail'>添加到尾</ui-button>
-        <ui-button e-click='addToHead'>添加到头</ui-button>
-        <ui-button e-click='addTo2'>添加到第二个</ui-button>
-        <ui-tab class='tab' position='top' name='tab2' allowClose>
-            <tab title='tab1'><p style='color:red'>this is tab1</p></tab>
-            <tab title='tab2'>this is tab2</tab>
-            <tab title='tab3'>this is tab3</tab>
-        </ui-tab>
+			<ui-button e-click="addToTail">添加到尾</ui-button>
+			<ui-button e-click="addToHead">添加到头</ui-button>
+			<ui-button e-click="addTo2">添加到第二个</ui-button>
+			<ui-button e-click="addModule">添加模块tab1</ui-button>
+			<ui-button e-click="addModule1">添加模块tab2</ui-button>
+			<ui-test></ui-test>
+			<!-- <ui-tab name="tab3" position="top" allowClose>
+				<tab title="tab1"><p style="color: red">this is tab1====>{{data1}}</p></tab>
+				<tab title="tab2">this is tab2====>{{data2}}</tab>
+				<tab title="tab3">this is tab3====>{{data3}}</tab>
+			</ui-tab>
+			<h2>自定义tab位置</h2>
+			<h3>左边</h3>
+			<ui-tab position="left">
+				<tab title="tab1">
+					<p style="color: red">this is tab1</p>
+				</tab>
+				<tab title="tab2">this is tab2</tab>
+				<tab title="tab3">this is tab3</tab>
+			</ui-tab>
+			<h3>右边</h3>
+			<ui-tab position="right">
+				<tab title="tab1">
+					<p style="color: red">this is tab1</p>
+				</tab>
+				<tab title="tab2">this is tab2</tab>
+				<tab title="tab3">this is tab3</tab>
+			</ui-tab>
+			<h3>底部</h3>
+			<ui-tab position="bottom">
+				<tab title="tab1">
+					<p style="color: red">this is tab1</p>
+				</tab>
+				<tab title="tab2">this is tab2</tab>
+				<tab title="tab3">this is tab3</tab>
+			</ui-tab> -->
+			<!-- <h2>动态tab</h2>
+			<ui-button e-click="addToTail">添加到尾</ui-button>
+			<ui-button e-click="addToHead">添加到头</ui-button>
+			<ui-button e-click="addTo2">添加到第二个</ui-button>
+			<ui-tab class="tab" position="top" name="tab2" allowClose>
+				<tab title="tab1"><p style="color: red">this is tab1</p></tab>
+				<tab title="tab2">this is tab2</tab>
+				<tab title="tab3">this is tab3</tab>
+			</ui-tab> -->
 
-        <h2>引入模块</h2>
-        <ui-button e-click='addModule'>添加模块tab1</ui-button>
-        <ui-button e-click='addModule1'>添加模块tab2</ui-button>
-        <ui-tab position='top' name='tab3' allowClose height='150'>
-            <tab title='tab1' name='TAB1' >
-                <div x-module='ModuleA|moda1' data='data/data1.json'></div>
-            </tab>
-        </ui-tab> -->
-    </div>
-</body>
-<script>
-    nodom.newApp({
-        module:{
-            el:'div',
-            data:{
-                tabIndex:4
-            },
-            methods:{
-                addToTail:function(dom,model,module){
-                    let index = ++model.data.tabIndex;
-                    module.getPlugin('tab2').addTab({
-                        title:'Tab' + index,
-                        name:'Tab' + index,
-                        content:`<span>这是动态添加的tab{{tabIndex}}</span>`,
-                        active:true
-                    });
-                },
+			<!-- <h2>引入模块</h2>
+			<ui-button e-click="addModule">添加模块tab1</ui-button>
+			<ui-button e-click="addModule1">添加模块tab2</ui-button>
+			<ui-tab position="top" name="tab3" allowClose height="150">
+				<tab title="tab1" name="TAB1">
+					<div x-module="ModuleA|moda1" data="data/data1.json"></div>
+				</tab>
+			</ui-tab> -->
+		</div>
+	</body>
+	<script>
+		nodom.app({
+			module: {
+				el: "div",
+				data: {
+					tabIndex: 4,
+					data1: 1,
+					data2: 2,
+					data3: 3,
+				},
+				methods: {
+					log: function (dom, module) {
+						console.log(this);
+					},
+					addToTail: function (dom, module) {
+						let index = ++this.tabIndex;
+						module.getElement({ name: "tab2", type: "defineelement" }).addTab({
+							title: "Tab" + index,
+							name: "Tab" + index,
+							content: `<span>这是动态添加的tab{{tabIndex}}</span>`,
+							active: true,
+						});
+					},
 
-                addToHead:function(dom,model,module){
-                    let index = ++model.data.tabIndex;
-                    module.getPlugin('tab2').addTab({
-                        title:'Tab' + index,
-                        index:0,
-                        name:'Tab' + index,
-                        content:`<span>这是动态添加的tab{{tabIndex}}</span>`,
-                        active:true
-                    });
-                },
+					addToHead: function (dom, module) {
+						let index = ++this.tabIndex;
+						module.getElement({ name: "tab2", type: "defineelement" }).addTab({
+							title: "Tab" + index,
+							index: 0,
+							name: "Tab" + index,
+							content: `<span>这是动态添加的tab{{tabIndex}}</span>`,
+							active: true,
+						});
+					},
 
-                addTo2:function(dom,model,module){
-                    let index = ++model.data.tabIndex;
-                    module.getPlugin('tab2').addTab({
-                        title:'Tab' + index,
-                        name:'Tab' + index,
-                        index:2,
-                        content:`<span>这是动态添加的tab{{tabIndex}}</span>`,
-                        active:true
-                    });
-                },
+					addTo2: function (dom, module) {
+						let index = ++this.tabIndex;
+						module.getElement({ name: "tab2", type: "defineelement" }).addTab({
+							title: "Tab" + index,
+							name: "Tab" + index,
+							index: 2,
+							content: `<span>这是动态添加的tab{{tabIndex}}</span>`,
+							active: true,
+						});
+					},
 
-                addModule:function(dom,model,module){
-                    let index = ++model.data.tabIndex;
-                    module.getPlugin('tab3').addTab({
-                        title:'Tab' + index,
-                        // name:'Tab' + index,
-                        module:'ModuleB',
-                        moduleName:'modbc',
-                        // data:'data/data1.json',
-                        active:true
-                    });
-                },
-                addModule1:function(dom,model,module){
-                    let index = ++model.data.tabIndex;
-                    module.getPlugin('tab3').addTab({
-                        title:'Tab' + index,
-                        // name:'Tab' + index,
-                        module:'ModuleC',
-                        moduleName:'modc1',
-                        // data:'data/data1.json',
-                        active:true
-                    });
-                }
-            }
-        }
-    })
-</script>
+					addModule: function (dom, module) {
+						let index = ++this.tabIndex;
+						module.getElement({ name: "tab3", type: "defineelement" }).addTab({
+							title: "Tab" + index,
+							// name:'Tab' + index,
+							module: "ModuleB",
+							moduleName: "modbc",
+							// data:'data/data1.json',
+							active: true,
+						});
+					},
+					addModule1: function (dom, module) {
+						let index = ++this.tabIndex;
+						module.getElement({ name: "tab3", type: "defineelement" }).addTab({
+							title: "Tab" + index,
+							// name:'Tab' + index,
+							module: "ModuleC",
+							moduleName: "modc1",
+							// data:'data/data1.json',
+							active: true,
+						});
+					},
+				},
+			},
+		});
+	</script>
 </html>

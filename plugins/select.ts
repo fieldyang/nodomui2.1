@@ -1,4 +1,5 @@
 import { Compiler, DefineElementManager, Directive, Element, Expression, Filter, Model, Module, ModuleFactory, NEvent, Util } from "nodom";
+import { UIFloatBox } from "./floatbox";
 import { NUITipWords } from "./msg_zh";
 import { pluginBase } from "./pluginBase";
 import { UIEventRegister, UITool } from "./uibase";
@@ -214,7 +215,7 @@ export class UISelect extends pluginBase {
         //修改model
         // new Directive('model', this.extraDataName, rootDom);
 
-
+        let float = new UIFloatBox()
         //下拉框
         let listDom: Element = new Element('div');
 

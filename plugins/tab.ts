@@ -1,10 +1,40 @@
-import { Element } from "nodom";
+import { Compiler, DefineElementManager, Directive, Element, Expression, Model, Module, ModuleFactory, NEvent, Util } from "nodom";
 import { pluginBase } from "./pluginBase";
+import { UITool } from "./uibase";
+
+/**
+ *
+        let ui = new UITab({
+            allowClose: true,
+            position: 'top',
+            bodyHeight: 500
+        })
+        // 如果要调用addTab 方法 需要给个名字方便查找到他
+        ui.element.setProp('name', 'tab3');
+ */
+
+interface IUITab extends Object {
+
+    /**
+     * 允许关闭
+     */
+    allowClose?: boolean;
+    /**
+     * tab位置 top left right bottom
+     */
+    position: string;
+    /**
+     * body 高度
+     */
+    bodyHeight?: number;
+
+
+}
 
 /**
  * panel 插件
  */
-class UITab extends pluginBase {
+export class UITab extends pluginBase {
     tagName: string = 'UI-TAB';
 
     /**
@@ -23,25 +53,6 @@ class UITab extends pluginBase {
     allowClose: boolean;
 
     /**
-     * 对象的modelId
-     */
-    modelId: number;
-
-    /**
-     * 模块id
-     */
-    moduleId: number;
-
-    /**
-     * 附加数据项modelId
-     */
-    extraModelId: number;
-
-    /**
-     * 绑定数据的数据项名
-     */
-    listField: string;
-    /**
      * tab对象 [{title:tab1,name:tab1,active:true},...] 用于激活显示tab
      */
     tabs = [];
@@ -56,12 +67,20 @@ class UITab extends pluginBase {
      */
     bodyHeight: number;
 
-    constructor(element: Element, parent?: Element) {
-        super(element);
-        UITool.handleUIParam(element, this,
-            ['position', 'allowclose|bool', 'listField', 'height|number'],
-            ['position', 'allowClose', 'listField', 'bodyHeight'],
-            ['top', null, '', 0]);
+    constructor(params: Element | IUITab, parent?: Element) {
+        super(params);
+        let element = new Element();
+        if (params instanceof Element) {
+            element = params;
+            UITool.handleUIParam(element, this,
+                ['position', 'allowclose|bool', 'height|number'],
+                ['position', 'allowClose', 'bodyHeight'],
+                ['top', null, 0]);
+        } else {
+            Object.keys(params).forEach(key => {
+                this[key] = params[key]
+            })
+        }
         this.generate(element);
         element.tagName = 'div';
         element.defineEl = this;
@@ -93,11 +112,11 @@ class UITab extends pluginBase {
         if (this.bodyHeight > 0) {
             bodyDom.assets.set('style', 'height:' + this.bodyHeight + 'px');
         }
-        // 如果有，则表示自定义
         let index = 1;
         let activeIndex: number = 0;
         let itemDom: Element;
 
+        // 如果有,则表示写了模板
         for (let c of rootDom.children) {
             if (!c.tagName) {
                 continue;
@@ -118,7 +137,7 @@ class UITab extends pluginBase {
             let contentDom: Element = new Element('div');
             contentDom.children = c.children;
             //show 指令
-            contentDom.addDirective(new Directive('show', this.extraDataName + '.' + tabName, contentDom));
+            new Directive('show', this.extraDataName + '.' + tabName, contentDom);
             bodyDom.add(contentDom);
 
             if (itemDom) {
@@ -150,6 +169,30 @@ class UITab extends pluginBase {
             }));
             itemDom = c;
         }
+        if (!itemDom) {
+            itemDom = new Element('div')
+            itemDom.addClass('nd-tab-item')
+            let txt: Element = new Element();
+            txt.expressions = [new Expression('title')];
+            itemDom.children = [txt];
+            //close
+            if (this.allowClose) {
+                let b: Element = new Element('b');
+                b.addClass('nd-tab-close');
+                //click禁止冒泡
+                b.addEvent(new NEvent('click', ':nopopo', (dom, module) => {
+                    me.delTab(dom.model.name, module);
+                }));
+                itemDom.add(b);
+            }
+            new Directive('repeat', this.extraDataName + '.datas', itemDom);
+            new Directive('class', "{'nd-tab-item-active':'active'}", itemDom);
+
+            itemDom.addEvent(new NEvent('click', (dom, module) => {
+                me.setActive(dom.model.name, module);
+            }));
+        }
+
         headDom.add(itemDom);
         // 设置默认active tab
         if (activeIndex === 0 && this.tabs.length > 0) {
@@ -172,7 +215,7 @@ class UITab extends pluginBase {
         let model: Model;
         //附加数据model
         if (this.needPreRender) {
-            model = module.model;
+            model = dom.model;
             let data = {
                 datas: this.tabs
             }
@@ -203,18 +246,18 @@ class UITab extends pluginBase {
             return;
         }
 
-        let model: Model = module.model;
+        let model: Model = this.model[this.extraDataName];
 
         //设置索引
-        let index: number = Util.isNumber(cfg.index) ? cfg.index : model.datas.length;
+        let index: number = Util.isNumber(cfg.index) ? cfg.index : model["datas"].length;
         //tab名
         let tabName: string = cfg.name || ('Tab' + Util.genId())
-        model.datas.splice(index, 0, {
+        model["datas"].splice(index, 0, {
             title: cfg.title,
             name: tabName,
             active: false
         });
-        model.set(tabName, false);
+        model[tabName] = false;
         //需要添加到virtualDom中，否则再次clone会丢失
         let bodyDom: Element = module.virtualDom.query(this.bodyKey);
         let dom: Element;
@@ -249,8 +292,8 @@ class UITab extends pluginBase {
         if (!module) {
             module = ModuleFactory.get(this.moduleId);
         }
-        let model: Model = module.model;
-        let datas = model.datas;
+        let model: Model = this.model[this.extraDataName];
+        let datas = model["datas"];
         let activeIndex: number;
         //最后一个不删除
         if (datas.length === 1) {
@@ -271,7 +314,7 @@ class UITab extends pluginBase {
                 datas.splice(i, 1);
                 //删除show绑定数据
 
-                model.del(tabName);
+                delete model[tabName];
                 //删除body 中的对象，需要从原始虚拟dom中删除
                 let bodyDom: Element = module.virtualDom.query(this.bodyKey);
                 bodyDom.children.splice(i, 1);
@@ -289,18 +332,18 @@ class UITab extends pluginBase {
      * @param tabName   tab名
      * @param module    模块
      */
-    setActive(tabName: string, module?: nodom.Module) {
+    setActive(tabName: string, module?: Module) {
         if (!module) {
-            module = nodom.ModuleFactory.get(this.moduleId);
+            module = ModuleFactory.get(this.moduleId);
         }
-        let pmodel: nodom.Model = module.getModel(this.extraModelId);
-        let datas = pmodel.data.datas;
+        let pmodel: Model = this.model[this.extraDataName];
+        let datas = pmodel["datas"];
 
         let activeData;
         //之前的激活置为不激活
         for (let o of datas) {
             if (o.active) {
-                pmodel.data[o.name] = false;
+                pmodel[o.name] = false;
                 o.active = false;
             }
             if (o.name === tabName) {
@@ -310,8 +353,12 @@ class UITab extends pluginBase {
         //tab active
         activeData.active = true;
         //body active
-        pmodel.data[tabName] = true;
+        pmodel[tabName] = true;
     }
 }
 
-nodom.PluginManager.add('UI-TAB', UITab);
+DefineElementManager.add('UI-TAB', {
+    init: function (element: Element, parent?: Element) {
+        new UITab(element, parent)
+    }
+});

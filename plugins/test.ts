@@ -1,6 +1,6 @@
 import { DefineElementManager, Element, Module, Util } from "nodom";
-import { UIListTransfer } from "./listtransfer";
 import { pluginBase } from "./pluginBase";
+import { UITab } from "./tab";
 
 /**
  * 手风琴插件
@@ -23,26 +23,15 @@ export class UITest extends pluginBase {
     private generate(rootDom: Element) {
         this.extraDataName = '$ui_test_' + Util.genId();
         console.log(11);
-        let ui = new UIListTransfer({
-            dataName: 'selectedUser1',
-            listField: 'users',
-            valueField: 'uid',
-            displayField: "userName"
+
+        let ui = new UITab({
+            allowClose: true,
+            position: 'top',
+            bodyHeight: 500
         })
-        let ui2 = new UIListTransfer({
-            dataName: 'selectedUser2',
-            listField: 'users',
-            valueField: 'uid',
-            displayField: "userName",
-            customTemplate: `
-                <div>
-                    <span style="width: 100px; display: inline-block">{{userName}}</span>
-                    <span>{{company}}</span>
-                </div>
-            `
-        })
+        ui.element.setProp('name', 'tab3');
         rootDom.add(ui.element)
-        rootDom.add(ui2.element)
+
     }
     /**
    * 前置渲染

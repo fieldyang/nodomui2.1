@@ -10,13 +10,13 @@
 		<script src="../dist/nodomui.js"></script>
 	</head>
 	<body>
-		<div style="position: relative">
-			<p>
-				<label>姓名:</label><input type="text" e-click="focusme" /> <label>测试:</label>
-				<input type="text" style="background-color: grey" e-click="focusme" />
+		<div style="position: relative; width: 1000px; height: 1000px">
+			<p style="position: absolute; top: 400px; left: 400px">
+				<label>姓名:</label><input type="text" e-mouseover="focusme" e-mouseout="unfunsme" />
+				<!--  -->
+				<label>测试:</label>
+				<input type="text" style="background-color: grey" e-mouseover="focusme" e-mouseout="unfunsme" />
 			</p>
-			<!-- <p><label>姓名:</label><input type='text'></p>
-        <button e-click='focusme'>显示</button> -->
 			<ui-floatbox></ui-floatbox>
 		</div>
 	</body>
@@ -24,17 +24,18 @@
 		nodom.app({
 			module: {
 				el: "div",
-				data: {
-					files: [],
-					photos: [],
-				},
 				methods: {
 					focusme: function (dom, module, e) {
+						// let template = `<div>hello world!</div>`;
 						let dom1 = new nodom.Element("div");
 						let txt = new nodom.Element();
 						txt.textContent = "hello world!";
 						dom1.add(txt);
-						nodomui.floatbox(dom1, e);
+						nodomui.showFloatBox(dom1, e, { type: "attach", pos: "bottom" });
+						// nodomui.floatbox(template, e);
+					},
+					unfunsme: function (dom, module, e) {
+						nodomui.hideFloatBox();
 					},
 				},
 			},

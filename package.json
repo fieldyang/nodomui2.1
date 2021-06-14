@@ -6,8 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "rollup -c",
-        "sass": "sass ./examples/css/nodomui.scss ./example/css/nodomui.css",
-        "dev": "webpack-dev-server --open"
+        "sass": "sass ./examples/css/nodomui.scss ./examples/css/nodomui.css"
     },
     "repository": {
         "type": "git",

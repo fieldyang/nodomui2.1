@@ -165,12 +165,9 @@ export class UITool {
      * @returns 
      */
     static caclOffset(el: HTMLElement) {
-        console.log(el);
-
         let [offsetX, offsetY] = [0, 0];
-        // let path = event.composedPath();
         let ele: HTMLElement = el;
-        while (ele.offsetLeft != 0 || ele.offsetTop != 0) {
+        while (ele.offsetParent != null) {
             [offsetX, offsetY] = [offsetX + ele.offsetLeft, offsetY + ele.offsetTop];
             ele = <HTMLElement>ele.offsetParent;
         }
