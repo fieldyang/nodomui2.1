@@ -93,7 +93,7 @@ export class UIFloatBox extends pluginBase {
 
     height: number;
 
-    constructor(params: Element | IFloatBoxPosition, parent?: Element) {
+    constructor(params: Element | IUIFloatBox, parent?: Element) {
         super(params);
         let element = new Element()
         if (params instanceof Element) {
