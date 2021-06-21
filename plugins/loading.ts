@@ -167,11 +167,11 @@ DefineElementManager.add('UI-LOADING', {
  * 显示loading
  */
 export function showLoading() {
-    // let manager: UILoading = <UILoading>ModuleFactory.getMain().getNPlugin('$ui-loading');
-    // //新建manager
-    // if (manager) {
-    //     manager.open();
-    // }
+    let manager: UILoading = <UILoading>ModuleFactory.getMain().getElement({ name: '$ui-loading', type: 'defineelement' });
+    //新建manager
+    if (manager) {
+        manager.open();
+    }
 }
 
 /**
@@ -182,10 +182,10 @@ export function closeLoading(config: any) {
     if (!module) {
         return null;
     }
-    // let manager: UILoading = <UILoading>module.getNPlugin('$ui-loading');
-    // //新建manager
-    // if (manager) {
-    //     manager.close();
-    // }
+    let manager: UILoading = <UILoading>module.getElement({ name: '$ui-loading', type: 'defineelement' });
+    //新建manager
+    if (manager) {
+        manager.close();
+    }
 }
 

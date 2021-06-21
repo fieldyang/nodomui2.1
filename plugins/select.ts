@@ -214,7 +214,6 @@ export class UISelect extends pluginBase {
         //修改model
         // new Directive('model', this.extraDataName, rootDom);
 
-
         //下拉框
         let listDom: Element = new Element('div');
 
