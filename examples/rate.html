@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - icon usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='../node_modules/nodom/dist/nodom.js'></script>
+    <script src='../dist/nodomui.js'></script>
+    
+    <style>
+        .icon1{
+            font-size:20px;
+            /* display:inline-block; */
+            /* color:#f00; */
+            font-style: normal;  
+            margin-right: 5px;     
+        }
+        .icon span{
+            font-size:14px;
+        }
+        .add{
+            list-style: none;
+            display: inline-block;
+            vertical-align:middle;
+            padding: 10px 5px 10px 0px;
+            font-size: 0;
+        }
+        .nodom-inline{
+            /* position: relative; */
+            display: inline;
+            vertical-align:middle;
+        }
+    </style>
+</head>
+<body>
+     <div >
+         <span>普通评星</span>
+         <ui-rate length="5" dataField='star'></ui-rate>
+         <span>只读评星</span>
+         <ui-rate length='7' dataField='star1'  readonly></ui-rate>
+         <span>不定义数据，默认为0星</span>
+         <ui-rate length='10' dataField='star4'></ui-rate>
+        
+       
+    </div>
+
+
+</body>
+<script>
+    	nodom.app({
+			module: {
+				el: "div",
+				data: {
+                    star:1,
+					star1:5
+				},
+				methods: {
+					change: function (model, module, newValue, oldValue) {
+						console.log(model, module, newValue, oldValue);
+					},
+					changeData: function (dom, module) {
+						// model.set('hobbies',[
+						//     {hid:1,htitle:'体育',icon:'message',desc:'体育运动很不错'},
+						//     {hid:2,htitle:'阅读',icon:'search',desc:'阅读让人睿智'},
+						//     {hid:3,htitle:'健身',icon:'home',disable:true,desc:'健身让人上瘾'}
+						// ]);
+						this.hobbies.shift();
+						this.hobby = 1;
+					},
+				},
+			},
+		});
+</script>
+</html>

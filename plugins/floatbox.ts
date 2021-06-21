@@ -156,17 +156,17 @@ export function floatbox(dom: Element, evt: Event, loc?: number) {
         return null;
     }
 
-    let floatBox: UIFloatBox | Element = <UIFloatBox>module.getNPlugin('$ui_floatbox');
+    // let floatBox: UIFloatBox | Element = <UIFloatBox>module.getNPlugin('$ui_floatbox');
 
-    if (floatBox) {
+    // if (floatBox) {
 
-        //把传递的dom加入到源虚拟dom树
-        let vDom = module.getElement(floatBox.element.key, true);
+    //     //把传递的dom加入到源虚拟dom树
+    //     let vDom = module.getElement(floatBox.element.key, true);
 
-        vDom.children[0].children = [dom];
+    //     vDom.children[0].children = [dom];
 
-        floatBox.show(evt, loc);
-    }
+    //     floatBox.show(evt, loc);
+    // }
     // else {
     //     floatBox = new UIFloatBox({}).element;
     //     return floatBox;

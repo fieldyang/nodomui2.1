@@ -5,18 +5,19 @@ button,
 .nd-btn {
 	display: inline-block;
 	@extend .nd-canclick;
-	@include nd-color(8);
-
+	// @include nd-color(8);
+	@include nd-color-set('green',$nd-color-white);
 	border-radius: $nd-radius;
 	border: 0px;
 	padding: $nd-padding $nd-btn-padding-left;
 
-	> b {
-		margin-right: math.div($nd-padding, 2);
-	}
+	// > b {
+	// 	margin-right: math.div($nd-padding, 2);
+	// }
 	&:hover {
-		background-color: lighten($nd-color8, 5%);
-		color: $nd-forecolor2;
+		// background-color: lighten($nd-color8, 5%);
+		// color: $nd-forecolor2;
+		opacity: 0.8;
 	}
 }
 
@@ -59,20 +60,27 @@ button,
 
 /*active背景色*/
 .nd-btn-active {
-	@include nd-btn-bg($nd-activecolor);
+	@include nd-btn-bg($nd-color-blue);
 }
 
 /*success 背景色*/
 .nd-btn-success {
-	@include nd-btn-bg($nd-successcolor);
+	// @include nd-btn-bg($nd-successcolor);
+	@include nd-btn-bg($nd-color-mainActive);
 }
 
 /*warn背景色*/
 .nd-btn-warn {
-	@include nd-btn-bg($nd-warncolor);
+	// @include nd-btn-bg($nd-warncolor);
+	@include nd-btn-bg($nd-color-orange);
 }
 
 /*warn背景色*/
 .nd-btn-error {
-	@include nd-btn-bg($nd-errorcolor);
+	// @include nd-btn-bg($nd-errorcolor);
+	@include nd-btn-bg($nd-color-red);
+}
+/*禁用背景色*/
+.nd-btn-disable{
+	@include nd-btn-bg($nd-color-disable);
 }

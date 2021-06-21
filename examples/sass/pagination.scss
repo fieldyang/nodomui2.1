@@ -2,7 +2,8 @@
 /*pagenation*/
 .nd-pagination {
 	padding: $nd-padding * 2 $nd-padding;
-	@include nd-color(1);
+	// @include nd-color(1);
+	@include nd-color-set('white',$nd-color-realBlack);
 	input,
 	select {
 		border: 1px solid $nd-color3;
@@ -17,12 +18,12 @@
 		> * {
 			cursor: pointer;
 			&:hover {
-				color: $nd-activecolor;
+				color: $nd-color-mainActive;
 			}
 		}
 
 		.nd-pagination-active {
-			color: $nd-activecolor;
+			color: $nd-color-mainActive;
 		}
 
 		.nd-pagination-disable {

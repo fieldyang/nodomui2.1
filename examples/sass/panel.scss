@@ -3,10 +3,16 @@
 /* panel */
 
 .nd-panel {
+	// border-width: 1px;
+    // border-style: solid;
+    // border-radius: 2px;
+    // background-color: #fff;
+    // color: #666;
 	border-radius: $nd-radius;
 	border: 1px solid $nd-color6;
 	@extend .nd-border;
-	@include nd-color(1);
+	// @include nd-color(1);
+	@include nd-color-set('white',$nd-color-black);
 	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
@@ -57,6 +63,7 @@
 		font-size: $nd-fontnormal;
 		flex: 1;
 		overflow: auto;
-		@include nd-color(1);
+		// @include nd-color(1);
+		@include nd-color-set('white',$nd-color-black);
 	}
 }

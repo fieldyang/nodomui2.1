@@ -3,7 +3,8 @@
 
 .nd-relationmap {
 	border-spacing: 1px;
-	@include nd-color(6);
+	// @include nd-color(6);
+	@include nd-color-set('white',$nd-color-black);
 	.nd-relationmap-head {
 		td {
 			padding: $nd-padding $nd-padding * 2;
@@ -11,7 +12,8 @@
 	}
 
 	td {
-		@include nd-color(1);
+		// @include nd-color(1);
+		@include nd-color-set('white',$nd-color-black);
 		text-align: center;
 	}
 
@@ -34,6 +36,6 @@
 
 	.nd-relationmap-active {
 		@extend .nd-icon-select;
-		color: $nd-activecolor;
+		color: $nd-color-green;
 	}
 }

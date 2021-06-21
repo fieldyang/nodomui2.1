@@ -77,15 +77,17 @@ export class UITool {
             let p = paramArr[i];
             //参数类型
             let type: string;
+           
+            
             let pa: string[];
             if (p.includes('|')) {
                 pa = p.split('|');
                 p = pa[0];
                 type = pa[1];
             }
+           
             let v = dom.getProp(p);
-
-            if (v) {
+            if (v!=undefined) {
                 //去掉空格
                 v = this.clearSpace(v);
                 if (v !== '') {
@@ -176,6 +178,20 @@ export class UITool {
         }
 
         return [offsetX, offsetY]
+    }
+
+    /**
+     * 
+     * @param module 查找的模块
+     * @param value 关键值
+     * @param key 查找的element键名，默认uid
+     * @returns 
+     */
+    static getPlugin(module:Module,value:String,key:string='uid'){
+       return module.getElement({
+            key:value,
+            type:'defineElement',
+        })
     }
 }
 

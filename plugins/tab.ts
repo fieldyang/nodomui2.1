@@ -1,6 +1,6 @@
 import { Element } from "nodom";
 import { pluginBase } from "./pluginBase";
-
+import { UIEventRegister, UITool } from "./uibase";
 /**
  * panel 插件
  */

@@ -117,6 +117,7 @@ var nodom = (function (exports) {
     /**
      * 模型类
      */
+    const modelCloneExpKey = ["$moduleId", "$key", "$watch", "$query"];
     class Model {
         /**
          * @param data 		数据
@@ -137,12 +138,12 @@ var nodom = (function (exports) {
                     if (excludes.includes(key)) {
                         return true;
                     }
+                    const excArr = ['$watch', "$moduleId", "$query", "$key"];
                     //不进行赋值
                     if (typeof value !== 'object' || (value === null || !value.$watch)) {
                         //更新渲染
-                        if (typeof (value) != 'function' && (!['$moduleId', '$key'].includes(key)))
+                        if (typeof (value) != 'function' && (excArr.indexOf(value) == -1))
                             mm.update(proxy, key, src[key], value);
-                        // return Reflect.set(src, key, value, receiver)
                     }
                     return Reflect.set(src, key, value, receiver);
                 },
@@ -1390,7 +1391,7 @@ var nodom = (function (exports) {
                 let data = Util.clone(this.model, /^\$\S+/);
                 m.model = new Model(data, m);
             }
-            let excludes = ['id', 'name', 'model', 'virtualDom', 'container', 'containerKey', 'modelManager', 'plugins'];
+            let excludes = ['id', 'name', 'model', 'virtualDom', 'container', 'containerKey', 'modelManager', 'defineElements'];
             Object.getOwnPropertyNames(this).forEach((item) => {
                 if (excludes.includes(item)) {
                     return;
@@ -3971,6 +3972,63 @@ var nodom = (function (exports) {
             delete this.dontRender;
         }
         /**
+         *
+         * @param module 模块
+         * @param key domkey
+         * @param dom element节点
+         * @returns element
+         */
+        getElement(module, key, dom) {
+            let newDom = dom ? dom : module.virtualDom.clone();
+            let res;
+            function judge(dom) {
+                if (dom.key === key) {
+                    res = dom;
+                    return dom;
+                }
+                if (dom.children.length > 0) {
+                    dom.children.forEach(element => {
+                        let res = judge(element);
+                        if (res != undefined)
+                            return res;
+                    });
+                }
+                return undefined;
+            }
+            judge(newDom);
+            return res;
+        }
+        dataRender(dom, module) {
+            let newDom = dom.getElement(module, dom.key);
+            let retARR = new Array();
+            let flag = true;
+            if (newDom === undefined) {
+                newDom = module.virtualDom.clone();
+                newDom.render(module, null);
+                newDom = dom.getElement(module, dom.key, newDom);
+            }
+            else {
+                flag = newDom.render(module, null);
+            }
+            if (!flag) {
+                retARR.push(new ChangedDom(newDom, 'rep', dom.getParent(module)));
+            }
+            else {
+                newDom.compare(dom, retARR, dom.getParent(module));
+            }
+            // 删除
+            for (let i = retARR.length - 1; i >= 0; i--) {
+                let item = retARR[i];
+                if (item.type === 'del') {
+                    item.node.removeFromHtml(module);
+                    retARR.splice(i, 1);
+                }
+            }
+            retARR.forEach((item) => {
+                item.node.renderToHtml(module, item);
+            });
+        }
+        /**
          * 渲染到html element
          * @param module 	模块
          * @param params 	配置对象{}
@@ -4151,7 +4209,7 @@ var nodom = (function (exports) {
             let dst = new Element();
             //不直接拷贝的属性
             // let notCopyProps:string[] = ['parent','directives','props','exprProps','events','children'];
-            let notCopyProps = ['parent', 'directives', 'children'];
+            let notCopyProps = ['parent', 'directives', 'children', 'defineEl'];
             //简单属性
             Util.getOwnProps(this).forEach((p) => {
                 if (notCopyProps.includes(p)) {
@@ -5383,19 +5441,6 @@ var nodom = (function (exports) {
             // 将AST编译成抽象语法树
             this.compileAST(oe, ast);
             return oe;
-            // // 这里是使用游离的dom来充当ast的流程 暂时先保留着以便对比
-            // const div: HTMLElement = Util.newEl('div');
-            // try {
-            //     div.innerHTML = elementStr;
-            // } catch (e) { }
-            // let oe = new Element('div');
-            // this.handleChildren(oe, div);
-            // //保证模块只有一个根节点
-            // // if (oe.children.length === 1) {
-            // //     return oe.children[0];
-            // // }
-            // // console.log(oe);
-            // return oe;
         }
         /**
          * 把AST编译成虚拟dom
@@ -5404,8 +5449,6 @@ var nodom = (function (exports) {
          * @returns oe 虚拟dom的根容器
          */
         static compileAST(oe, ast) {
-            // const div: HTMLElement = Util.newEl('div');
-            // let oe = new Element('div');
             if (!ast)
                 return;
             for (const a of ast) {
@@ -5445,24 +5488,15 @@ var nodom = (function (exports) {
          * @param astObj
          */
         static handleAstNode(parent, astObj) {
+            // let de = PluginManager.get(astObj.tagName.toUpperCase());
             let de = DefineElementManager.get(astObj.tagName.toUpperCase());
             let child = new Element(astObj.tagName);
             parent.add(child);
             this.handleAstAttrs(child, astObj.attrs, parent);
+            this.compileAST(child, astObj.children);
             if (de) {
                 de.init(child, parent);
             }
-            this.compileAST(child, astObj.children);
-            // // 处理属性
-            // if (de) {
-            //     parent.children.push(
-            //         Reflect.construct(de, [child]).element
-            //     )
-            // } else {
-            //     parent.children.push(child);
-            // }
-            // this.handleAstAttrs(child, astObj.attrs,parent);
-            // this.compileAST(child, astObj.children);
         }
         /**
          * 编译ast 到虚拟dom
@@ -5477,6 +5511,8 @@ var nodom = (function (exports) {
                 return;
             }
             for (const attr of attrs) {
+                // 统一吧属性名转换成小写
+                attr.propName = attr.propName.toLocaleLowerCase();
                 if (attr.propName.startsWith("x-")) {
                     //指令
                     directives.push(attr);
@@ -5569,7 +5605,7 @@ var nodom = (function (exports) {
             }
             result = result.map((item) => {
                 // 如果match为空说明属性串里面没有“”也就是自定义的只有属性名没有属性值得属性，这种直接给他的value字段设置为空就行了
-                const o = item.match(/^(.+)=[\'|\"](.*)[\'|\"]$/) || [, item];
+                const o = item.match(/^(.+)=[\'|\"]([\s\S]*)[\'|\"]$/) || [, item];
                 return {
                     propName: o[1],
                     value: o[2] ? o[2] : '',
@@ -5759,198 +5795,80 @@ var nodom = (function (exports) {
             return retA;
         }
     }
-    // /**
-    //  * 编译器，负责模版的编译
-    //  * @since 1.0
-    //  */
-    // export  class Compiler {
-    //     /**
-    //      * 编译
-    //      * 如果为el.innerHTML方式，可能存在多个子节点，则在外面包一层父节点，因为模块只能有一个根节点，否则返回模块根节点
-    //      * @param elementStr    待编译html串
-    //      * @returns             虚拟dom
-    //      */
-    //     public static compile(elementStr:string):Element {
-    //         const div:HTMLElement = Util.newEl('div');
-    //         try{
-    //             div.innerHTML = elementStr;
-    //         }catch(e){}
-    //         let oe = new Element('div');
-    //         oe.setProp('role','moduleContainer')
-    //         this.handleChildren(oe,div);
-    //         // //保证模块只有一个根节点
-    //         // if(oe.children.length===1){
-    //         //     return oe.children[0];
-    //         // }
-    //         return oe;
-    //     }
-    //     /**
-    //      * 编译dom
-    //      * @param ele           待编译html element
-    //      * @param parent        父节点（virtualdom）   
-    //      */
-    //     public static compileDom(ele:Node) {
-    //         let oe:Element;
-    //         //注视标志
-    //         let isComment = false;
-    //         switch (ele.nodeType) {
-    //         case Node.ELEMENT_NODE: //元素
-    //             let el:HTMLElement = <HTMLElement>ele;
-    //             oe = this.handleDefineEl(el);
-    //             if(!oe){
-    //                 oe = this.handleEl(el);
-    //             }
-    //             break;
-    //         case Node.TEXT_NODE: //文本节点
-    //             oe = new Element();
-    //             let txt = ele.textContent;
-    //             let expA = this.compileExpression(txt);
-    //             if (typeof expA === 'string') { //无表达式
-    //                 oe.textContent = expA;
-    //             } else { //含表达式
-    //                 oe.expressions = expA;
-    //             }
-    //             break;
-    //         case Node.COMMENT_NODE: //注释
-    //             isComment = true;
-    //             break;
-    //         }
-    //         //添加到子节点,comment节点不需要    
-    //         if (!isComment) {
-    //             return oe;
-    //         }
-    //     }
-    //     /**
-    //      * 编译html element
-    //      * @param oe    新建的虚拟dom
-    //      * @returns     虚拟dom
-    //      */
-    //     public static handleEl(el:HTMLElement):Element{
-    //         let oe:Element = new Element(el.tagName);
-    //         this.handleAttributes(oe,el);
-    //         this.handleChildren(oe,el);
-    //         return oe;
-    //     }
-    //     /**
-    //      * 编译插件
-    //      * @param el 待处理的html element
-    //      * @returns  如果识别自定义el，则返回编译后的虚拟dom，否则返回undefined
-    //      */
-    //     static handleDefineEl(el:HTMLElement):Element{
-    //         let de:any = PluginManager.get(el.tagName);
-    //         if(!de){
-    //             return;
-    //         }
-    //         return Reflect.construct(de,[el]).element;
-    //     }
-    //     /**
-    //      * 处理属性
-    //      * @param oe 新建的虚拟dom
-    //      * @param el 待处理的html element
-    //      */
-    //     public static handleAttributes(oe:Element,el:HTMLElement){
-    //         //遍历attributes
-    //         //先处理普通属性，再处理指令
-    //         let directives = [];
-    //         for (let i = 0; i < el.attributes.length; i++) {
-    //             let attr = el.attributes[i];
-    //             if (attr.name.startsWith('x-')) { //指令，先存，最后处理
-    //                 directives.push(attr);
-    //             } else if (attr.name.startsWith('e-')) { //事件
-    //                 let en = attr.name.substr(2);
-    //                 oe.addEvent(new NEvent(en, attr.value.trim()));
-    //             } else {
-    //                 let isExpr:boolean = false;
-    //                 let v = attr.value.trim();
-    //                 if (v !== '') {
-    //                     let ra = this.compileExpression(v);
-    //                     if (Util.isArray(ra)) {
-    //                         oe.setProp(attr.name, ra,true);
-    //                         isExpr = true;
-    //                     }
-    //                 }
-    //                 if (!isExpr) {
-    //                     oe.setProp(attr.name, v);
-    //                 }
-    //             }
-    //         }
-    //         //处理属性
-    //         for(let attr of directives){
-    //             new Directive(attr.name.substr(2), attr.value.trim(),oe,null,true);
-    //         }
-    //         if(directives.length>1){
-    //             //指令排序
-    //             oe.directives.sort((a, b) => {
-    //                 return a.type.prio - b.type.prio;
-    //             });    
-    //         }
-    //     }
-    //     /**
-    //      * 处理子节点
-    //      * @param oe 新建的虚拟dom
-    //      * @param el 待处理的html element
-    //      */
-    //     public static handleChildren(oe:Element,el:HTMLElement){
-    //         //子节点编译
-    //         for(let i=0;i<el.childNodes.length;i++){
-    //             let nd = el.childNodes[i];
-    //             let o = this.compileDom(nd);
-    //             if(o){
-    //                 if(o.tagName && oe.isSvgNode){ //设置svg对象
-    //                     o.isSvgNode = true;
-    //                 }
-    //                 oe.children.push(o);
-    //             }
-    //         }
-    //     }
-    //     /**
-    //      * 处理表达式串
-    //      * @param exprStr   含表达式的串
-    //      * @return          处理后的字符串和表达式数组
-    //      */
-    //     private static compileExpression(exprStr:string):string|any[] {
-    //         if (/\{\{.+?\}\}/.test(exprStr) === false) {
-    //             return exprStr;
-    //         }
-    //         let reg:RegExp = /\{\{.+?\}\}/g;
-    //         let retA = new Array();
-    //         let re:RegExpExecArray;
-    //         let oIndex:number = 0;
-    //         while ((re = reg.exec(exprStr)) !== null) {
-    //             let ind = re.index;
-    //             //字符串
-    //             if (ind > oIndex) {
-    //                 let s = exprStr.substring(oIndex, ind);
-    //                 retA.push(s);
-    //             }
-    //             //实例化表达式对象
-    //             let exp = new Expression(re[0].substring(2, re[0].length - 2));
-    //             //加入工厂
-    //             retA.push(exp);
-    //             oIndex = ind + re[0].length;
-    //         }
-    //         //最后的字符串
-    //         if (oIndex < exprStr.length - 1) {
-    //             retA.push(exprStr.substr(oIndex));
-    //         }
-    //         return retA;
-    //     }
-    // }
 
-    const arrayFunc = new Map();
-    ['push', 'pop', 'shift', 'unshift', 'splice'].forEach(key => {
-        const method = Array.prototype[key];
-        arrayFunc[key] = function (...args) {
-            const res = method.apply(this, args);
-            return res;
-        };
-    });
-    // (['includes', 'indexOf', 'lastIndexOf'] as const).forEach(key => {
-    //     const method = Array.prototype[key] as any;
-    //     arrayFunc[key] = function (this: unknown[], ...args: unknown[]) {
-    //         console.log(this);
-    //     }
-    // });
+    /**
+     * 插件，插件为自定义元素方式实现
+     */
+    class DefineElement {
+        constructor(params) {
+        }
+        /**
+         * 初始化 子类必须实现init方法
+         */
+        init(dom, parent) { }
+        ;
+        /**
+         * 前置渲染方法(dom render方法中获取modelId和parentKey后执行)
+         * @param module    模块
+         * @param uidom     虚拟dom
+         */
+        beforeRender(module, uidom) {
+            this.element = uidom;
+            this.moduleId = module.id;
+            // 如果需要改绑model，则改绑model
+            if (this.parentDataName && this.parentDataName != '') {
+                uidom.model = uidom.model[this.parentDataName];
+            }
+            if (!this.model || uidom.key !== this.key) {
+                this.key = uidom.key;
+                // 插件默认把model绑定在根model上
+                this.model = uidom.model;
+                //添加到模块
+                if (uidom.hasProp('name')) {
+                    // module.addNPlugin(uidom.getProp('name'),this);       
+                    this.name = uidom.getProp('name');
+                }
+                this.needPreRender = true;
+            }
+            else {
+                this.needPreRender = false;
+            }
+        }
+        /**
+         * 后置渲染方法(dom render结束后，渲染到html之前)
+         * @param module    模块
+         * @param uidom     虚拟dom
+         */
+        afterRender(module, uidom) { }
+        /**
+         * 克隆
+         */
+        clone(dst) {
+            let plugin = Reflect.construct(this.constructor, []);
+            //不拷贝属性
+            let excludeProps = ['key', 'element', 'modelId', 'moduleId'];
+            Util.getOwnProps(this).forEach((prop) => {
+                if (excludeProps.includes(prop)) {
+                    return;
+                }
+                plugin[prop] = Util.clone(this[prop]);
+            });
+            if (dst) {
+                plugin.element = dst;
+            }
+            return plugin;
+        }
+        /**
+         * 获取model
+         */
+        getModel() {
+            let module = ModuleFactory.get(this.moduleId);
+            if (!module) {
+                return null;
+            }
+            return this.model || null;
+        }
+    }
 
     /**
      * module 元素
@@ -6248,7 +6166,12 @@ var nodom = (function (exports) {
             }
         }, (directive, dom, module, parent) => {
             let model = dom.model;
-            model = model.$query(directive.value);
+            if (directive.value == '$$') {
+                model = module.model;
+            }
+            else {
+                model = model.$query(directive.value);
+            }
             if (!model) {
                 model = module.model.$query(directive.value);
             }
@@ -6626,8 +6549,18 @@ var nodom = (function (exports) {
                         v = undefined;
                     }
                 }
-                //修改字段值
-                this[field] = v;
+                //修改字段值,需要处理.运算符
+                let temp = this;
+                let arr = field.split('.');
+                if (arr.length === 1) {
+                    this[field] = v;
+                }
+                else {
+                    for (let i = 0; i < arr.length - 1; i++) {
+                        temp = temp[arr[i]];
+                    }
+                    temp[arr[arr.length - 1]] = v;
+                }
                 //修改value值，该节点不重新渲染
                 if (type !== 'radio') {
                     dom.setProp('value', v);
@@ -6641,7 +6574,8 @@ var nodom = (function (exports) {
             if (!model) {
                 return;
             }
-            let dataValue = model[directive.value];
+            let dataValue = model.$query(directive.value);
+            // model[directive.value];
             //变为字符串
             if (dataValue !== undefined && dataValue !== null) {
                 dataValue += '';
@@ -7208,230 +7142,6 @@ var nodom = (function (exports) {
         });
     })());
 
-    /**
-     * 插件，插件为自定义元素方式实现
-     */
-    class DefineElement {
-        constructor(params) {
-        }
-        /**
-         * 初始化
-         */
-        init(dom, parent) { }
-        /**
-         * 前置渲染方法(dom render方法中获取modelId和parentKey后执行)
-         * @param module    模块
-         * @param uidom     虚拟dom
-         */
-        beforeRender(module, uidom) {
-            this.element = uidom;
-            this.moduleId = module.id;
-            if (!this.model || uidom.key !== this.key) {
-                this.key = uidom.key;
-                this.model = uidom.model;
-                //添加到模块
-                if (uidom.hasProp('name')) {
-                    // module.addNPlugin(uidom.getProp('name'),this);       
-                    this.name = uidom.getProp('name');
-                }
-                this.needPreRender = true;
-            }
-            else {
-                this.needPreRender = false;
-            }
-        }
-        /**
-         * 后置渲染方法(dom render结束后，渲染到html之前)
-         * @param module    模块
-         * @param uidom     虚拟dom
-         */
-        afterRender(module, uidom) { }
-        /**
-         * 克隆
-         */
-        clone(dst) {
-            let plugin = Reflect.construct(this.constructor, []);
-            //不拷贝属性
-            let excludeProps = ['key', 'element', 'modelId', 'moduleId'];
-            Util.getOwnProps(this).forEach((prop) => {
-                if (excludeProps.includes(prop)) {
-                    return;
-                }
-                plugin[prop] = Util.clone(this[prop]);
-            });
-            if (dst) {
-                plugin.element = dst;
-            }
-            return plugin;
-        }
-        /**
-         * 获取model
-         */
-        getModel() {
-            let module = ModuleFactory.get(this.moduleId);
-            if (!module) {
-                return null;
-            }
-            return this.model || null;
-        }
-    }
-
-    class Img extends DefineElement {
-        constructor(params) {
-            super(params);
-            let rootDom = new Element();
-            if (params) {
-                rootDom = params;
-                this.init(params);
-            }
-            rootDom.tagName = 'div';
-            rootDom.defineEl = this;
-            this.element = rootDom;
-            console.log(this);
-        }
-        init(element) {
-            let that = this;
-            // this.preSrcName =  element.getProp('presrcname')||'preSrc';
-            // this.SrcName = element.getProp('srcname') || 'src';
-            if (element.hasProp('prename')) {
-                this.preSrcName = element.getProp('prename');
-                element.delProp('prename');
-            }
-            else {
-                this.preSrcName = 'preSrc';
-            }
-            if (element.hasProp('srcname')) {
-                this.srcName = element.getProp('srcname');
-                element.delProp('srcname');
-            }
-            else {
-                this.srcName = 'src';
-            }
-            if (element.hasProp('dataname')) {
-                this.dataName = element.getProp('dataname');
-                element.delProp('dataname');
-            }
-            else {
-                this.dataName = 'rows';
-            }
-            that.delay = 50;
-            element.addEvent(new NEvent('scroll', function (dom, module, e, el) {
-                if (this.$query('$timer'))
-                    clearTimeout(this.$query('$timer'));
-                let timer = setTimeout(() => {
-                    that.refresh(dom, el);
-                }, that.delay || 50);
-                this['$timer'] = timer;
-            }));
-            // element.defineEl=this;
-        }
-        ;
-        // <div style="max-height: 500px; overflow-y: scroll; display: flex; flex-wrap: wrap; flex-direction: rows;"
-        // 	e-scroll='scroll' e-click="click">
-        // 	<img x-repeat="rows" src="img/mvvm.png" data-src="{{src}}" width="100%">
-        // </div>
-        // scroll(dom, model, module, e, el) {
-        //     if (model.query('timer')) clearTimeout(model.query('timer'));
-        //     var timer = setTimeout(() => {
-        //             console.dir(el);
-        //             render();
-        //         },
-        //         50);
-        //     model.set('timer', timer);
-        //     function render() {
-        //         let height = el.offsetHeight;
-        //         var start = el.scrollTop,
-        //             end = start + height;
-        //         let isPosition;
-        //         let hasPosition = el.style.position == '';
-        //         for (var i = 0; i < el.children.length; i++) {
-        //             var item = el.children[i],
-        //                 elemTop = hasPosition ? item.offsetTop - el.offsetTop : item.offsetTop;
-        //             // console.log(item,start,end,elemTop);
-        //             // console.dir(item);
-        //             // console.log(el.scrollTop,height);
-        //             if (elemTop >= start && elemTop <= end) {
-        //                 if (item.getAttribute('data-src')) {
-        //                     item.setAttribute('src', item.getAttribute('data-src'));
-        //                     item.removeAttribute('data-src');
-        //                     // console.log(item.getAttribute('data-src'));
-        //                     // var src = item.attr('lay-src');
-        //                 }
-        //             }
-        //             if (elemTop > end) break;
-        //         }
-        //     }
-        beforeRender(module, dom) {
-            super.beforeRender(module, dom);
-            if (this.needPreRender) {
-                dom.setProp('overflow-y', 'scroll');
-                let child = dom.children[0];
-                let img = child.query({
-                    tagName: 'img'
-                });
-                img.setProp('src', new Expression(`${this.preSrcName}`), true);
-                new Directive('repeat', this.dataName, child, dom);
-            }
-        }
-        ;
-        afterRender(module, dom) {
-            if (this.needPreRender) {
-                let md = this.getModel();
-                md['$timer'] = null;
-                setTimeout(() => {
-                    this.refresh(dom, module.getNode(dom.key));
-                }, 50);
-            }
-            super.afterRender(module, dom);
-            this.imgs = this.getImgElement(dom);
-        }
-        getImgElement(dom, res = []) {
-            for (let i = 0; i < dom.children.length; i++) {
-                let item = dom.children[i];
-                if (item.tagName === 'img') {
-                    res.push(item);
-                }
-                if (item.children.length > 0) {
-                    this.getImgElement(item, res);
-                }
-            }
-            return res;
-        }
-        refresh(uidom, el) {
-            console.log(uidom, el);
-            let height = el.offsetHeight;
-            let start = el.scrollTop, end = start + height;
-            let hasPosition = el.style.position == '';
-            for (let i = 0; i < el.children.length; i++) {
-                for (let j = 0; j < el.children[i].children.length; j++) {
-                    let item = el.children[i].children[j];
-                    if (item.tagName.toLowerCase() !== 'img')
-                        continue;
-                    // let item: any = el.children[i],
-                    let elemTop = hasPosition ? item.offsetTop - el.offsetTop : item.offsetTop;
-                    console.log(elemTop, start, end);
-                    if (elemTop >= start && elemTop <= end) {
-                        let element = uidom.query(item.getAttribute('key'));
-                        console.log(element);
-                        let em = element.model;
-                        if (em.hasOwnProperty(this.srcName)) {
-                            em[this.preSrcName] = em[this.srcName];
-                            delete em[this.srcName];
-                        }
-                        console.log(em);
-                    }
-                    if (elemTop > end)
-                        break;
-                }
-            }
-        }
-    }
-    DefineElementManager.add('NIMG', {
-        init: function (element, parent) {
-            new Img(element);
-        }
-    });
-
     /*
      * 消息js文件 中文文件
      */
@@ -7584,95 +7294,11 @@ var nodom = (function (exports) {
         }
     };
 
-    /**
-     * 插件，插件为自定义元素方式实现
-     */
-    class Plugin {
-        constructor(params) {
-        }
-        /**
-         * 前置渲染方法(dom render方法中获取modelId和parentKey后执行)
-         * @param module    模块
-         * @param uidom     虚拟dom
-         */
-        beforeRender(module, uidom) {
-            this.element = uidom;
-            this.moduleId = module.id;
-            if (!this.model || uidom.key !== this.key) {
-                this.key = uidom.key;
-                this.model = uidom.model;
-                //添加到模块
-                if (uidom.hasProp('name')) ;
-                this.needPreRender = true;
-            }
-            else {
-                this.needPreRender = false;
-            }
-        }
-        /**
-         * 后置渲染方法(dom render结束后，渲染到html之前)
-         * @param module    模块
-         * @param uidom     虚拟dom
-         */
-        afterRender(module, uidom) { }
-        /**
-         * 克隆
-         */
-        clone(dst) {
-            let plugin = Reflect.construct(this.constructor, []);
-            //不拷贝属性
-            let excludeProps = ['key', 'element', 'modelId', 'moduleId'];
-            Util.getOwnProps(this).forEach((prop) => {
-                if (excludeProps.includes(prop)) {
-                    return;
-                }
-                plugin[prop] = Util.clone(this[prop]);
-            });
-            if (dst) {
-                plugin.element = dst;
-            }
-            return plugin;
-        }
-        /**
-         * 获取model
-         */
-        getModel() {
-            let module = ModuleFactory.get(this.moduleId);
-            if (!module) {
-                return null;
-            }
-            return this.model || null;
-        }
-    }
-
-    /**
-     * 自定义元素管理器
-     */
-    class PluginManager {
-        /**
-         * 添加自定义元素类
-         * @param name  元素名
-         * @param cfg   元素类
-         */
-        static add(name, cfg) {
-            if (this.plugins.has(name)) {
-                throw new NError('exist1', exports.NodomMessage.TipWords['element'], name);
-            }
-            this.plugins.set(name, cfg);
-        }
-        /**
-         * 获取自定义元素类
-         * @param tagName 元素名
-         */
-        static get(tagName) {
-            return this.plugins.get(tagName);
-        }
-    }
-    PluginManager.plugins = new Map();
-
     exports.Application = Application;
     exports.ChangedDom = ChangedDom;
     exports.Compiler = Compiler;
+    exports.DefineElement = DefineElement;
+    exports.DefineElementManager = DefineElementManager;
     exports.Directive = Directive;
     exports.DirectiveManager = DirectiveManager;
     exports.DirectiveType = DirectiveType;
@@ -7693,8 +7319,6 @@ var nodom = (function (exports) {
     exports.NFactory = NFactory;
     exports.NodomMessage_en = NodomMessage_en;
     exports.NodomMessage_zh = NodomMessage_zh;
-    exports.Plugin = Plugin;
-    exports.PluginManager = PluginManager;
     exports.Renderer = Renderer;
     exports.ResourceManager = ResourceManager;
     exports.Route = Route;
@@ -7704,9 +7328,9 @@ var nodom = (function (exports) {
     exports.Util = Util;
     exports.addModules = addModules;
     exports.app = app;
-    exports.arrayFunc = arrayFunc;
     exports.createDirective = createDirective;
     exports.createRoute = createRoute;
+    exports.modelCloneExpKey = modelCloneExpKey;
     exports.request = request;
 
     Object.defineProperty(exports, '__esModule', { value: true });

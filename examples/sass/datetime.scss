@@ -47,7 +47,7 @@
 		/*显示年月和箭头*/
 		.nd-datetime-ymct {
 			line-height: 30px;
-			padding: math.div($nd-padding, 2);
+			// padding: math.div($nd-padding, 2);
 			font-size: $nd-fontlarge;
 			display: flex;
 			justify-content: space-between;
@@ -87,7 +87,7 @@
 		.nd-datetime-dates {
 			> span {
 				font-size: $nd-fontnormal;
-				margin: math.div($nd-padding, 2);
+				// margin: math.div($nd-padding, 2);
 				display: inline-block;
 				height: 25px;
 				width: 25px;

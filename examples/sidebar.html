@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>nodomui example - panel usage</title>
     <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
-    <script src='js/nodom.js'></script>
-    <script src='../bin/nodomui.js'></script>
+		<script src="../node_modules/nodom/dist/nodom.js"></script>
+		<script src="../dist/nodomui.js"></script>
 </head>
 <body>
     <div>
@@ -21,7 +21,7 @@
     </div>
 </body>
 <script>
-    nodom.newApp({
+    nodom.app({
         module:{
             el:'div',
             data:{

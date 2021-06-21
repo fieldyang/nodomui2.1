@@ -6,12 +6,12 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 		<title>nodomui example - panel usage</title>
 		<link rel="stylesheet" type="text/css" href="css/nodomui.css" />
-		<script src="../node_modules/nodom/dist/nodom.js"></script>
+		<script src="./js/nodom.js"></script>
 		<script src="../dist/nodomui.js"></script>
 	</head>
 	<body>
 		<div>
-			<ui-test></ui-test>
+			<!-- <ui-test></ui-test> -->
 			<!-- 
             let ui = new UIButton({
                     size: SIZE.NORMAL,
@@ -44,6 +44,7 @@
 			<ui-button icon="checked" theme="success" e-click="itemClick">check图标</ui-button>
 			<ui-button icon="ashbin" theme="error" e-click="itemClick">search图标</ui-button>
 			<ui-button icon="prompt" theme="warn" e-click="itemClick">prompt图标</ui-button>
+			<ui-button icon="prompt" theme="disable" e-click="itemClick">prompt图标</ui-button>
 			<p>无背景 无文字</p>
 			<ui-button iconPos="left" icon="prompt" theme="warn" nobg e-click="itemClick">小图标</ui-button>
 			<ui-button iconPos="left" icon="prompt" theme="warn" nobg e-click="itemClick"></ui-button>

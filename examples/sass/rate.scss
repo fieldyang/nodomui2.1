@@ -1,0 +1,23 @@
+@import "base", "icon";
+
+.nd-rate {
+    list-style: none;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 10px 5px 10px 0px;
+    font-size: 0;
+    @include nd-color-set('white',$nd-color-orange);
+}
+
+.nd-inline {
+    display: inline;
+    vertical-align: middle;
+}
+
+.nd-rate-item{
+    font-size:20px;
+    display:inline-block;
+    color:$nd-color-orange;
+    font-style: normal;  
+    margin-right: 5px;    
+}

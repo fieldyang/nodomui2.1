@@ -6,8 +6,10 @@
 	// url('font/iconfont.woff')
 	src: url("font/iconfont.eot");
 	src: url("font/iconfont.eot") format("embedded-opentype"), url("font/iconfont.woff") format("woff"),
-		url("font/iconfont.ttf") format("truetype");
-	// url('font/iconfont.svg') format('svg');
+		url("font/iconfont.ttf") format("truetype"),
+		url('//at.alicdn.com/t/font_2616188_6m8jo80wcnc.woff2?t=1623905554680') format('woff2'),
+		url('//at.alicdn.com/t/font_2616188_6m8jo80wcnc.woff?t=1623905554680') format('woff'),
+		url('//at.alicdn.com/t/font_2616188_6m8jo80wcnc.ttf?t=1623905554680') format('truetype');
 }
 
 /*icon size*/
@@ -444,4 +446,8 @@
 /*电话*/
 .nd-icon-telphone {
 	@include nd-genicon("\e8ad");
+}
+
+.nd-icon-star{
+	@include nd-genicon("\e646");
 }

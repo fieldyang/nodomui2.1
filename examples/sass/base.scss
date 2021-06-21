@@ -19,6 +19,37 @@ $nd-errorcolor: #f00;
 $nd-linkcolor: rgb(38, 117, 246);
 $nd-linkcolorvisted: rgb(30, 100, 200);
 
+
+/*
+默认主题颜色
+*/
+$nd-color-red:#FF5722;
+$nd-color-blue:#1E9FFF;
+$nd-color-orange:#FFB800;
+$nd-color-black:#393D49;
+$nd-color-green:#009688;
+$nd-color-cyan:#2f4056;
+$nd-color-gray:#FAFAFA;
+$nd-color-mainActive:#5FB878;
+$nd-color-blueLink:#01AAED;
+$nd-color-whiteActive:#F6F6F6;
+$nd-color-white:#FFF;
+$nd-color-realBlack:#000;
+$nd-color-disable:#d2d2d2;
+$nd-color-set: ("red": $nd-color-red, "blue": $nd-color-blue, "orange": #FFB800, "black":$nd-color-black, "green":$nd-color-green,
+	"cyan":$nd-color-cyan, "gray":$nd-color-gray, "mainActive":$nd-color-mainActive, "blueLink":$nd-color-blueLink, "whiteActive":$nd-color-whiteActive, "white":$nd-color-white, );
+
+@mixin nd-color-set($backgroundColor, $color:#fff) {
+	background-color: map-get($nd-color-set, $backgroundColor);
+	color: $color;
+}
+
+// $nd-listcolor: $nd-color1 $nd-color2 $nd-color3 $nd-color4 $nd-color5 $nd-color6 $nd-color7 $nd-color8 $nd-color9;
+/*颜色 混合*/
+// @mixin nd-color($index) {
+// 	background-color: nth($nd-listcolor, $index);
+// 	color: $nd-forecolor1;
+// }
 /**白色主题 **/
 //阴影色
 // $nd-shadecolor: #999;
@@ -114,6 +145,7 @@ $nd-color11: rgb(73, 80, 120); //hover
 // $nd-color9:rgb(41,147,237);     //默认tip框背景色、蒙版背景色
 //颜色序列
 $nd-listcolor: $nd-color1 $nd-color2 $nd-color3 $nd-color4 $nd-color5 $nd-color6 $nd-color7 $nd-color8 $nd-color9;
+
 /*颜色 混合*/
 @mixin nd-color($index) {
 	background-color: nth($nd-listcolor, $index);
@@ -159,23 +191,26 @@ $nd-border1: 1px solid $nd-color7;
 @mixin nd-clickicon($icon) {
 	@extend #{".nd-icon-" + $icon};
 	@extend .nd-canclick;
+
 	&:hover {
-		color: $nd-color-active1;
+		color: $nd-color-mainActive;
 	}
 }
 
 //生成颜色
 //item hover
 .nd-item-hovercolor {
-	background-color: $nd-color11;
-	color: $nd-color-active1;
-	text-shadow: 2px 2px 2px $nd-shadecolor;
+	// background-color: $nd-color11;
+	background-color: rgba($nd-color-realBlack, .1);
+	//  color: $nd-color-mainActive;
+	// text-shadow: 2px 2px 2px $nd-shadecolor;
 }
 
 /*item active*/
 .nd-item-selectcolor {
 	// background-color:lighten($nd-activecolor,20%);
-	background-color: $nd-color6;
+	// background-color: $nd-color6;
+	background-color: $nd-color-mainActive;
 	color: $nd-forecolor4;
 }
 
@@ -186,9 +221,12 @@ $nd-border1: 1px solid $nd-color7;
 	background-color: $bg;
 	border-radius: $nd-radius;
 	box-shadow: 0px 0px 8px 1px $nd-shadecolor;
-	@if lightness($bg) > 70% {
+
+	@if lightness($bg)>70% {
 		color: mix(#000, $color, 20%);
-	} @else {
+	}
+
+	@else {
 		color: #fff;
 	}
 }
@@ -198,6 +236,7 @@ $nd-border1: 1px solid $nd-color7;
 	border-color: $nd-color-grey5;
 	border-style: solid;
 }
+
 /*主背景+字体颜色*/
 .nd-main-color {
 	background-color: $nd-color1;
@@ -209,11 +248,14 @@ $nd-border1: 1px solid $nd-color7;
 	background-color: $nd-color-active5;
 	color: $nd-color-active1;
 }
+
 /*hover 颜色*/
 .nd-hover-active {
 	&:hover {
-		background-color: $nd-color6;
-		color: $nd-color-active1;
+		// background-color: $nd-color6;
+		// background-color: $nd-color6;
+		// @include nd-color-set(#fff,#fff );
+		background-color: rgba($color: $nd-color-black, $alpha: 0.1);
 	}
 }
 
@@ -236,21 +278,25 @@ $nd-border1: 1px solid $nd-color7;
 /*通用框*/
 //用于 tree、accordion、list等
 .nd-commonbox {
-	@include nd-color(1);
+	// @include nd-color(1);
+	@include nd-color-set('white', #000);
 	border: 1px solid $nd-color6;
 	padding: $nd-padding;
 }
 
 /*默认色背景box*/
 .nd-box-default {
-	@include nd-color(1);
+	// @include nd-color(1);
+	@include nd-color-set('white', $nd-color-realBlack);
 	border-radius: $nd-radius;
 	box-shadow: 0px 0px 8px 1px $nd-shadecolor;
 }
+
 /*active颜色框*/
 .nd-box-active {
 	@include nd-box-bg($nd-activecolor);
 }
+
 /*success 颜色框*/
 .nd-box-success {
 	@include nd-box-bg($nd-successcolor);
@@ -284,6 +330,7 @@ a:visited {
 .nd-disable {
 	color: grey;
 	cursor: not-allowed !important;
+
 	&:hover {
 		color: grey !important;
 		background-color: transparent !important;
@@ -298,13 +345,14 @@ a:visited {
 /*输入框*/
 input,
 .nd-input {
-	background-color: $nd-color3;
-	color: $nd-color-fore;
+	// background-color: $nd-color3;
+	// color: $nd-color-fore;
 	padding: $nd-padding;
 	border-radius: $nd-radius;
 	border: $nd-border1;
 	margin: 0 5px;
-	&:hover,
+
+	// &:hover,
 	&:focus {
 		@extend .nd-hover-active;
 
@@ -315,18 +363,21 @@ input,
 /*label*/
 label {
 	font-size: 12px;
-	color: $nd-color-fore;
-	text-shadow: 1px 1px 1px $nd-shadecolor;
+	color: $nd-color-realBlack;
+	// text-shadow: 1px 1px 1px $nd-shadecolor;
 }
+
 /*带图标输入框*/
 .nd-input-icon {
 	@extend .nd-input;
 	display: inline-flex;
+
 	b {
 		flex: 0;
 		padding: 0;
 		width: 16px;
 	}
+
 	input {
 		margin: 0;
 		padding: 0;
@@ -334,6 +385,7 @@ label {
 		background-color: transparent;
 		// flex:1;
 	}
+
 	line-height: 15px;
 }
 
@@ -341,7 +393,7 @@ label {
 body {
 	// padding:0;
 	margin: 0;
-	@include nd-color(1);
+	// @include nd-color(1);
 	font-size: $nd-fontnormal;
 }
 
@@ -365,7 +417,7 @@ input {
 
 /*滚动条轨道*/
 ::-webkit-scrollbar-track {
-	@include nd-color(1);
+	// @include nd-color(1);
 	border: $nd-border;
 	border-radius: 5px;
 	// background-color:$nd-color-grey7;
@@ -374,7 +426,9 @@ input {
 /*定义滑块 内阴影+圆角*/
 ::-webkit-scrollbar-thumb {
 	border-radius: $nd-padding;
-	@include nd-color(7);
+	// @include nd-color(7);
+	background-color: rgba($nd-color-realBlack, .5);
+
 	&:hover {
 		background-color: $nd-color-grey2;
 	}
@@ -412,6 +466,6 @@ h5 {
 	color: $nd-color-active1;
 }
 
-body {
-	color: $nd-color-fore;
-}
+// body {
+// 	color: $nd-color-fore;
+// }

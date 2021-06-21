@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - panel usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <!-- <script src="../node_modules/nodom/dist/nodom.js"></script> -->
+    <script src="./js/nodom.js"></script>
+    <script src="../dist/nodomui.js"></script>
+    <style>
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .imgs{
+            max-height:500px; overflow-y: scroll; width: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <button e-click="clickItem">click</button>
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+            <!-- <nimg dataName='rows' srcName='src' preName='pre' class="imgs" IntersectionObserver>
+                <div class="card">
+                    <img width="100%">
+                    第{{$index}}个图片
+                    <button>收藏</button>
+                </div>
+            </nimg> -->
+            <nimg dataName='rows1' srcName='src' preName='pre' class="imgs">
+                <div class="card">
+                    <img width="100%">
+                    第{{$index}}个图片
+                    <button>喜欢</button>
+                </div>
+            </nimg>
+            <!-- <nimg dataName='rows' srcName='src' preName='pre' class="imgs">
+                <div class="card">
+                    <img width="100%">
+                    第{{$index}}个图片
+                    <button>收藏</button>
+                </div>
+            </nimg>
+            <nimg dataName='rows' srcName='src' preName='pre' class="imgs">
+                <div class="card">
+                    <img width="100%">
+                    第{{$index}}个图片
+                    <button>收藏</button>
+                </div>
+            </nimg> -->
+        </div>
+        <!-- <ut dataName='rows' srcName='src' preName='pre' class="imgs">
+            <div class="card">
+                <img width="100%">
+                第{{$index}}个图片
+                <button>收藏</button>
+            </div>
+        </ut>
+        <ut dataName='rows' srcName='src' preName='pre' class="imgs">
+            <div class="card">
+                <img width="100%">
+                第{{$index}}个图片
+                <button>收藏</button>
+            </div>
+        </ut> -->
+    </div>
+</body>
+<script>
+    nodom.app({
+        module: {
+            el: 'div',
+            data: {
+                test: 1,
+                rows: [{
+                        name: 'yang',
+                        addr: 'chengdu',
+                        pre: './data/img/logo.png',
+                        src: './data/img/1.jpg'
+                    },
+                    {
+                        name: 'zhang',
+                        addr: 'mianyang',
+                        pre: './data/img/logo.png',
+                        src: './data/img/2.jpg'
+                    },
+                    {
+                        name: 'chen',
+                        addr: 'luoyang',
+                        pre: './data/img/logo.png',
+                        src: './data/img/3.jpg'
+                    },
+                    {
+                        name: 'tang',
+                        addr: 'beijing',
+                        pre: './data/img/logo.png',
+                        src: './data/img/4.jpg'
+                    }, {
+                        name: 'tang',
+                        addr: 'beijing',
+                        pre: './data/img/logo.png',
+                        src: './data/img/5.jpg'
+                    }, {
+                        name: 'tang',
+                        addr: 'beijing',
+                        pre: './data/img/logo.png',
+                        src: './data/img/6.jpg'
+                    }, {
+                        name: 'tang',
+                        addr: 'beijing',
+                        pre: './data/img/logo.png',
+                        src: './data/img/7.jpg'
+                    }, {
+                        name: 'tang',
+                        addr: 'beijing',
+                        pre: './data/img/logo.png',
+                        src: './data/img/2.jpg'
+                    }, {
+                        name: 'tang',
+                        addr: 'beijing',
+                        pre: './data/img/logo.png',
+                        src: './data/img/4.jpg'
+                    },
+                ],
+                rows1: [{
+                        name: 'yang',
+                        addr: 'chengdu',
+                        pre: './data/img/logo.png',
+                        src: './data/img/1.jpg'
+                    },
+                    {
+                        name: 'zhang',
+                        addr: 'mianyang',
+                        pre: './data/img/logo.png',
+                        src: './data/img/2.jpg'
+                    },
+                    {
+                        name: 'chen',
+                        addr: 'luoyang',
+                        pre: './data/img/logo.png',
+                        src: './data/img/3.jpg'
+                    },
+                    {
+                        name: 'tang',
+                        addr: 'beijing',
+                        pre: './data/img/logo.png',
+                        src: './data/img/4.jpg'
+                    }, {
+                        name: 'tang',
+                        addr: 'beijing',
+                        pre: './data/img/logo.png',
+                        src: './data/img/4.jpg'
+                    }, {
+                        name: 'tang',
+                        addr: 'beijing',
+                        pre: './data/img/logo.png',
+                        src: './data/img/4.jpg'
+                    }, {
+                        name: 'tang',
+                        addr: 'beijing',
+                        pre: './data/img/logo.png',
+                        src: './data/img/4.jpg'
+                    }, {
+                        name: 'tang',
+                        addr: 'beijing',
+                        pre: './data/img/logo.png',
+                        src: './data/img/4.jpg'
+                    }, {
+                        name: 'tang',
+                        addr: 'beijing',
+                        pre: './data/img/logo.png',
+                        src: './data/img/4.jpg'
+                    },
+                ]
+            },
+            methods: {
+                clickItem: function (dom, model, module, e) {
+                  this.rows.pop();
+                }
+            }
+        }
+    })
+</script>
+
+</html>

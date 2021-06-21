@@ -1,7 +1,8 @@
 @import "base";
 /********** accordion ***********/
 .nd-accordion {
-	@extend .nd-commonbox;
+	//  @extend .nd-commonbox;
+	@include nd-color-set('black',rgba($nd-color-white,0.7));
 	.nd-accordion-item {
 		border-bottom: $nd-border;
 		.nd-accordion-first {
@@ -29,16 +30,19 @@
 				text-indent: 2em;
 				font-size: $nd-fontnormal;
 				display: block;
-				// @include nd-color(2);
+				background-color: rgba($nd-color-realBlack,.2);
 			}
 
 			.nd-accordion-selected {
-				@extend .nd-item-selectcolor;
-				@include nd-color(2);
+				//  @extend .nd-item-selectcolor;
+				//  @include nd-color(2);
+			background-color: $nd-color-green;
 			}
 
 			.nd-accordion-second:hover {
-				@extend .nd-hover-active;
+				// @extend .nd-hover-active;
+				// @include nd-color-set('black',#fff)
+				color: #fff;
 			}
 		}
 		.nd-accordion-hide {

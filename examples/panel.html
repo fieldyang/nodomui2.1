@@ -6,15 +6,15 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 		<title>nodomui example - panel usage</title>
 		<link rel="stylesheet" type="text/css" href="css/nodomui.css" />
-		<script src="js/nodom.js"></script>
-		<script src="../bin/nodomui.js"></script>
+		<script src="../node_modules/nodom/dist/nodom.js"></script>
+		<script src="../dist/nodomui.js"></script>
 		<style></style>
 	</head>
 	<body>
 		<div>
 			<button e-click="show">show</button>
 			<!-- <ui-panel title='' style='box-sizing:border-box;width:{{width}};height:{{height}}' buttons='minus|recover,add|maximum'> -->
-			<ui-panel style="box-sizing:border-box;width:{{width}};height:{{height}}">
+			<ui-panel style="box-sizing:border-box;width:100px">
 				<ui-toolbar name="tbr">
 					<ui-button nobg icon="menu"></ui-button>
 					<ui-button nobg>颜色</ui-button>
@@ -34,7 +34,7 @@
 		</div>
 	</body>
 	<script>
-		$.a({
+		nodom.app({
 			module: {
 				el: "div",
 				data: {
