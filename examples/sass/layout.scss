@@ -17,7 +17,7 @@
 		box-sizing: border-box;
 		position: relative;
 		// @include nd-color(1);
-		@include nd-color-set('black',$nd-color-white);
+		 @include nd-color-set('black',$nd-color-white);
 	}
 
 	.nd-layout-middle {

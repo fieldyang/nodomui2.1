@@ -4,14 +4,15 @@
 	z-index: $nd-menu-index;
 	font-size: $nd-fontnormal;
 	position: relative;
-	@include nd-color(3);
+	// @include nd-color(3);
+	@include nd-color-set('white',$nd-color-realBlack);
 	.nd-menu-subct {
 		z-index: $nd-menu-index;
 		display: block;
 		position: absolute;
 		top: 0px;
 		@extend .nd-box-default;
-		@include nd-color(3);
+		// @include nd-color(3);
 		.nd-menu-nodect {
 			position: relative;
 			line-height: 30px;
@@ -19,7 +20,7 @@
 			width: 100%;
 			.nd-menu-node,
 			a.nd-menu-node {
-				color: $nd-forecolor1;
+				color: $nd-color-realBlack;
 				padding: 0 $nd-padding * 2;
 				/*子菜单箭头*/
 				.nd-menu-subicon {
@@ -32,9 +33,9 @@
 					width: 20px;
 					display: inline-block;
 				}
-				&:hover {
-					@extend .nd-item-hovercolor;
-				}
+				// &:hover {
+				// 	@extend .nd-item-hovercolor;
+				// }
 			}
 			&:hover {
 				@extend .nd-item-hovercolor;

@@ -10,7 +10,7 @@ export * from './plugins/layout';
 export * from './plugins/list';
 // export * from './plugins/listtransfer';
 export * from './plugins/loading';
-// export * from './plugins/menu';
+ export * from './plugins/menu';
 export * from './plugins/pagination';
 export * from './plugins/panel';
 export * from './plugins/radio';
