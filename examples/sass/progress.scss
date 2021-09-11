@@ -1,0 +1,45 @@
+@import "base.scss";
+.nd-progress {
+    position: relative;
+    height: 6px;
+    border-radius: 20px;
+    background-color: #eee;
+    user-select: none;
+
+}
+
+.nd-progress-big {
+    height: 18px;
+    line-height: 18px;
+}
+
+.nd-progress-big .nd-progress-text {
+    position: static;
+    padding: 0 10px;
+    color: $nd-color-white;
+}
+
+.nd-progress-big .nd-progress-bar {
+    height: 18px;
+    line-height: 18px;
+}
+
+.nd-progress-bar {
+    background-color: $nd-color-green;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0px;
+    max-width: 100%;
+    height: 6px;
+    border-radius: 20px;
+    text-align: right;
+    transition: all .3s;
+}
+
+.nd-progress-text {
+    font-size: 12px;
+    position: relative;
+    top: -20px;
+    line-height: 18px;
+}

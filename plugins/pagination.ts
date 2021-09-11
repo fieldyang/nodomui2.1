@@ -524,8 +524,8 @@ export class UIPagination extends pluginBase {
      * @param module 
      * @param uidom 
      */
-    beforeRender(module: Module, uidom: Element) {
-        super.beforeRender(module, uidom);
+    beforeRender(uidom: Element, module: Module,) {
+        super.beforeRender(uidom, module);
         this.handleInit(uidom, module);
     }
 

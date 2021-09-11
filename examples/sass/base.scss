@@ -44,6 +44,67 @@ $nd-color-set: ("red": $nd-color-red, "blue": $nd-color-blue, "orange": #FFB800,
 	color: $color;
 }
 
+.nd-bg-red {
+	background-color: $nd-color-red  !important ;
+}
+
+.nd-bg-blue {
+	background-color: $nd-color-blue  !important ;
+}
+
+.nd-bg-black {
+	background-color: $nd-color-black  !important ; 
+}
+
+.nd-bg-green {
+	background-color: $nd-color-green  !important ;
+}
+
+.nd-bg-cyan {
+	background-color: $nd-color-cyan  !important ;
+}
+
+.nd-bg-gray {
+	background-color: $nd-color-gray  !important ;
+}
+
+.nd-bg-white {
+	background-color: $nd-color-white !important;
+}
+.nd-bg-orange{
+	background-color: $nd-color-orange !important;
+}
+
+.nd-color-red {
+	color: $nd-color-red  !important ;
+}
+
+.nd-color-blue {
+	color: $nd-color-blue  !important ;
+}
+
+.nd-color-black {
+	color: $nd-color-black  !important ; 
+}
+
+.nd-color-green {
+	color: $nd-color-green  !important ;
+}
+
+.nd-color-cyan {
+	color: $nd-color-cyan  !important ;
+}
+
+.nd-color-gray {
+	color: $nd-color-gray  !important ;
+}
+
+.nd-color-white {
+	color: $nd-color-white !important;
+}
+.nd-color-orange{
+	color: $nd-color-orange !important;
+}
 // $nd-listcolor: $nd-color1 $nd-color2 $nd-color3 $nd-color4 $nd-color5 $nd-color6 $nd-color7 $nd-color8 $nd-color9;
 /*颜色 混合*/
 // @mixin nd-color($index) {
@@ -466,6 +527,9 @@ h5 {
 	color: $nd-color-active1;
 }
 
+i{
+	font-style: normal;
+}
 // body {
 // 	color: $nd-color-fore;
 // }

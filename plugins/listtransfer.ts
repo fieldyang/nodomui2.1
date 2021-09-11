@@ -222,7 +222,7 @@ export class UIListTransfer extends pluginBase {
      * @param module 
      * @param dom 
      */
-    beforeRender(module: Module, dom: Element) {
+    beforeRender(dom: Element,module: Module) {
         super.beforeRender(module, dom);
         //module model
         let model: Model = this.model;

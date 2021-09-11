@@ -257,8 +257,8 @@ export class UIList extends pluginBase {
      * @param module 
      * @param dom 
      */
-    beforeRender(module: Module, dom: Element) {
-        super.beforeRender(module, dom);
+    beforeRender(dom: Element, module: Module) {
+        super.beforeRender(dom, module);
         //附加数据model
         let model: Model
         model = this.model;

@@ -174,9 +174,9 @@ class UITree extends pluginBase {
      * 渲染前执行
      * @param module 
      */
-    beforeRender(module: Module, uidom: Element) {
+    beforeRender(uidom: Element, module: Module,) {
         const me = this;
-        super.beforeRender(module, uidom);
+        super.beforeRender(uidom, module);
         if (this.needPreRender) {
             //展开收拢事件
             module.addMethod(me.arrowClickId,

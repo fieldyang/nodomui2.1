@@ -149,8 +149,8 @@ export class UIRelationMap extends pluginBase {
      * 渲染前执行
      * @param module 
      */
-    beforeRender(module: Module, uidom: Element) {
-        super.beforeRender(module, uidom);
+    beforeRender(uidom: Element, module: Module,) {
+        super.beforeRender(uidom, module);
         //增加列表格渲染数据
         let model: Model = this.model;
 

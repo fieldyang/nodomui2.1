@@ -204,8 +204,8 @@ export class UIRadio extends pluginBase {
      * @param module 
      * @param dom 
      */
-    beforeRender(module: Module, dom: Element) {
-        super.beforeRender(module, dom);
+    beforeRender(dom: Element, module: Module) {
+        super.beforeRender(dom, module);
         let model = this.model;
         if (this.checkName) {
             let datas: Array<object> = model[this.listField];

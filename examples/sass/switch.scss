@@ -1,0 +1,89 @@
+@import "base", "icon";
+.nd-switch {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 22px;
+    height: 22px;
+    display: inline-block;
+    min-width: 44px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    border: 0;
+    border-radius: 100px;
+    background-color: gray;
+    box-shadow: none;
+    position: relative;
+    cursor: pointer;
+    transition: all .2s;
+    user-select: none;
+    .nd-switch-inner {
+        display: block;
+        margin: 0 7px 0 25px;
+        color: $nd-color-white;
+        font-size: 12px;
+        transition: margin .2s;
+    }
+    .nd-switch-handle {
+        left: 2px;
+        top: 2px;
+        border-radius: 50%;
+        background-color: $nd-color-white;
+        width: 18px;
+        height: 18px;
+        transition: all .2s ease-in-out;
+        position: absolute;
+    }
+}
+
+.nd-switch-small {
+    min-width: 28px;
+    height: 16px;
+    line-height: 16px;
+    .nd-switch-handle {
+        width: 12px;
+        height: 12px;
+    }
+    .nd-switch-inner {
+        margin: 0 5px 0 15px;
+    
+    }
+}
+
+.nd-switch-small.nd-switch-checked{
+    .nd-switch-handle {
+        left: calc(100% - 12px - 2px);
+    }
+    .nd-switch-inner {
+        margin: 0 18px 0 5px;
+    }
+} 
+
+.nd-switch-checked {
+    background-color: $nd-color-green;
+    .nd-switch-handle {
+        left: calc(100% - 18px - 2px)
+    }
+    .nd-switch-inner {
+        margin: 0 25px 0 7px;
+    }
+}
+
+.nd-switch-handle::before {
+    content: '';
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    border-radius: 9px;
+    box-shadow: 0 2px 4px;
+    transition: all .2s ease-in-out;
+} 
+
+
+
+.nd-switch-disable{
+    cursor: not-allowed;
+    opacity: .4;
+}

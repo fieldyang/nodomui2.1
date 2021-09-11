@@ -24,9 +24,10 @@
             new Directive('model', "$$", ui.element)
              -->
 			<h1>{{data}}</h1>
+			<div e-click='change'>aaa</div>
 			<p>带buttongroup</p>
 			<ui-buttongroup>
-				<ui-button size="small" e-click="itemClick">small</ui-button>
+				<ui-button size="small"  e-click="itemClick">small</ui-button>
 				<ui-button size="normal" e-click="itemClick">normal</ui-button>
 				<ui-button size="big" e-click="itemClick">large</ui-button>
 			</ui-buttongroup>
@@ -64,6 +65,9 @@
 						console.log(dom, module);
 						this.data++;
 					},
+					change:function(){
+						this.data=2;
+					}
 				},
 			},
 		});

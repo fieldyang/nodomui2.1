@@ -38,8 +38,8 @@ export class UITest extends pluginBase {
    * @param module 
    * @param dom 
    */
-    beforeRender(module: Module, dom: Element) {
-        super.beforeRender(module, dom);
+    beforeRender( dom: Element,module: Module,) {
+        super.beforeRender( dom,module);
         if (this.needPreRender) {
             //根据this.extraData 来创建extraData
             this.model[this.extraDataName] = {

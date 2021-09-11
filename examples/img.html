@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,8 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>nodomui example - panel usage</title>
     <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
-    <!-- <script src="../node_modules/nodom/dist/nodom.js"></script> -->
-    <script src="./js/nodom.js"></script>
+    <script src="../node_modules/nodom/dist/nodom.js"></script>
     <script src="../dist/nodomui.js"></script>
     <style>
         .card {
@@ -25,50 +25,27 @@
 <body>
     <div>
         <button e-click="clickItem">click</button>
+        <!--
+            图片插件，
+           只加载视口区域的图片，适合展示多个图片，提高性能
+           dataName:绑定的model数据项，要求是数组。
+           ui-img会将标签内的第一个子元素执行repeat指令，所以确保展示项包裹在第一个元素内。
+           srcName:'真实显示的图片路径对应的数据项'，
+           preName:'预加载的图片路径对应的数据项，可以统一设置'，
+           IntersectionObserver:支持IntersectionObserver API，需要使用时设置，默认监听滚动事件
+        -->
+
         <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
-            <!-- <nimg dataName='rows' srcName='src' preName='pre' class="imgs" IntersectionObserver>
-                <div class="card">
-                    <img width="100%">
-                    第{{$index}}个图片
-                    <button>收藏</button>
-                </div>
-            </nimg> -->
-            <nimg dataName='rows1' srcName='src' preName='pre' class="imgs">
+            
+            <ui-img dataName='rows' srcName='src' preName='pre' class="imgs">
                 <div class="card">
                     <img width="100%">
                     第{{$index}}个图片
                     <button>喜欢</button>
                 </div>
-            </nimg>
-            <!-- <nimg dataName='rows' srcName='src' preName='pre' class="imgs">
-                <div class="card">
-                    <img width="100%">
-                    第{{$index}}个图片
-                    <button>收藏</button>
-                </div>
-            </nimg>
-            <nimg dataName='rows' srcName='src' preName='pre' class="imgs">
-                <div class="card">
-                    <img width="100%">
-                    第{{$index}}个图片
-                    <button>收藏</button>
-                </div>
-            </nimg> -->
+            </ui-img>
         </div>
-        <!-- <ut dataName='rows' srcName='src' preName='pre' class="imgs">
-            <div class="card">
-                <img width="100%">
-                第{{$index}}个图片
-                <button>收藏</button>
-            </div>
-        </ut>
-        <ut dataName='rows' srcName='src' preName='pre' class="imgs">
-            <div class="card">
-                <img width="100%">
-                第{{$index}}个图片
-                <button>收藏</button>
-            </div>
-        </ut> -->
+     
     </div>
 </body>
 <script>

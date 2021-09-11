@@ -87,8 +87,8 @@ export class UIDialog extends UIPanel {
      * @param module 
      * @param dom 
      */
-    beforeRender(module: Module, dom: Element) {
-        super.beforeRender(module, dom);
+    beforeRender(dom: Element,module: Module) {
+        super.beforeRender( dom,module);
         if (this.needPreRender) {
             if (this.autoOpen) {
                 this.open();

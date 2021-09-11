@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - progress usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='../node_modules/nodom/dist/nodom.js'></script>
+    <script src='../dist/nodomui.js'></script>
+
+    <style>
+     
+    </style>
+</head>
+
+<body>
+    <div>
+        <button e-click='change'>改变进度条</button>
+        <br>
+
+        <!--
+            进度条
+        dataField:数据绑定的字段，数据支持数字，百分号，分数
+        size:'进度条的尺寸，提供大进度条：big，默认普通大小'，
+        color:'进度条颜色，默认墨绿，可选：green,cyan,red,black,white,orange,blue',
+        showText:是否展示提示文字，默认展示
+      -->
+
+        <span>常规大小</span>
+        <br>
+        <br>
+        <ui-progress dataField="percent"></ui-progress>
+        <br>
+        <span>大号进度条</span>
+        <br>
+        <br>
+        <ui-progress dataField="percent" size='big'></ui-progress>
+        <br>
+        <span>其他颜色</span>
+        <br>
+        <br>
+        <ui-progress dataField="percent1" color='orange'></ui-progress>
+        <br>
+        <span>不展示提示框</span>
+        <br>
+        <ui-progress dataField="percent2" color='red' showText='false'></ui-progress>
+    </div>
+
+
+</body>
+<script>
+    nodom.app({
+        module: {
+            el: "div",
+            data: {
+                percent: '100%',
+                percent1: 60,
+                percent2: '2/3'
+            },
+            methods: {
+                change: function (model, module, newValue, oldValue) {
+                    let count = 0;
+                    let inter = setInterval(() => {
+                        this['percent'] = count + '%';
+                        this['percent1'] = (100 - count) + '%';
+                        if (count++ == 100) {
+                            clearInterval(inter);
+                        }
+                    }, 100);
+
+                },
+                changeData: function (dom, module) {},
+            },
+        },
+    });
+    
+</script>
+</html>

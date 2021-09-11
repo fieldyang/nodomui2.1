@@ -199,9 +199,9 @@ class UIMenu extends pluginBase {
      * 渲染前执行
      * @param module 
      */
-    beforeRender(module: Module, uidom: Element) {
+    beforeRender(uidom: Element, module: Module,) {
         let me = this;
-        super.beforeRender(module, uidom);
+        super.beforeRender(uidom, module);
 
         //popup menu需要添加右键点击事件
         if (this.needPreRender && this.popupMenu && this.position !== 'left' && this.position !== 'right') {

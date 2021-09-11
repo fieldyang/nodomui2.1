@@ -317,7 +317,6 @@ export class UISelect extends pluginBase {
             this.filterMethodId = '$$nodom_method_' + Util.genId();
             let filter: Filter = new Filter(['select', 'func', this.filterMethodId]);
             directive.filters = [filter];
-
             input.assets.set('readonly', 'true');
             //input上覆盖一个query input
             let queryDom: Element = new Element('input');
@@ -335,9 +334,9 @@ export class UISelect extends pluginBase {
      * @param module 
      * @param dom 
      */
-    beforeRender(module: Module, dom: Element) {
+    beforeRender(dom: Element, module: Module) {
         let me = this;
-        super.beforeRender(module, dom);
+        super.beforeRender(dom, module);
         this.listKey = dom.children[1].key;
         let model: Model = this.model;
         if (this.needPreRender) {

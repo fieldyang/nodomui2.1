@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - icon usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src='../node_modules/nodom/dist/nodom.js'></script>
+    <script src='../dist/nodomui.js'></script>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div>
+        <!--
+           时间轴插件
+           mode:可设置ease,简版时间线
+           ending:最后一个节点是否存在内容
+           timeline-item:每一个时间节点对应的模块代码 
+           icon:图标区展示的图标,设置nodom图标对应的类即可 
+           color:图标颜色 默认墨绿，可选：green,cyan,red,black,white,orange,blue',
+           item-title:节点内的时间显示区域
+           item-text：节点内详情描述区域
+           在标签内编写需要呈现的代码即可
+        -->
+        <section>
+            <h2>完整时间线</h2>
+            <hr>
+            <ui-timeline ending='false'>
+                <timeline-item icon='nd-icon-more' color='green'>
+                    <item-title>2021-7-23</item-title>
+                    <item-text>
+                        Nodom2 正式起航<br>
+                        一款基于数据驱动的web mvvm框架<br>
+                        全面支持 typescript
+                        <br>nodom完成度：
+                        <ui-progress dataField="percent3" color='green' ></ui-progress>
+                    </item-text>
+                </timeline-item>
+                <timeline-item color='orange'>
+                    <item-title>2020-8-18</item-title>
+                    <item-text>表达式主要用于数据计算<br>
+                        比如需要显示内容为商品价格折扣价格并取整，可以采用方式为 { {pricediscount|number:0}} <br>
+                        或{ {Math.floor(price*discount)}}。<br>表达式可用于元素属性(attribute)或textContent。以"{ {}}"包裹。
+                        <br>nodom完成度：
+                        <ui-progress dataField="percent2" color='orange' ></ui-progress>
+                    </item-text>
+                </timeline-item>
+                <timeline-item color='cyan'>
+                    <item-title>2020-8-17</item-title>
+                    <item-text>
+                         <strong>模型(Model)</strong>
+                        模型作为模块数据提供者，绑定到模块的数据对象都由模型管理。NoDom基于数据驱动，即数据改变会驱动虚拟dom的渲染。
+                        <br>nodom完成度：
+                        <ui-progress dataField="percent1"color='cyan' ></ui-progress>
+                    </item-text>
+                </timeline-item>
+                <timeline-item icon='nd-icon-edit' color='red'>
+                    <item-title>2020-8-16</item-title>
+                    <item-text>
+                        在1.0的基础上，2.0版本做了以下几个大的改变：<br>
+                        由html element全面改成虚拟dom，即由json数据对象方式管理模块dom树，同时强化虚拟dom操作；<br>
+                        增加了IoC模式，模块支持即插即用，支持模块单例和非单例模式，灵活掌控资源消耗；<br>
+                        改变插件接入方式，支持自定义element tag接入和对象化接入；<br>
+                        提供大量插件，便于快速搭建应用，插件持续增加。<br>
+                        注：因调整结构较大，1.0版本不再支持更新，2.0版本用户直接使用方式改变很小，但深度使用方式（如自定义指令、插件等）改变较大。<br>nodom完成度：<br>
+                        <ui-progress dataField="percent" color='red'></ui-progress>
+                    </item-text>
+                </timeline-item>
+            </ui-timeline>
+            <h2>简版时间线</h2>
+            <ui-timeline mode='ease'>
+                <timeline-item >
+                    <item-title>2018年，三十功名尘与土，八千里路云和月。莫等闲，白了少年头，空悲切。壮志饥餐胡虏肉，笑谈渴饮匈奴血。待从头，收拾旧山河，朝天阙!</item-title>
+                </timeline-item>
+                <timeline-item >
+                    <item-title>2017年，黄沙百战穿金甲，不破楼兰终不还。</item-title>
+                </timeline-item>
+                <timeline-item >
+                    <item-title>2016年，立志欲坚不欲锐,成功在久不在速。</item-title>
+                </timeline-item>
+                <timeline-item >
+                    <item-title>2015年，路漫漫其修远兮,吾将上下而求索 </item-title>
+                </timeline-item>
+            </ui-timeline>
+        </section>
+
+
+    </div>
+
+    </div>
+
+
+</body>
+<script>
+    nodom.app({
+        module: {
+            el: "section",
+            data: {
+                percent:40,
+                percent1:60,
+                percent2:80,
+                percent3:100
+            },
+            methods: {
+            },
+        },
+    });
+</script>
+
+</html>

@@ -334,8 +334,8 @@ export class UIFile extends pluginBase {
         pm[this.extraDataName].uploading = false;
     }
 
-    beforeRender(module: Module, dom: Element) {
-        super.beforeRender(module, dom);
+    beforeRender(dom: Element, module: Module) {
+        super.beforeRender(dom, module);
         if (this.needPreRender) {
             let model = this.model;
             //增加附加model

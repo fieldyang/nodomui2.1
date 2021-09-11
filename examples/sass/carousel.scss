@@ -1,0 +1,240 @@
+@import "base.scss";
+.nd-carousel {
+    position: relative;
+    left: 0;
+    top: 0;
+    background: #f8f8f8;
+}
+
+.nd-carousel-item {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.nd-carousel-item>* {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f8f8f8;
+    transition-duration: .3s;
+    -webkit-transition-duration: .3s;
+}
+
+.nd-carousel-item>.nd-carousel-this {
+    display: block;
+    left: 0;
+}
+
+.nd-carousel-item>.nd-carousel-next {
+    display: block;
+    left: 100%
+}
+
+.nd-carousel-item>.nd-carousel-prev {
+    display: block;
+    left: -100%;
+}
+
+.nd-carousel-item>.nd-carousel-next.nd-carousel-left,
+.nd-carousel-item>.nd-carousel-prev.nd-carousel-right {
+    left: 0;
+}
+
+.nd-carousel-item>.nd-carousel-this.nd-carousel-left {
+    left: -100%;
+}
+
+.nd-carousel-item>.nd-carousel-this.nd-carousel-right {
+    left: 100%;
+}
+
+.nd-carousel-arrow {
+    display: none;
+    opacity: 0;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    margin-top: -18px;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    font-size: 20px;
+    border: 0;
+    border-radius: 50%;
+    background-color: rgba($nd-color-realBlack, .2);
+    color: $nd-color-white;
+    -webkit-transition-duration: .3s;
+    transition-duration: .3s;
+    cursor: pointer;
+    padding: 0;
+}
+
+.nd-carousel-arrow[nd-type='add'] {
+    left: auto !important;
+    right: 20px;
+
+}
+
+.nd-carousel[arrow="always"] .nd-carousel-arrow {
+    display: block;
+    opacity: 1;
+    left: 20px;
+}
+
+.nd-carousel[arrow="always"] .nd-carousel-arrow[lay-type="add"] {
+    right: 20px;
+}
+
+.nd-carousel[arrow="none"] .nd-carousel-arrow {
+    display: none !important;
+}
+
+.nd-carousel:hover .nd-carousel-arrow {
+    display: block;
+    opacity: 1;
+    left: 20px;
+}
+
+.nd-carousel:hover .nd-carousel-arrow[nd-type='add'] {
+    right: 20px;
+}
+
+.nd-carousel-ind {
+    position: relative;
+    top: -35px;
+    width: 100%;
+    line-height: 0 !important;
+    text-align: center;
+    font-size: 0;
+}
+
+.nd-carousel-ind ul {
+    display: inline-block;
+    padding: 5px;
+    background-color: rgba($nd-color-realBlack, .2);
+    border-radius: 10px;
+    -webkit-transition-duration: .3s;
+    transition-duration: .3s;
+}
+
+.nd-carousel-ind li {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 3px;
+    font-size: 14px;
+    background-color: #eee;
+    background-color: rgba(255, 255, 255, .5);
+    border-radius: 50%;
+    cursor: pointer;
+    -webkit-transition-duration: .3s;
+    transition-duration: .3s;
+}
+
+.nd-carousel-ind li:hover {
+    background-color: rgba(255, 255, 255, .7);
+}
+
+.nd-carousel-ind .nd-carousel-this {
+    background-color:$nd-color-white;
+}
+
+.nd-carousel[indicator="outside"] {
+    margin-bottom: 30px;
+}
+
+.nd-carousel[indicator="outside"] .nd-carousel-ind {
+    top: 10px;
+}
+
+.nd-carousel[indicator="outside"] .nd-carousel-ind ul {
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.nd-carousel[indicator="none"] .nd-carousel-ind {
+    display: none;
+}
+
+.nd-carousel[anim="updown"] .nd-carousel-arrow {
+    left: 50% !important;
+    top: 20px;
+    margin: 0 0 0 -18px;
+}
+
+.nd-carousel[anim="updown"] .nd-carousel-arrow[nd-type="add"] {
+    top: auto !important;
+    bottom: 20px;
+}
+
+.nd-carousel[anim="updown"] .nd-carousel-ind {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    width: auto;
+    height: auto;
+    transform: translate(0, -50%);
+}
+
+.nd-carousel[anim="updown"] .nd-carousel-ind ul {
+    padding: 3px 5px;
+}
+
+.nd-carousel[anim="updown"] .nd-carousel-ind li {
+    display: block;
+    margin: 6px 0;
+}
+
+.nd-carousel[anim="updown"]>.nd-carousel-item>* {
+    left: 0 !important;
+}
+
+.nd-carousel[anim="updown"]>.nd-carousel-item>.nd-carousel-this {
+    top: 0;
+}
+
+.nd-carousel[anim="updown"]>.nd-carousel-item>.nd-carousel-prev {
+    top: -100%;
+}
+
+.nd-carousel[anim="updown"]>.nd-carousel-item>.nd-carousel-next {
+    top: 100%;
+}
+
+.nd-carousel[anim="updown"]>.nd-carousel-item>.nd-carousel-prev.nd-carousel-right,
+.nd-carousel[anim="updown"]>.nd-carousel-item>.nd-carousel-next.nd-carousel-left {
+    top: 0;
+}
+
+.nd-carousel[anim="updown"]>.nd-carousel-item>.nd-carousel-this.nd-carousel-left {
+    top: -100%;
+}
+
+.nd-carousel[anim="updown"]>.nd-carousel-item>.nd-carousel-this.nd-carousel-right {
+    top: 100%;
+}
+
+/* 渐显切换 */
+.nd-carousel[anim="fade"]>.nd-carousel-item>* {
+    left: 0 !important;
+}
+
+.nd-carousel[anim="fade"]>.nd-carousel-item>.nd-carousel-prev,
+.nd-carousel[anim="fade"]>.nd-carousel-item>.nd-carousel-next {
+    opacity: 0;
+}
+
+.nd-carousel[anim="fade"]>.nd-carousel-item>.nd-carousel-prev.nd-carousel-right,
+.nd-carousel[anim="fade"]>.nd-carousel-item>.nd-carousel-next.nd-carousel-left {
+    opacity: 1;
+}
+
+.nd-carousel[anim="fade"]>.nd-carousel-item>.nd-carousel-this.nd-carousel-left,
+.nd-carousel[anim="fade"]>.nd-carousel-item>.nd-carousel-this.nd-carousel-right {
+    opacity: 0
+}

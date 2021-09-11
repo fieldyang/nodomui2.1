@@ -89,6 +89,8 @@ export class UIButton extends pluginBase {
 
     constructor(params: Element | IUIButtonCfg, parent?: Element) {
         super(params);
+        console.log(params);
+        
         let element = new Element();
         if (params instanceof Element) {
             element = params;

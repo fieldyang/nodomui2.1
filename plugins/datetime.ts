@@ -218,7 +218,7 @@ class UIDatetime extends pluginBase {
      * @param module 
      * @param uidom 
      */
-    beforeRender(module: Module, uidom: Element) {
+    beforeRender(uidom: Element,module: Module) {
         let me = this;
         super.beforeRender(module, uidom);
         this.listKey = uidom.children[1].key;

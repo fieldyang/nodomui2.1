@@ -11,9 +11,9 @@ button,
 	border: 0px;
 	padding: $nd-padding $nd-btn-padding-left;
 
-	// > b {
-	// 	margin-right: math.div($nd-padding, 2);
-	// }
+	> b {
+		margin-right: math.div($nd-padding, 2);
+	}
 	&:hover {
 		// background-color: lighten($nd-color8, 5%);
 		// color: $nd-forecolor2;

@@ -1,6 +1,6 @@
 import { Element } from "nodom";
 import { pluginBase } from "./pluginBase";
-
+import { UITool } from "./uibase";
 /**
  * 联动下拉框
  * 待写...

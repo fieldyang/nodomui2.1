@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,20 +10,22 @@
     <script src='js/nodom.js'></script>
     <script src='../bin/nodomui.js'></script>
     <style>
-        .ct{
-            min-width:1000px !important;
-            height:400px; 
+        .ct {
+            min-width: 1000px !important;
+            height: 400px;
         }
-        .pager{
-            text-align:center;
-            padding-top:30px;
+
+        .pager {
+            text-align: center;
+            padding-top: 30px;
         }
-        body{
-            padding:5px;
+
+        body {
+            padding: 5px;
         }
-        
     </style>
 </head>
+
 <body>
     <div>
         <button e-click='getGridData'>获取表格数据</button>
@@ -41,7 +44,7 @@
         
         <p>表格列元素通过cols元素定义，cols每个子元素都为表格的一列</p> -->
         <!-- <ui-grid name='grd'  dataName='rows' style='height:200px' dataUrl='data/grid1.json'> -->
-            <!--
+        <!--
                 列属性
                 width:显示宽度，数字
                 title:表头名
@@ -49,22 +52,22 @@
                 notsort: 不显示排序
                 hide: 在表格中隐藏该列，在sub中显示
             -->
-            <!-- <cols>
+        <!-- <cols>
                 <div width='50' title='编号' notsort field='id' left>{{id}}</div>
                 <div width='100' title='价格' field='price' left>{{price|currency}}</div>
                 <div width='100' title='原价' field='oprice'>{{oprice|currency}}</div>
                 <div  title='商品名' field='name' left>{{name}}</div>
             </cols>
         </ui-grid>  -->
-        
-         <h3>增加网格线</h3>
+
+        <h3>增加网格线</h3>
         <p>通过gridLine设置网格线，包括row(行线),column(列线),both(全部)</p>
-        <ui-grid  dataName='rows' style='height:300px' gridLine='both' checkbox rowalt>
+        <ui-grid dataName='rows' style='height:300px' gridLine='both' checkbox rowalt>
             <cols>
                 <div width='50' title='编号' notsort field='id' left>{{id}}</div>
                 <div width='100' title='价格' field='price' center>{{price|currency}}</div>
                 <div width='100' title='原价' field='oprice'>{{oprice|currency}}</div>
-                <div  title='商品名' field='name' left>{{name}}</div>
+                <div title='商品名' field='name' left>{{name}}</div>
             </cols>
         </ui-grid>
 
@@ -92,13 +95,13 @@
             </cols>
         </ui-grid> -->
 
-         <!-- <h3>增加排序</h3>
+        <!-- <h3>增加排序</h3>
         <p>通过sortable启用排序，cols子元素可以设置notsort表示该列不排序</p>
         <ui-grid  dataName='rows' style='height:300px' rowalt fixHead sortable gridLine='both'
         dataUrl='data/grid1.json'>
             <cols>   -->
-                <!--该列不排序-->
-                 <!-- <div width='100' title='编号' notsort field='id' left>{{id}}</div>
+        <!--该列不排序-->
+        <!-- <div width='100' title='编号' notsort field='id' left>{{id}}</div>
                 <div width='100' title='价格' field='price' left>{{price|currency}}</div>
                 <div width='100' title='原价' field='oprice'>{{oprice|currency}}</div>
                 <div  title='商品名' field='name' left>{{name}}</div>
@@ -123,7 +126,7 @@
             </cols>
             <sub auto cols='2'></sub>
         </ui-grid>  -->
-<!-- 
+        <!-- 
         <h4>自定义子表格</h4>
         <ui-grid  dataName='rows' style='height:300px' rowalt fixHead
             dataUrl='data/grid1.json'>
@@ -141,65 +144,118 @@
             </sub>
         </ui-grid>  -->
 
-      <h3>增加分页</h3>
+        <h3>增加分页</h3>
         <p>通过ui-pagination引入分页插件</p>
-        
-        <ui-grid name='grd' dataName='rows' style='height:300px;' gridline='both' rowalt sortable checkbox
-        >
+
+        <ui-grid name='grd' dataName='rows' style='height:300px;' gridline='both' rowalt sortable checkbox>
             <cols>
                 <div width='50' title='编号' notsort field='id'>{{id}}</div>
-                <div width='120' title='头像' field='head' ><img width='70' src='{{head}}'></div>
+                <div width='120' title='头像' field='head'><img width='70' src='{{head}}'></div>
                 <div width='120' title='头像链接' field='head'><a href='{{head}}' target='blank'>{{head}}</a></div>
                 <div width='150' title='商品名' field='name'>{{name}}</div>
                 <div width='100' title='价格' field='price'>{{price|currency}}</div>
                 <div width='100' title='原价' field='oprice'>{{oprice|currency}}</div>
                 <div width='100' title='超级vip'>{{(oprice*discount*$$vip)|currency}}</div>
                 <div width='100' title='折扣' field='discount'>{{(discount*10)|number:2}}</div>
-                <div width='80' title='商品描述1' field='desc' >{{desc}}</div>
-                <div width='80' title='商品描述2' field='desc' >{{desc}}</div>
-                <div width='80' title='商品描述3' field='desc' >{{desc}}</div>
-                <div width='100' title='商品描述4' field='desc' >{{desc}}</div>
-                <div width='200' title='商品描述5' field='desc' >{{desc}}</div>
-                <div width='200' title='商品描述6' field='desc' >{{desc}}</div>
-                <div width='200' title='商品描述7' field='desc' >{{desc}}</div> 
+                <div width='80' title='商品描述1' field='desc'>{{desc}}</div>
+                <div width='80' title='商品描述2' field='desc'>{{desc}}</div>
+                <div width='80' title='商品描述3' field='desc'>{{desc}}</div>
+                <div width='100' title='商品描述4' field='desc'>{{desc}}</div>
+                <div width='200' title='商品描述5' field='desc'>{{desc}}</div>
+                <div width='200' title='商品描述6' field='desc'>{{desc}}</div>
+                <div width='200' title='商品描述7' field='desc'>{{desc}}</div>
                 <!-- <div title='商品描述' field='desc' >{{desc}}</div> -->
             </cols>
-            <sub class='sub' labelWidth='100' cols='2' auto ></sub>
+            <sub class='sub' labelWidth='100' cols='2' auto></sub>
         </ui-grid>
     </div>
 </body>
 <script>
-    
     nodom.app({
-        module:{
-            el:'div',
+        module: {
+            el: 'div',
+            data: {
+                rows: [{
+                        "id": 1,
+                        "name": "女款韩版休闲圆领宽松运动风条纹撞色短袖连衣裙",
+                        "price": 46,
+                        "oprice": 399,
+                        "discount": 0.12,
+                        "head": "imgs/1.jpg",
+                        "desc": "女款韩版休闲圆领宽松运动风条纹撞色短袖连衣裙女款韩版休闲圆领宽松运动风条纹撞色短袖连衣裙女款韩版休闲圆领宽松运动风条纹撞色短袖连衣裙女款韩版休闲圆领宽松运动风条纹撞色短袖连衣裙"
+                    },
+                    {
+                        "id": 2,
+                        "name": "夏季新款韩版时尚气质蝴蝶结圆领收腰连衣裙夏连衣裙女裙子",
+                        "price": 44,
+                        "oprice": 478,
+                        "discount": 0.09,
+                        "head": "imgs/2.jpg",
+                        "desc": "夏季新款韩版时尚气质蝴蝶结圆领收腰连衣裙夏连衣裙女裙子夏季新款韩版时尚气质蝴蝶结圆领收腰连衣裙夏连衣裙女裙子夏季新款韩版时尚气质蝴蝶结圆领收腰连衣裙夏连衣裙女裙子夏季新款韩版时尚气质蝴蝶结圆领收腰连衣裙夏连衣裙女裙子"
+                    },
+                    {
+                        "id": 3,
+                        "name": "夏新款显瘦仙女圆领直筒修身短袖女士时尚连衣裙",
+                        "price": 56,
+                        "oprice": 499,
+                        "discount": 0.12,
+                        "head": "imgs/3.jpg",
+                        "desc": "夏新款显瘦仙女圆领直筒修身短袖女士时尚连衣裙夏新款显瘦仙女圆领直筒修身短袖女士时尚连衣裙夏新款显瘦仙女圆领直筒修身短袖女士时尚连衣裙夏新款显瘦仙女圆领直筒修身短袖女士时尚连衣裙"
+                    },
+                    {
+                        "id": 4,
+                        "name": "2020可甜可盐系穿搭复古衬衫格子拼接假两件连衣裙气质收腰裙子",
+                        "price": 46,
+                        "oprice": 399,
+                        "discount": 0.12,
+                        "head": "imgs/4.jpg",
+                        "desc": "2020可甜可盐系穿搭复古衬衫格子拼接假两件连衣裙气质收腰裙子2020可甜可盐系穿搭复古衬衫格子拼接假两件连衣裙气质收腰裙子2020可甜可盐系穿搭复古衬衫格子拼接假两件连衣裙气质收腰裙子2020可甜可盐系穿搭复古衬衫格子拼接假两件连衣裙气质收腰裙子"
+                    },
+                    {
+                        "id": 5,
+                        "name": "【春装连衣裙】个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙",
+                        "price": 59,
+                        "oprice": 668,
+                        "discount": 0.09,
+                        "head": "imgs/5.jpg",
+                        "desc": "【春装连衣裙】个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙【春装连衣裙】个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙【春装连衣裙】个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙"
+                    },
+                    {
+                        "id": 6,
+                        "name": "2020夏装新款气质红色露肩宽松休闲遮肉女士连衣裙",
+                        "price": 95,
+                        "oprice": 519,
+                        "discount": 0.18,
+                        "head": "imgs/6.jpg",
+                        "desc": "2020夏装新款气质红色露肩宽松休闲遮肉女士连衣裙2020夏装新款气质红色露肩宽松休闲遮肉女士连衣裙2020夏装新款气质红色露肩宽松休闲遮肉女士连衣裙2020夏装新款气质红色露肩宽松休闲遮肉女士连衣裙"
+                    },
+                    {
+                        "id": 7,
+                        "name": "【2020夏装新款】女时尚森系V领修身桔梗法式雪纺连衣裙",
+                        "price": 168,
+                        "oprice": 798,
+                        "discount": 0.22,
+                        "head": "imgs/7.jpg",
+                        "desc": "【2020夏装新款】女时尚森系V领修身桔梗法式雪纺连衣裙【2020夏装新款】女时尚森系V领修身桔梗法式雪纺连衣裙【2020夏装新款】女时尚森系V领修身桔梗法式雪纺连衣裙【2020夏装新款】女时尚森系V领修身桔梗法式雪纺连衣裙"
+                    }
 
-            data:{
-                rows:[
-                {"id":1,"name":"女款韩版休闲圆领宽松运动风条纹撞色短袖连衣裙","price":46,"oprice":399,"discount":0.12,"head":"imgs/1.jpg","desc":"女款韩版休闲圆领宽松运动风条纹撞色短袖连衣裙女款韩版休闲圆领宽松运动风条纹撞色短袖连衣裙女款韩版休闲圆领宽松运动风条纹撞色短袖连衣裙女款韩版休闲圆领宽松运动风条纹撞色短袖连衣裙"},
-        {"id":2,"name":"夏季新款韩版时尚气质蝴蝶结圆领收腰连衣裙夏连衣裙女裙子","price":44,"oprice":478,"discount":0.09,"head":"imgs/2.jpg","desc":"夏季新款韩版时尚气质蝴蝶结圆领收腰连衣裙夏连衣裙女裙子夏季新款韩版时尚气质蝴蝶结圆领收腰连衣裙夏连衣裙女裙子夏季新款韩版时尚气质蝴蝶结圆领收腰连衣裙夏连衣裙女裙子夏季新款韩版时尚气质蝴蝶结圆领收腰连衣裙夏连衣裙女裙子"},
-        {"id":3,"name":"夏新款显瘦仙女圆领直筒修身短袖女士时尚连衣裙","price":56,"oprice":499,"discount":0.12,"head":"imgs/3.jpg","desc":"夏新款显瘦仙女圆领直筒修身短袖女士时尚连衣裙夏新款显瘦仙女圆领直筒修身短袖女士时尚连衣裙夏新款显瘦仙女圆领直筒修身短袖女士时尚连衣裙夏新款显瘦仙女圆领直筒修身短袖女士时尚连衣裙"},
-        {"id":4,"name":"2020可甜可盐系穿搭复古衬衫格子拼接假两件连衣裙气质收腰裙子","price":46,"oprice":399,"discount":0.12,"head":"imgs/4.jpg","desc":"2020可甜可盐系穿搭复古衬衫格子拼接假两件连衣裙气质收腰裙子2020可甜可盐系穿搭复古衬衫格子拼接假两件连衣裙气质收腰裙子2020可甜可盐系穿搭复古衬衫格子拼接假两件连衣裙气质收腰裙子2020可甜可盐系穿搭复古衬衫格子拼接假两件连衣裙气质收腰裙子"},
-        {"id":5,"name":"【春装连衣裙】个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙","price":59,"oprice":668,"discount":0.09,"head":"imgs/5.jpg","desc":"【春装连衣裙】个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙【春装连衣裙】个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙【春装连衣裙】个性纯色舒适显瘦气质复古百褶束腰设计款简约长裙"},
-        {"id":6,"name":"2020夏装新款气质红色露肩宽松休闲遮肉女士连衣裙","price":95,"oprice":519,"discount":0.18,"head":"imgs/6.jpg","desc":"2020夏装新款气质红色露肩宽松休闲遮肉女士连衣裙2020夏装新款气质红色露肩宽松休闲遮肉女士连衣裙2020夏装新款气质红色露肩宽松休闲遮肉女士连衣裙2020夏装新款气质红色露肩宽松休闲遮肉女士连衣裙"},
-        {"id":7,"name":"【2020夏装新款】女时尚森系V领修身桔梗法式雪纺连衣裙","price":168,"oprice":798,"discount":0.22,"head":"imgs/7.jpg","desc":"【2020夏装新款】女时尚森系V领修身桔梗法式雪纺连衣裙【2020夏装新款】女时尚森系V领修身桔梗法式雪纺连衣裙【2020夏装新款】女时尚森系V领修身桔梗法式雪纺连衣裙【2020夏装新款】女时尚森系V领修身桔梗法式雪纺连衣裙"}
-        
 
                 ]
             },
-            methods:{
-                getGridData:function(dom,model,module){
-                    
+            methods: {
+                getGridData: function (dom, model, module) {
+
                 },
-                
-                getSelectedData:function(dom,model,module){
+
+                getSelectedData: function (dom, model, module) {
                     console.log(module.getPlugin('grd').getSelectedRows());
                 },
-                removeSelectedData:function(dom,model,module){
+                removeSelectedData: function (dom, model, module) {
                     module.getPlugin('grd').removeSelectedRows();
                 }
             }
         }
     });
 </script>
+
 </html>

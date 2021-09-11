@@ -89,8 +89,8 @@ class UITip extends pluginBase {
      * @param module 
      * @param dom 
      */
-    beforeRender(module: Module, dom: Element) {
-        super.beforeRender(module, dom);
+    beforeRender(dom: Element, module: Module) {
+        super.beforeRender(dom, module);
         if (this.needPreRender) {
             let model: Model = module.model;
             //构建tip数据模型

@@ -1,7 +1,32 @@
+/*
+ * @Author: kyleslie 
+ * @Date: 2021-06-28 16:37:09 
+ * @Last Modified by: kyleslie
+ * @Last Modified time: 2021-08-04 21:06:27
+ */
 import { NEvent, DefineElement, Element, Module, Directive, Model, Expression, DefineElementManager } from "nodom";
 import { pluginBase } from "./pluginBase";
 import { UITool } from "./uibase";
-class Img extends pluginBase {
+import kayaks from "kayaks";
+// const store =kayaks({
+//     add:(pre={},action)=>{
+//         const {type} = action;
+//         switch(type){
+//             case 'add':return {name:Math.random()};
+//             default: return pre;
+//         }
+//     }
+// });
+// console.log(store.getState());
+// store.subscribe(()=>{
+//    console.log('数据更新了');
+//    setTimeout(() => {
+//        console.log(store.getState());
+        
+//    }, 200);
+   
+// })
+export class Img extends pluginBase {
     preSrcName: string;
     srcName: string;
     dataName: string;
@@ -9,21 +34,17 @@ class Img extends pluginBase {
     imgs: any[];
     delay: number;
     observe: IntersectionObserver;
-    IntersectionObserver: boolean = false;
+    IntersectionObserver: boolean;
     constructor(params: Element, parent?: Element) {
         super(params);
         let rootDom: Element = new Element();
         if (params instanceof Element) {
             rootDom = params;
             UITool.handleUIParam(rootDom, this,
-                ['prename', 'srcname', 'dataname', 'delay'],
-                ['preSrcName', 'srcName', 'dataName', 'delay'],
-                ['', '', 'rows', 50]
+                ['prename', 'srcname', 'dataname', 'delay', 'intersectionobserver|bool'],
+                ['preSrcName', 'srcName', 'dataName', 'delay', 'IntersectionObserver'],
+                ['', '', 'rows', 50, false]
             );
-            if (rootDom.hasProp('intersectionobserver')) {
-                this.IntersectionObserver = true;
-            }
-
         } else {
             Object.keys(params).forEach(key => {
                 this[key] = params[key]
@@ -34,11 +55,11 @@ class Img extends pluginBase {
         rootDom.defineEl = this;
         this.element = rootDom;
     }
-    init(element: Element) {
+    init(dom: Element) {
         let that = this;
         let timer = null;
         if (!this.IntersectionObserver) {
-            element.addEvent(new NEvent('scroll',
+            dom.addEvent(new NEvent('scroll',
                 function (dom, module, e, el) {
                     if (timer != null) clearTimeout(timer);
                     timer = setTimeout(() => {
@@ -46,24 +67,25 @@ class Img extends pluginBase {
                     }, that.delay || 50);
                 }));
         }
-
+        dom.addRenderOp(this.beforeRender, 'before');
+        dom.addRenderOp(this.afterRender,'after');
     };
-    beforeRender(module: Module, dom: Element) {
-        super.beforeRender(module, dom);
+    beforeRender(dom: Element, module: Module) {
+        super.beforeRender(dom,module);
+         let that=<Img>dom.defineEl;
         let child = dom.children[0];
-        let img:Element = child.query({
+        let img: Element = child.query({
             tagName: 'img'
         });
-        img.setProp('src', new Expression(`${this.preSrcName}`), true);
-        new Directive('repeat', this.dataName, child, dom);
+        img.setProp('src', new Expression(`${that.preSrcName}`), true);
+        new Directive('repeat', that.dataName, child, dom);
     };
-    afterRender(module: Module, dom: Element) {
-        let that = this;
-        super.afterRender(module, dom);
-        if (this.needPreRender) {
+    afterRender(dom: Element, module: Module) {
+        let that=<Img>dom.defineEl;
+        if (that.needPreRender) {
             setTimeout(() => {
-                if (this.IntersectionObserver) {
-                    this.observe = new IntersectionObserver(function (entries) {
+                if (that.IntersectionObserver) {
+                    that.observe = new IntersectionObserver(function (entries) {
                         entries.forEach(v => {
                             if (v.isIntersecting) {
                                 let em: Model = module.getElement(v.target.getAttribute('key')).model;
@@ -77,16 +99,18 @@ class Img extends pluginBase {
                     }, {
                         root: module.getNode(dom.key),
                     });
-                    this.imgs.forEach(img => {
+                    that.imgs.forEach(img => {
                         let imgEl = module.getNode(img);
-                        this.observe.observe(imgEl);
+                        that.observe.observe(imgEl);
                     })
-                } else {
-                    this.refresh(module.getNode(dom.key), module);
+                }
+                else {
+                    console.log('refres');
+                    that.refresh(module.getNode(dom.key), module);
                 }
             }, 50);
         }
-        this.imgs = this.getImgElements(dom);
+        that.imgs = that.getImgElements(dom);
 
     }
     getImgElements(dom: Element, res = []) {
@@ -101,6 +125,10 @@ class Img extends pluginBase {
         return res;
     }
     refresh(el: HTMLElement, module: Module) {
+        console.log('refresh');
+        // store.dispatch({
+        //     type:'add',
+        // })
         let height = el.offsetHeight;
         let start = el.scrollTop,
             end = start + height;
@@ -121,8 +149,9 @@ class Img extends pluginBase {
         }
     }
 }
-DefineElementManager.add('NIMG', {
+DefineElementManager.add('UI-IMG', {
     init: function (element: Element, parent?: Element) {
         new Img(element);
+     
     }
 });

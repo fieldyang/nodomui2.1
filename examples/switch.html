@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <script src="../node_modules/nodom/dist/nodom.js"></script>
+    <script src="../dist/nodomui.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <!--
+        开关插件
+        checked:选中状态，默认false,可选true
+        useIcon:使用默认图标
+        disabled:是否是禁用状态
+        size:插件大小，默认常规大小，可选small
+        checkedText:活跃状态下显示的内容，用户指定
+        uncheckedText:非活跃状态下显示的内容，用户指定
+        onchange:状态改变以后，执行的回调函数
+     -->
+    <div>
+        <section style="margin:5px 5px">
+            <div>基础用法</div>
+            <ui-switch></ui-switch>
+            <div>定义状态信息</div>
+            <ui-switch checkedText='1' uncheckedText='0' checked='true'></ui-switch>
+            <ui-switch checkedText='yes' uncheckedText='no'></ui-switch>
+            <div>小型开关</div>
+            <ui-switch size='small' checked='false'></ui-switch>
+            <div>不可用状态</div>
+            <ui-switch disabled='true' checked='true'></ui-switch>
+            <div>icon使用</div>
+            <ui-switch useIcon='true'></ui-switch>
+            <div>状态改变执行回调函数</div>
+            <ui-switch onchange="change"></ui-switch>
+        </section>
+
+    </div>
+
+</body>
+<script>
+    nodom.app({
+
+        module: {
+            el: 'div',
+            methods: {
+                change(checked, module, model) {
+                    console.log(this, checked, module, model);
+                }
+            },
+        }
+    })
+    // let btn = document.querySelector('button');
+    // console.log(btn);
+    // let flag = false;
+    // btn.addEventListener('click', () => {
+    //     if (flag) {
+    //         btn.querySelector('span').innerText = '关闭';
+    //         btn.classList.remove('nd-switch-checked');
+    //     } else {
+    //         btn.querySelector('span').innerText = '打开';
+    //         btn.classList.add('nd-switch-checked');
+    //     }
+
+    //     flag = !flag;
+    // })
+</script>
+
+</html>

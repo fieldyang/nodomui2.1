@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nodomui example - icon usage</title>
+    <link rel="stylesheet" type="text/css" href="css/nodomui.css" />
+    <!-- <script src='../node_modules/nodom/dist/nodom.js'></script> -->
+    <script src='./js/nodom.js'></script>
+    <script src='../dist/nodomui.js'></script>
+</head>
+
+<body>
+    <div>
+        <!--
+            轮播图插件
+            width,height:容器的宽高  
+            indicator:指定指示器所在的位置，可选 outside none 默认在图内,
+            animation:动画类型，可选 fade,updown 默认左右切换,
+            arrow:箭头状态，可选 always none 默认hover,
+            autoplay:是否自动播放，可选 false 默认自动播放, 
+            呈现元素需在ui-carousel标签内第一个字div内,
+            onchane:当页面发生切换后，执行的回调，自动传入三个参数,from 切换前的下标位置,to 切换后的下标位置,module this 指向实例
+        -->
+        <ui-carousel width='270px' height="400px" indicator='outside' arrow='hover' onchange="change">
+            <div>
+                <div style="background-color: aliceblue;">1</div>
+                <div style="background-color: aqua;">2</div>
+                <div style="background-color: red;">3</div>
+                <div style="background-color: yellow;">4</div>
+                <div style="background-color: green;">5</div>
+            </div>
+        </ui-carousel>
+        <!--可以配合img插件使用-->
+        <ui-carousel width='270px' height="400px" animation='updown' indicator='inside' arrow='hover' >
+            <ui-img dataName='rows' srcName='src' preName='pre' class="imgs">
+                <img style="max-width: 100%; max-height: 100%;">
+            </ui-img>
+        </ui-carousel>
+
+    </div>
+
+    </div>
+
+
+</body>
+<script>
+    nodom.app({
+        module: {
+            el: "div",
+            data: {
+                rows: [{
+                   
+                        pre: './data/img/logo.png',
+                        src: './data/img/1.jpg'
+                    },
+                    {
+                       
+                        pre: './data/img/logo.png',
+                        src: './data/img/2.jpg'
+                    },
+                    {
+                       
+                        pre: './data/img/logo.png',
+                        src: './data/img/3.jpg'
+                    },
+                    {
+                     
+                        pre: './data/img/logo.png',
+                        src: './data/img/4.jpg'}
+                ]
+            },
+            methods: {
+                change:function(fromIndex,toIndex,module){
+                    console.log('从'+fromIndex,'到'+toIndex,module,this);
+                },
+            },
+        },
+    });
+</script>
+
+</html>

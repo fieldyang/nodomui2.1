@@ -1,0 +1,61 @@
+@import "base", "icon";
+
+.nd-timeline {
+    padding-left: 5px;
+    .nd-timeline-item {
+        list-style: none;
+        position: relative;
+        padding-bottom: 20px;
+    }
+
+    .nd-timeline-item::before {
+        content: "";
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        background-color: aquamarine;
+        left: 5px;
+        top: 0px;
+        z-index: 0;
+        background-color: #eee;
+    }
+
+    li[timeline-end]::before {
+        content: none;
+    }
+
+    .nd-timeline-axis {
+        position: absolute;
+        left: -4px;
+        top: 0;
+        z-index: 10;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        background-color: #fff;
+        color: green;
+        border-radius: 50%;
+        text-align: center;
+        cursor: pointer;
+        font-size: 20px;
+    }
+
+    .nd-timeline-content {
+        font-size: 14px;
+        padding-left: 20px;
+        line-height: 1.6;
+        color: #666;
+
+        .nd-timeline-title {
+            margin: 0px 0px 10px 0px;
+            line-height: 22px;
+            color: #333;
+        }
+    }
+
+    .nd-timeline-content p {
+        margin: 10px 0;
+    }
+
+
+}

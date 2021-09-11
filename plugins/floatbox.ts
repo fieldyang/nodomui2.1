@@ -140,8 +140,8 @@ export class UIFloatBox extends pluginBase {
      * @param module 
      * @param dom 
      */
-    beforeRender(module: Module, dom: Element) {
-        super.beforeRender(module, dom);
+    beforeRender(dom: Element, module: Module) {
+        super.beforeRender(dom, module);
         if (this.needPreRender) {
             let model = dom.model;
             model[this.dataName] = {
@@ -247,8 +247,8 @@ export function showFloatBox(dom: Element | string, evt: Event, loc?: IFloatBoxP
 
     //     vDom.children[0].children = [dom];
 
-        // floatBox.show(evt, loc);
-    }
+    // floatBox.show(evt, loc);
+}
 
 
 

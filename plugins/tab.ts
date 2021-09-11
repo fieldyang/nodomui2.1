@@ -209,8 +209,8 @@ export class UITab extends pluginBase {
      * @param module 
      * @param dom 
      */
-    beforeRender(module: Module, dom: Element) {
-        super.beforeRender(module, dom);
+    beforeRender(dom: Element, module: Module) {
+        super.beforeRender(dom, module);
         //uidom model
         let model: Model;
         //附加数据model
